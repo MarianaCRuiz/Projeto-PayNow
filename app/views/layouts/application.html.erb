@@ -11,6 +11,22 @@
   </head>
 
   <body>
+  <%= render 'home/header' %>
+    <div class="container">
+      <br>
+      <% if admin_signed_in? %>
+        <p><%= current_user.email %></p>
+      <% end %>
+      <% if client_signed_in? %>
+        <p><%= current_student.email %></p>
+      <% end %>
+      <% if notice %>
+        <%= render 'layouts/alerts' %>
+      <% end %>
+      <% if alert %>
+        <p class="alert"><%= alert %></p>
+      <% end %>
     <%= yield %>
+    </div>
   </body>
 </html>
