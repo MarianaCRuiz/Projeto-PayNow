@@ -3,6 +3,7 @@ require 'rails_helper'
 describe 'clients accounts from a registered company' do
   context 'client register' do
     xit 'successfully' do
+
     end
     xit 'cannot be blank' do
     end

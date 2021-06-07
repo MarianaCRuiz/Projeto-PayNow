@@ -1,0 +1,15 @@
+<h2><%= @company.corporate_name %></h2>
+<ul>
+  <li>CNPJ: <%= @company.cnpj %></li>
+  <li>Email de faturamento: <%= @company.billing_email %></li>
+</ul>
+<div>
+  <p>Endereço de faturamento:</p>
+  <li>Estado: <%= @company.state %></li>
+  <li>Cidade: <%= @company.city %></li>
+  <li>Bairro: <%= @company.district %></li>
+  <li>Rua: <%= @company.street %></li>
+  <li>Número: <%= @company.number %></li>
+  <li>Complemento: <%= @company.address_complement %></li>
+</div>
+<%= link_to 'Atualizar dados da empresa', '#', class:"btn btn-primary" %>

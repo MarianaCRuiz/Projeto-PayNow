@@ -1,0 +1,31 @@
+---
+pt-BR:
+  client_admin:
+    companies:
+      new:
+        title: 'Cadastro'
+        submit: 'Registrar'
+      edit:
+        title: ''
+        submit: 'Atualizar'
+      create:
+        success: ''
+      update:
+        success: 'Dados atualizados com sucesso'
+      destroy:
+        failure: ''
+        success: ''
+  activerecord:
+    models:
+      company: 'Empresa'
+    attributes:
+      company:
+        corporate_name: 'Razão Social'
+        cnpj: 'CNPJ'
+        state: 'Estado'
+        city: 'Cidade'
+        district: 'Bairro'
+        street: 'Rua'
+        number: 'Número'
+        address_complement: 'Complemento'
+        billing_email: 'Email de faturamento'

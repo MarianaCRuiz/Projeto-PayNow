@@ -11,43 +11,26 @@
       <li class="nav-item active">
         <%= link_to '', '#', class:"nav-link" %>
       </li>
-      <li class="nav-item active">
-        <%= link_to '', '#', class:"nav-link" %>
-      </li>
-      <%# if client_signed_in? %>
-      <li class="nav-item active">
-          <%= link_to '', '#', class:"nav-link" %>
-        </li>
+      <% if user_signed_in?%>
         <li class="nav-item active">
           <%= link_to 'Sair', '#', method: :delete, class:"nav-link" %>
         </li>
         <li class="nav-item active">
-          <%= link_to '', '#', method: :put, class:"nav-link" %>
+          <%= link_to 'Editar conta', '#', class:"nav-link" %>
         </li>
-      <%# elsif !client_signed_in? && !amdin_signed_in? %>
-         <li class="nav-item active">
-          <%= link_to 'Entrar', '#', class:"nav-link" %>
+        <% if current_user.client_admin_first_login? %>
+          <li class="nav-item active">
+           <%= link_to 'Registre sua empresa', new_client_admin_company_path, class:"nav-link" %>
+          </li>
+        <% end %>
+      <% else %>
+        <li class="nav-item active">
+          <%= link_to 'Registrar-se', new_user_registration_path, class:"nav-link" %>
         </li>
         <li class="nav-item active">
           <%= link_to '', '#', class:"nav-link" %>
         </li>
-      <%# end %>
-
-      <%# if admin_signed_in? %>
-        <li class="nav-item active">
-          <%# link_to 'Sair Admin', '#', method: :delete, class:"nav-link" %>
-        </li>
-        <li class="nav-item active">
-          <%# link_to 'Editar conta', user_registration_path, method: :put, class:"nav-link" %>
-        </li>
-      <%# elsif !admin_signed_in? && !client_signed_in? %>
-        <li class="nav-item active">
-          <%# link_to 'Entrar Admin', new_user_session_path, class:"nav-link" %>
-        </li>
-        <li class="nav-item active">
-          <%# link_to 'Registrar-se Admin', new_user_registration_path, class:"nav-link" %>
-        </li>
-      <%# end %>
+      <% end %>
     </ul>
   </div>
 </nav>

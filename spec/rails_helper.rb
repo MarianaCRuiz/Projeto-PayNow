@@ -66,9 +66,8 @@ RSpec.configure do |config|
   config.before(type: :system) do
     driven_by :rack_test
   end
-
-
-
+  
+  config.include Warden::Test::Helpers
 
   #config.example_status_persistence_file_path = "rspec.txt"
   

@@ -1,0 +1,48 @@
+<% if @company.errors.any? %>
+  <p>Foram encontrados <%= @company.errors.count %> erro(s):</p>
+  <ul>
+    <% @company.errors.full_messages.each do |error| %>
+      <li><%= error %></li>
+    <% end %>
+  </ul>
+<% end %>
+<%= form_with model: [:client_admin, @company] do |f| %>
+  <div class="field form-group">
+    <%= f.label :corporate_name %>
+    <%= f.text_field :corporate_name, class:"form-control" %>
+  </div>
+  <div class="field form-group">
+    <%= f.label :cnpj %>
+    <%= f.text_field :cnpj, class:"form-control" %>
+  </div>
+  <div class="field form-group">
+    <%= f.label :state %>
+    <%= f.text_area :state, class:"form-control" %>
+  </div>
+  <div class="field form-group">
+    <%= f.label :city %>
+    <%= f.text_area :city, class:"form-control" %>
+  </div>
+  <div class="field form-group">
+    <%= f.label :district %>
+    <%= f.text_area :district, class:"form-control" %>
+  </div>
+  <div class="field form-group">
+    <%= f.label :street %>
+    <%= f.text_field :street, class:"form-control" %>
+  </div>
+  <div class="field form-group">
+    <%= f.label :number %>
+    <%= f.text_field :number, class:"form-control" %>
+  </div>
+  <div class="field form-group">
+    <%= f.label :address_complement %>
+    <%= f.text_field :address_complement, class:"form-control" %>
+  </div>
+  <div class="field form-group">
+    <%= f.label :billing_email %>
+    <%= f.number_field :billing_email, class:"form-control" %>
+  </div>
+  <%= f.submit t('.submit'), class:"btn btn-success mb-1 mt-1" %>
+<% end %>
+<%= link_to 'Cancelar', '#', class:"btn btn-dark btn-sm mb-1 mt-1" %>
