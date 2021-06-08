@@ -1,0 +1,25 @@
+---
+pt-BR:
+  admin:
+    payment_options:
+      new:
+        title: 'Cadastro'
+        submit: 'Adicionar'
+      edit:
+        title: ''
+        submit: 'Atualizar'
+      create:
+        success: ''
+      update:
+        success: 'Dados atualizados com sucesso'
+      destroy:
+        failure: ''
+        success: ''
+  activerecord:
+    models:
+      payment_option: 'Opções de pagamento'
+    attributes:
+      payment_option:
+        name: 'Nome'
+        fee: 'Taxa'
+        max_money_fee: 'Taxa máxima'

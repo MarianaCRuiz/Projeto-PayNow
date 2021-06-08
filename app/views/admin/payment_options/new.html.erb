@@ -1,0 +1,28 @@
+<% if @payment_option.errors.any? %>
+  <p>Foram encontrados <%= @payment_option.errors.count %> erro(s):</p>
+  <ul>
+    <% @payment_option.errors.full_messages.each do |error| %>
+      <li><%= error %></li>
+    <% end %>
+  </ul>
+<% end %>
+<%= form_with model: [:admin, @payment_option] do |f| %>
+  <div class="field form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class:"form-control" %>
+  </div>
+  <div class="field form-group">
+    <%= f.label :fee %>
+    <%= f.text_field :fee, class:"form-control" %>
+  </div>
+  <div class="field form-group">
+    <%= f.label :max_money_fee %>
+    <%= f.text_area :max_money_fee, class:"form-control" %>
+  </div>
+  <div class="field form-group">
+    <%= f.label :icon, 'Icone' %>
+    <%= f.file_field :icon, id:"icon", class:"form-control" %>
+  </div>
+  <%= f.submit t('.submit'), class:"btn btn-success mb-1 mt-1" %>
+<% end %>
+<%= link_to 'Cancelar', '#', class:"btn btn-dark btn-sm mb-1 mt-1" %>

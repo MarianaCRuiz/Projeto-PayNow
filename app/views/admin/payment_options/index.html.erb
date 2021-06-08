@@ -1,0 +1,25 @@
+<div class="container">
+  <h2>Opções de pagamento</h2> <br>
+  <div>
+    <% @payment_options.each do |option|%>
+    <div class="container">
+      <dl>
+        <dt>
+          <% if option.icon.persisted? %>
+            <%= image_tag option.icon, size:'100' %>
+          <% end %>
+        </dt>
+        <dt><%= option.name %></dt>
+        <dt>Taxa(%): <%= option.fee %></dt>
+        <dt>Taxa máxima(R$): <%= option.max_money_fee %></dt>
+      </dl>
+    </div>
+    <% end %>
+  </div>
+  <% if user_signed_in? %>
+    <% if current_user.admin? %>
+      <%= link_to 'Adicionar opções de pagamento', new_admin_payment_option_path , class:"btn btn-primary btn-sm" %>
+    <% end %>
+  <% end %>
+  <%= link_to 'Voltar', '#' , class:"btn btn-primary btn-sm" %>
+</div>

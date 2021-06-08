@@ -9,5 +9,5 @@ import * as ActiveStorage from "@rails/activestorage"
 import * as bootstrap from "bootstrap"
 
 Rails.start()
-Turbolinks.start()
+// Turbolinks.start()
 ActiveStorage.start()

@@ -13,14 +13,24 @@
       </li>
       <% if user_signed_in?%>
         <li class="nav-item active">
-          <%= link_to 'Sair', '#', method: :delete, class:"nav-link" %>
+          <%= link_to 'Sair', destroy_user_session_path, method: :delete, class:"nav-link" %>
         </li>
         <li class="nav-item active">
           <%= link_to 'Editar conta', '#', class:"nav-link" %>
         </li>
-        <% if current_user.client_admin_first_login? %>
+        <% if current_user.client_admin_sign_up? %>
+          <% if !current_user.company %>
+            <li class="nav-item active">
+              <%= link_to 'Registre sua empresa', new_client_admin_company_path, class:"nav-link" %>
+            </li>
+          <% else %>
+            <li class="nav-item active">
+              <%= link_to 'Atualizar dados da empresa', '#', class:"nav-link" %>
+            </li>
+          <% end %>
+        <% elsif current_user.admin? %>
           <li class="nav-item active">
-           <%= link_to 'Registre sua empresa', new_client_admin_company_path, class:"nav-link" %>
+            <%= link_to 'Registro de opções de pagamento', admin_payment_options_path, class:"nav-link" %>
           </li>
         <% end %>
       <% else %>

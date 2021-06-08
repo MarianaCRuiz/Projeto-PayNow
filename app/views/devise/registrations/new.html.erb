@@ -21,6 +21,8 @@
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div>
 
+  <%= f.hidden_field :company_id, value: :null %>
+
   <div class="actions">
     <%= f.submit t('.submit') %>
   </div>
