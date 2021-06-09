@@ -14,7 +14,11 @@ Rails.application.routes.draw do
       resources :pix_register_options, only: %i[new create]
     end
   end
-  
+  namespace :api do
+    namespace :v1 do
+      resources :final_clients, only: %i[index show], param: :token
+    end
+  end
   namespace :admin do
     resources :payment_options, only: %i[index new create edit update]
   end

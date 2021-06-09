@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_09_054447) do
+ActiveRecord::Schema.define(version: 2021_06_09_063519) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -74,6 +74,15 @@ ActiveRecord::Schema.define(version: 2021_06_09_054447) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "company_clients", force: :cascade do |t|
+    t.integer "final_client_id", null: false
+    t.integer "company_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_company_clients_on_company_id"
+    t.index ["final_client_id"], name: "index_company_clients_on_final_client_id"
+  end
+
   create_table "credit_card_register_options", force: :cascade do |t|
     t.integer "company_id", null: false
     t.string "name"
@@ -92,6 +101,14 @@ ActiveRecord::Schema.define(version: 2021_06_09_054447) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "company_id"
     t.index ["company_id"], name: "index_domain_records_on_company_id"
+  end
+
+  create_table "final_clients", force: :cascade do |t|
+    t.string "name"
+    t.string "cpf"
+    t.string "token"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "historic_products", force: :cascade do |t|
@@ -163,6 +180,8 @@ ActiveRecord::Schema.define(version: 2021_06_09_054447) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "boleto_register_options", "companies"
+  add_foreign_key "company_clients", "companies"
+  add_foreign_key "company_clients", "final_clients"
   add_foreign_key "credit_card_register_options", "companies"
   add_foreign_key "domain_records", "companies"
   add_foreign_key "historic_products", "companies"
