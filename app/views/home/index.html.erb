@@ -5,7 +5,7 @@
   <p>Organize e gerencie suas vendas</p>
   <% if user_signed_in? %>
     <% if current_user.client? || current_user.client_admin? %>
-      <%= link_to "#{@company.corporate_name}", '#', class:"btn btn-primary btn-sm" %>
+      <%= link_to "#{@company.corporate_name}", client_admin_company_path(@company.token), class:"btn btn-primary btn-sm" %>
     <% end %>
   <% end %>
 </div>

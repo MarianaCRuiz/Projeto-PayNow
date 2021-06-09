@@ -1,0 +1,15 @@
+<div class="container">
+  <h2>Produtos cadastrados</h2> <br>
+  <div>
+    <% @products.each do |product|%>
+    <div class="container">
+      <p>Nome: <%= product.name %>, Preço: R$ <%= product.price %>, 
+        Desconto Boleto(%): <%= product.boleto_discount %>, 
+        Desconto Cartão de Crédito(%): <%= product.credit_card_discount %>, 
+        Desconto PIX(%): <%= product.pix_discount %></p>
+    </div>
+    <% end %>
+  </div>
+  <%= link_to 'Registrar produto', new_client_admin_company_product_path(current_user.company.token) , class:"btn btn-primary" %>
+  <%= link_to 'Voltar', client_admin_company_path(current_user.company.token) , class:"btn btn-primary btn-sm" %>
+</div>

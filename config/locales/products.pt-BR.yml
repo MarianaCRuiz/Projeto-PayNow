@@ -1,0 +1,27 @@
+---
+pt-BR:
+  client_admin:
+    products:
+      new:
+        title: 'Cadastro'
+        submit: 'Registrar produto'
+      edit:
+        title: ''
+        submit: 'Atualizar'
+      create:
+        success: ''
+      update:
+        success: 'Dados atualizados com sucesso'
+      destroy:
+        failure: ''
+        success: ''
+  activerecord:
+    models:
+      product: 'Dados de products vinculados à empresa'
+    attributes:
+      product:
+        name: 'Nome'
+        price: 'Preço'
+        boleto_discount: 'Desconto Boleto'
+        credit_card_discount: 'Desconto Cartão de Crédito'
+        pix_discount: 'Desconto PIX'

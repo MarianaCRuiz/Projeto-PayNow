@@ -35,13 +35,8 @@
     </div>
     <% end %>
   </div>
-</div>
-
-
-
-
   <% if user_signed_in? %>
       <%= link_to 'Adicionar opção de pagamento', client_admin_payment_options_path , class:"btn btn-primary btn-sm" %>
   <% end %>
-  <%= link_to 'Voltar', '#' , class:"btn btn-primary btn-sm" %>
+  <%= link_to 'Voltar', client_admin_company_path(current_user.company.token) , class:"btn btn-primary btn-sm" %>
 </div>
