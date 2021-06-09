@@ -43,9 +43,6 @@ describe 'client_admin register' do
       expect(page).to have_content('faturamento@codeplay.com')
       expect(page).to have_link('Atualizar dados da empresa')
     end
-    xit 'token must be uniq' do
-
-    end
   end
   context 'company first register failure' do
     xit 'client_admin create account missing information' do

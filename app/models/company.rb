@@ -15,6 +15,10 @@ class Company < ApplicationRecord
 
   has_many :historic_products
   
+  validates :corporate_name, :cnpj, :state, :city, :district, :street, :number, :billing_email, presence: true
+
+  validates :corporate_name, :cnpj, :billing_email, uniqueness: true
+
   before_create do    #before_validate ou before_save
     self.token = SecureRandom.base58(20)
   end

@@ -8,10 +8,22 @@ class ClientAdmin::CompaniesController < ApplicationController
   end
   def create
     @company = Company.new(company_params)
+    test_token = []
+    Company.all.each do |company|
+      test_token << company.token
+    end
     if @company.save!
-      DomainRecord.where(email_client_admin: current_user.email).first.company_id = @company.id
-      current_user.company = @company
-      redirect_to client_admin_company_path(@company[:token])
+      same = true
+      while same == true do
+        if !test_token.any?(@company.token)
+          DomainRecord.where(email_client_admin: current_user.email).first.company_id = @company.id
+          current_user.company = @company
+          redirect_to client_admin_company_path(@company[:token])
+          same = false
+        else
+          @company.token = SecureRandom.base58(20)
+        end
+      end
     else
       redirect_to root_path, notice: 'erro'
     end
