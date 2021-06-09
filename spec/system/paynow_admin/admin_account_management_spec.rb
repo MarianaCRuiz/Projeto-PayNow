@@ -37,6 +37,8 @@ describe 'account admin' do
       expect(page).to have_content('email inválido')
       expect(page).to_not have_link('Registro de opções de pagamento') 
     end
+    xit 'admin model do not repeat email' do
+    end
     xit 'wrong confirmation password' do
     end
     xit 'permittion rejected' do

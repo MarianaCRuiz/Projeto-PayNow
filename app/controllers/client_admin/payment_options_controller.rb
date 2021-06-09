@@ -1,23 +1,25 @@
 class ClientAdmin::PaymentOptionsController < ApplicationController
   
   def index
-    @company = current_user.company
-    @payment_companies = @company.payment_companies
+    @payment_options = PaymentOption.all
   end
-  def edit
-    @payment_option = PaymentOption.find(params[:id])
-  end
-  def update
-     @payment_option = PaymentOption.find(params[:id])
-    if @payment_option.update(payment_option_params)
-      #redirect_to , notice: t('.success')
-    else
-      render :edit
-    end
-  end
+  #def new
+  #  @payment_option = PaymentOption.new
+  #end
+  #def create
+   # byebug
+    #@company = Company.new(company_params)
+    #if @company.save!
+    #  DomainRecord.where(email_client_admin: current_user.email).first.company_id = @company.id
+    #  current_user.company = @company
+    #  redirect_to client_admin_company_path(@company[:token])
+    #else
+    #  redirect_to root_path, notice: 'erro'
+    #end
+  #end
   
-  private
-  def payment_option_params
-    params.require(:payment_option).permit(:name, :fee, :max_money_fee, :state, :icon)
-  end
+  #private
+  #def payment_option_params
+  #  params.require(:payment_option).permit(:name, :fee, :max_money_fee, :state, :icon)
+  #end
 end

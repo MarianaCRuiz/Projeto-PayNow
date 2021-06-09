@@ -13,7 +13,6 @@ class HomeController < ApplicationController
   def check_current_user
     
     if current_user
-      puts 'ENTROU'
       domain = current_user.email.split('@').last
       if domain == "paynow.com.br" && !Admin.where(email: current_user.email).empty?
         current_user.admin!

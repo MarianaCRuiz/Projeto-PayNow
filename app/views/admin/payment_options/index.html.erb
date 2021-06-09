@@ -3,16 +3,11 @@
   <div>
     <% @payment_options.each do |option|%>
     <div class="container">
-      <dl>
-        <dt>
-          <% if option.icon.persisted? %>
-            <%= image_tag option.icon, size:'100' %>
-          <% end %>
-        </dt>
-        <dt><%= option.name %></dt>
-        <dt>Taxa(%): <%= option.fee %></dt>
-        <dt>Taxa máxima(R$): <%= option.max_money_fee %></dt>
-      </dl>
+      <p><% if option.icon.persisted? %>
+        <%= image_tag option.icon, size:'50' %>
+        <% end %>
+      <%= option.name %>, Taxa(%): <%= option.fee %>, Taxa máxima(R$): <%= option.max_money_fee %>
+      </p>
     </div>
     <% end %>
   </div>

@@ -64,6 +64,12 @@ describe 'payment options' do
     end
     xit 'creditcard missing information' do
     end
+    xit 'cannot repeat same boleto registration' do
+    end
+    xit 'cannot repeat same PIX registration' do
+    end
+    xit 'cannot repeat same creditcard registration' do
+    end
   end
   context 'deactivated option' do
     xit 'must be logged in' do

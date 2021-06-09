@@ -1,0 +1,25 @@
+---
+pt-BR:
+  client_admin:
+    boleto_register_options:
+      new:
+        title: 'Cadastro'
+        submit: 'Registrar boleto'
+      edit:
+        title: ''
+        submit: 'Atualizar'
+      create:
+        success: ''
+      update:
+        success: 'Dados atualizados com sucesso'
+      destroy:
+        failure: ''
+        success: ''
+  activerecord:
+    models:
+      boleto_register_option: 'Dados de boletos vinculados à empresa'
+    attributes:
+      boleto_register_option:
+        bank_code: 'Código do banco'
+        agency_number: 'Agência'
+        account_number: 'Número da conta'

@@ -1,0 +1,23 @@
+---
+pt-BR:
+  client_admin:
+    credit_card_register_options:
+      new:
+        title: 'Cadastro'
+        submit: 'Registrar cartão'
+      edit:
+        title: ''
+        submit: 'Atualizar'
+      create:
+        success: ''
+      update:
+        success: 'Dados atualizados com sucesso'
+      destroy:
+        failure: ''
+        success: ''
+  activerecord:
+    models:
+      credit_card_register_option: 'Dados de cartão vinculado à empresa'
+    attributes:
+      credit_card_register_option:
+        credit_card_operator_token: 'Código operadora'

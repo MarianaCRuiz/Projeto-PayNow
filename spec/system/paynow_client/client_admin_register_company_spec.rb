@@ -43,29 +43,6 @@ describe 'client_admin register' do
       expect(page).to have_content('faturamento@codeplay.com')
       expect(page).to have_link('Atualizar dados da empresa')
     end
-   xit 'client _admin choose payment options' do
-      company = Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , 
-                                state: 'São Paulo', city: 'Campinas', district: 'Inova', 
-                                street: 'rua 1', number: '12', address_complement: '', 
-                                billing_email: 'person1@codeplay.com',
-                                token: SecureRandom.base58(20))
-      PaymentOption.create!(name: 'Boleto', fee: 1.9, max_money_fee: 20, icon: fixture_file_upload('Boleto.jpg', ('image/jpg')))
-      PaymentOption.create!(name: 'PIX', fee: 1.2, max_money_fee: 15)
-      PaymentOption.create!(name: 'Cartão de Crédito', fee: 1.5, max_money_fee: 18)
-      user_client = User.create!(email:'user1@codeplay.com', password: '123456', role: 'client', company: company)
-      
-      login_as user_client, scope: :user
-      visit client_admin_company_path(company[:token])
-      click_on 'Opções de pagamento'
-      click_on 'Adicionar opções de pagamento'
-      check ('Boleto')
-      check ('PIX')
-      
-      expect(page).to have_content('Boleto')
-      expect(page).to have_content('PIX')
-      expect(page).to_not have_content('Cartão de Crédito')
-      
-    end
     xit 'token must be uniq' do
 
     end

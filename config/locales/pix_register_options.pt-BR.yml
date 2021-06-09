@@ -1,0 +1,24 @@
+---
+pt-BR:
+  client_admin:
+    pix_register_options:
+      new:
+        title: 'Cadastro'
+        submit: 'Registrar PIX'
+      edit:
+        title: ''
+        submit: 'Atualizar'
+      create:
+        success: ''
+      update:
+        success: 'Dados atualizados com sucesso'
+      destroy:
+        failure: ''
+        success: ''
+  activerecord:
+    models:
+      pix_register_option: 'Dados de Pix vinculados à empresa'
+    attributes:
+      pix_register_option:
+        pix_key: 'Chave PIX'
+        bank_code: 'Código do banco'
