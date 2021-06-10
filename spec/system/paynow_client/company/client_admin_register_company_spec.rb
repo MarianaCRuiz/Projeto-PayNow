@@ -1,21 +1,9 @@
 require 'rails_helper'
 
 describe 'client_admin register' do
-  let(:user_client_admin) {User.create!(email:'user1@codeplay.com', password: '123456', role: 2)}
+  let(:user_client_admin) {User.create!(email:'user1@codeplay.com', password: '123456', role: 3)}
   
   context 'company first register successfuly' do
-    it 'client_admin create account' do
-      visit root_path
-      click_on 'Registrar-se'
-      fill_in 'Email', with: 'client1@codeplay.com.br'
-      fill_in 'Senha', with: '123456'
-      fill_in 'Confirmar senha', with: '123456'
-      expect{ click_on 'Criar conta' }.to change{ User.count }.by(1)
-
-      expect(current_path).to eq root_path
-      expect(page).to have_content('client1@codeplay.com.br')
-      expect(page).to have_link('Registre sua empresa')
-    end
     it 'client_admin register company' do
       login_as user_client_admin, scope: :user
       visit root_path
@@ -45,21 +33,32 @@ describe 'client_admin register' do
     end
   end
   context 'company first register failure' do
-    xit 'client_admin create account missing information' do
+    it 'client_admin create account missing information' do
+      visit root_path
+      click_on 'Registrar-se'
+      fill_in 'Email', with: ''
+      fill_in 'Senha', with: ''
+      fill_in 'Confirmar senha', with: ''
+      click_on 'Criar conta'
+
+      expect(page).to have_content('não pode ficar em branco', count: 3)
     end
-    xit 'client_admin register company missing information' do
-    end
-    xit 'client _admin choose no payment options' do
-    end
-  end
-  context 'company profile' do
-    xit 'client_admin view profile' do
-    end
-    xit 'client_admin edit profile' do
-    end
-    xit 'client_admin edit profile failure' do
-    end
-    xit 'client_not_admin cannot edit company profile' do
+    it 'client_admin register company missing information' do
+      login_as user_client_admin, scope: :user
+      visit root_path
+      click_on 'Registre sua empresa'
+      fill_in 'Razão Social', with: ''
+      fill_in 'CNPJ', with: ''
+      fill_in 'Estado', with: ''
+      fill_in 'Cidade', with: ''
+      fill_in 'Bairro', with: ''
+      fill_in 'Rua', with: ''
+      fill_in 'Número', with: ''
+      fill_in 'Complemento', with: ''
+      fill_in 'Email de faturamento', with: ''
+      click_on 'Registrar'
+
+      expect(page).to have_content('não pode ficar em branco', count: 8)
     end
   end
 end

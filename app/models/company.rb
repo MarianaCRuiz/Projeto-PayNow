@@ -2,7 +2,7 @@ class Company < ApplicationRecord
   has_many :users
   has_many :products
   
-  belongs_to :domain_record, optional: true
+  has_many :domain_records
 
   has_many :payment_companies
   has_many :payment_options, through: :payment_companies

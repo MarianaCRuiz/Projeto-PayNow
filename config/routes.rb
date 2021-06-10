@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   root 'home#index'
 
   namespace :client_admin do
-    resources :companies, only: %i[show new create], param: :token do
+    resources :companies, only: %i[show new create edit update], param: :token do
       get 'payment_chosen', on: :collection
       resources :products, only: %i[index show new create], param: :token
     end
@@ -12,6 +12,12 @@ Rails.application.routes.draw do
       resources :boleto_register_options, only: %i[new create]
       resources :credit_card_register_options, only: %i[new create]
       resources :pix_register_options, only: %i[new create]
+    end
+  end
+  namespace :clients do
+    resources :companies, only: %i[show], param: :token do
+      get 'payment_chosen', on: :collection
+      resources :products, only: %i[index show new create], param: :token
     end
   end
   namespace :api do
