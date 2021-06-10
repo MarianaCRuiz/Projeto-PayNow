@@ -4,7 +4,6 @@ class CreatePixRegisterOptions < ActiveRecord::Migration[6.1]
       t.references :company, null: false, foreign_key: true
       t.string :name
       t.string :pix_key
-      t.string :bank_code
 
       t.timestamps
     end

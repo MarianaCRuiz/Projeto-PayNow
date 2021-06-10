@@ -1,7 +1,9 @@
 class ClientAdmin::PixRegisterOptionsController < ApplicationController
+  require 'csv'
   def new
     @pix_register_option = PixRegisterOption.new
     @payment_option = PaymentOption.find(params[:payment_option_id])
+    @bank_codes = BankCode.all
   end
 
   def create
@@ -18,6 +20,6 @@ class ClientAdmin::PixRegisterOptionsController < ApplicationController
 
   private
   def pix_register_option_params
-    params.require(:pix_register_option).permit(:pix_key, :bank_code)
+    params.require(:pix_register_option).permit(:pix_key, :bank_code_id)
   end
 end

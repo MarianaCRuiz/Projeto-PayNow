@@ -20,6 +20,6 @@ pt-BR:
       boleto_register_option: 'Dados de boletos vinculados à empresa'
     attributes:
       boleto_register_option:
-        bank_code: 'Código do banco'
+        bank_code_id: 'Código do banco'
         agency_number: 'Agência'
         account_number: 'Número da conta'

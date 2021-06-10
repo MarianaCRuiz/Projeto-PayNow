@@ -2,6 +2,7 @@ class ClientAdmin::BoletoRegisterOptionsController < ApplicationController
   def new
     @boleto_register_option = BoletoRegisterOption.new
     @payment_option = PaymentOption.find(params[:payment_option_id])
+    @bank_codes = BankCode.all
   end
 
   def create
@@ -18,6 +19,6 @@ class ClientAdmin::BoletoRegisterOptionsController < ApplicationController
 
   private
   def boleto_register_option_params
-    params.require(:boleto_register_option).permit(:bank_code, :agency_number, :account_number)
+    params.require(:boleto_register_option).permit(:bank_code_id, :agency_number, :account_number)
   end
 end

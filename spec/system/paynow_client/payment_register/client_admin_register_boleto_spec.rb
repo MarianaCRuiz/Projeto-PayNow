@@ -10,13 +10,14 @@ describe 'register Boleto' do
     PaymentOption.create!(name: 'Boleto', fee: 1.9, max_money_fee: 20, icon: fixture_file_upload('Boleto.jpg', ('image/jpg')))
   
     user_client_admin = User.create!(email:'user1@codeplay.com', password: '123456', role: 'client_admin', company: company)
-    
+    bank = BankCode.create!(code: '001', bank:'Banco do Brasil S.A.')
+
     login_as user_client_admin, scope: :user
     visit client_admin_company_path(company[:token])
     click_on 'Opções de pagamento'
     click_on 'Adicionar opção de pagamento' #Boleto PIX CC
     click_on 'Adicionar Boleto'
-    fill_in 'Código do banco', with: '001'
+    select "#{bank.code} - #{bank.bank}", from: 'Código do banco'
     fill_in 'Agência', with: '3040'
     fill_in 'Número da conta', with: '111.222-3'
     click_on 'Registrar boleto'

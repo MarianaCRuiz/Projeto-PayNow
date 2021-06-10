@@ -8,8 +8,8 @@
 <% end %>
 <%= form_with model: [:client_admin, @payment_option, @boleto_register_option] do |f| %>
   <div class="field form-group">
-    <%= f.label :bank_code %>
-    <%= f.text_field :bank_code, class:"form-control" %>
+    <%= f.label :bank_code_id %>
+    <%= f.collection_select :bank_code_id, @bank_codes, :id, :display_name, class:"form-control" %>
   </div>
   <div class="field form-group">
     <%= f.label :agency_number %>

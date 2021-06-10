@@ -14,7 +14,7 @@
   <div>
     <% @boletos.each do |boleto|%>
     <div class="container">
-      <p><%= boleto.name %>, Código do Banco: <%= boleto.bank_code %>, Agência: <%= boleto.agency_number %>,
+      <p><%= boleto.name %>, Código do Banco: <%= boleto.bank_code.code %>, Agência: <%= boleto.agency_number %>,
        Conta: <%= boleto.account_number %>
       </p>
     </div>
@@ -30,7 +30,7 @@
   </div>
   <% @pixies.each do |pix|%>
     <div class="container">
-      <p><%= pix.name %>, Chave PIX <%= pix.pix_key %>, Código do Banco: <%= pix.bank_code %>
+      <p><%= pix.name %>, Chave PIX <%= pix.pix_key %>, Código do Banco: <%= pix.bank_code.code %>
       </p>
     </div>
     <% end %>

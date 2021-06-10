@@ -10,6 +10,7 @@ describe 'register PIX option' do
     payment_option = PaymentOption.create!(name: 'PIX_1', fee: 1.1, max_money_fee: 24, icon: fixture_file_upload('CreditCard.jpg', ('image/jpg')))
   
     user_client_admin = User.create!(email:'user1@codeplay.com', password: '123456', role: 'client_admin', company: company)
+    bank = BankCode.create!(code: '001', bank:'Banco do Brasil S.A.')
     token = SecureRandom.base58(20)
 
     login_as user_client_admin, scope: :user
@@ -18,7 +19,7 @@ describe 'register PIX option' do
     click_on 'Adicionar opção de pagamento' #Boleto PIX CC
     click_on 'Adicionar PIX_1'
     fill_in 'Chave PIX', with: token
-    fill_in 'Código do banco', with: '001'
+    select "#{bank.code} - #{bank.bank}", from: 'Código do banco'
     click_on 'Registrar PIX'
   
     expect(page).to have_content('Opção adicionada com sucesso')

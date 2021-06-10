@@ -20,6 +20,16 @@ class Company < ApplicationRecord
   validates :corporate_name, :cnpj, :billing_email, uniqueness: true
 
   before_create do    #before_validate ou before_save
-    self.token = SecureRandom.base58(20)
+    token = self.token = SecureRandom.base58(20)
+    same = true
+    while same == true do
+      if Company.where(token: token).empty?
+        self.token = token
+        same = false
+      else
+        self.token = SecureRandom.base58(20)
+      end
+    end
+    self.token
   end
 end

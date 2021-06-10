@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_09_063519) do
+ActiveRecord::Schema.define(version: 2021_06_10_015937) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -47,15 +47,23 @@ ActiveRecord::Schema.define(version: 2021_06_09_063519) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "bank_codes", force: :cascade do |t|
+    t.string "code"
+    t.string "bank"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "boleto_register_options", force: :cascade do |t|
     t.integer "company_id", null: false
     t.string "name"
     t.string "token"
-    t.string "bank_code"
     t.string "agency_number"
     t.string "account_number"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "bank_code_id", null: false
+    t.index ["bank_code_id"], name: "index_boleto_register_options_on_bank_code_id"
     t.index ["company_id"], name: "index_boleto_register_options_on_company_id"
   end
 
@@ -143,9 +151,10 @@ ActiveRecord::Schema.define(version: 2021_06_09_063519) do
     t.integer "company_id", null: false
     t.string "name"
     t.string "pix_key"
-    t.string "bank_code"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "bank_code_id", null: false
+    t.index ["bank_code_id"], name: "index_pix_register_options_on_bank_code_id"
     t.index ["company_id"], name: "index_pix_register_options_on_company_id"
   end
 
@@ -179,6 +188,7 @@ ActiveRecord::Schema.define(version: 2021_06_09_063519) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "boleto_register_options", "bank_codes"
   add_foreign_key "boleto_register_options", "companies"
   add_foreign_key "company_clients", "companies"
   add_foreign_key "company_clients", "final_clients"
@@ -188,6 +198,7 @@ ActiveRecord::Schema.define(version: 2021_06_09_063519) do
   add_foreign_key "historic_products", "products"
   add_foreign_key "payment_companies", "companies"
   add_foreign_key "payment_companies", "payment_options"
+  add_foreign_key "pix_register_options", "bank_codes"
   add_foreign_key "pix_register_options", "companies"
   add_foreign_key "products", "companies"
   add_foreign_key "users", "companies"

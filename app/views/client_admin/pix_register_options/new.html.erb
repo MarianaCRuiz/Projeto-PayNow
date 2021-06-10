@@ -12,8 +12,8 @@
     <%= f.text_field :pix_key, class:"form-control" %>
   </div>
   <div class="field form-group">
-    <%= f.label :bank_code %>
-    <%= f.text_field :bank_code, class:"form-control" %>
+    <%= f.label :bank_code_id %>
+    <%= f.collection_select :bank_code_id, @bank_codes, :id, :display_name, class:"form-control" %>
   </div>
   <%= f.submit t('.submit'), class:"btn btn-success mb-1 mt-1" %>
 <% end %>

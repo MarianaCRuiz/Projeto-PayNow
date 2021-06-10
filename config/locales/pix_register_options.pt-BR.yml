@@ -21,4 +21,4 @@ pt-BR:
     attributes:
       pix_register_option:
         pix_key: 'Chave PIX'
-        bank_code: 'Código do banco'
+        bank_code_id: 'Código do banco'
