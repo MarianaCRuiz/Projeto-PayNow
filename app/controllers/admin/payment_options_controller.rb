@@ -8,10 +8,10 @@ class Admin::PaymentOptionsController < ApplicationController
   end
   def create
      @payment_option = PaymentOption.new(payment_option_params)
-    if @payment_option.save!
+    if @payment_option.save
         redirect_to admin_payment_options_path(@payment_option)
     else
-      redirect_to root_path, notice: 'erro'
+      render :new
     end
   end
   

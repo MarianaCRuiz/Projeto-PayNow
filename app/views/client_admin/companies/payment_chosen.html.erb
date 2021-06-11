@@ -1,5 +1,9 @@
 <div class="container">
   <h2>Opções de pagamento escolhidas</h2> <br>
+  <% if user_signed_in? %>
+    <%= link_to 'Adicionar opção de pagamento', client_admin_payment_options_path , class:"btn btn-primary btn-sm" %>
+  <% end %>
+  <%= link_to 'Voltar', client_admin_company_path(current_user.company.token) , class:"btn btn-primary btn-sm" %> <br> <br>
   <div>
     <% @payments_chosen.each do |option|%>
     <div class="container">
@@ -23,6 +27,7 @@
                 <li>Código do Banco: <%= boleto.bank_code.code %></li>
                 <li>Agência: <%= boleto.agency_number %></li>
                 <li>Conta: <%= boleto.account_number %></li>
+                <%= link_to "Atualizar #{boleto.payment_option.name}", edit_client_admin_payment_option_boleto_register_option_path(boleto.payment_option, boleto) , class:"btn btn-primary btn-sm" %>
               </ul>
             </div>
           <% end %>
@@ -38,6 +43,7 @@
               <ul>
                <li><%= credit_card.name %></li>
                 <li>Código da operadora: <%= credit_card.credit_card_operator_token %></li>
+                <%= link_to "Atualizar #{credit_card.name}", '#', class:"btn btn-primary btn-sm" %>
               </ul>
             </div>
           <% end %>
@@ -52,8 +58,9 @@
             <div class="container">
               <ul>
                 <li><%= pix.name %></li>
-                <li>Chave PIX <%= pix.pix_key %></li>
+                <li>Chave PIX: <%= pix.pix_key %></li>
                 <li>Código do Banco: <%= pix.bank_code.code %></li>
+                <%= link_to "Atualizar #{pix.name}", '#', class:"btn btn-primary btn-sm" %>
               </ul>
             </div>
           <% end %>
@@ -61,8 +68,4 @@
     </li>
     <% end %>
   </ol>
-  <% if user_signed_in? %>
-      <%= link_to 'Adicionar opção de pagamento', client_admin_payment_options_path , class:"btn btn-primary btn-sm" %>
-  <% end %>
-  <%= link_to 'Voltar', client_admin_company_path(current_user.company.token) , class:"btn btn-primary btn-sm" %>
 </div>

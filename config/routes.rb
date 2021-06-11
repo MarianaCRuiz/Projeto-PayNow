@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       resources :products, only: %i[index show new create], param: :token
     end
     resources :payment_options, only: %i[index] do
-      resources :boleto_register_options, only: %i[new create]
+      resources :boleto_register_options, only: %i[new create edit update]
       resources :credit_card_register_options, only: %i[new create]
       resources :pix_register_options, only: %i[new create]
     end

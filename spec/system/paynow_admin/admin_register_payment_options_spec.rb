@@ -58,17 +58,34 @@ describe 'payment options' do
     end
   end
   context 'register failure' do
-    xit 'boleto missing information' do
+    it 'missing information' do
+      Admin.create!(email: 'admin1@paynow.com.br')
+      
+      login_as user, scope: :user
+      visit root_path
+      click_on 'Registro de opções de pagamento'
+      click_on 'Adicionar opções de pagamento'
+      fill_in 'Nome', with: ''
+      fill_in 'Taxa', with: ''
+      fill_in 'Taxa máxima', with: ''
+      expect{ click_on 'Adicionar' }.to change{ PaymentOption.count }.by(0)
+  
+      expect(page).to have_content('não pode ficar em branco', count: 3)
     end
-    xit 'PIX missing information' do
-    end
-    xit 'creditcard missing information' do
-    end
-    xit 'cannot repeat same boleto registration' do
-    end
-    xit 'cannot repeat same PIX registration' do
-    end
-    xit 'cannot repeat same creditcard registration' do
+    it 'name uniq' do
+      Admin.create!(email: 'admin1@paynow.com.br')
+      PaymentOption.create!(name: 'Cartão de Crédito MASTERCHEF', fee: 1.1, max_money_fee: 12)
+      
+      login_as user, scope: :user
+      visit root_path
+      click_on 'Registro de opções de pagamento'
+      click_on 'Adicionar opções de pagamento'
+      fill_in 'Nome', with: 'Cartão de Crédito MASTERCHEF'
+      fill_in 'Taxa', with: 1.1
+      fill_in 'Taxa máxima', with: 11
+      expect{ click_on 'Adicionar' }.to change{ PaymentOption.count }.by(0)
+
+      expect(page).to have_content('já está em uso')
     end
   end
   context 'deactivated option' do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_10_015937) do
+ActiveRecord::Schema.define(version: 2021_06_11_082836) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -56,15 +56,19 @@ ActiveRecord::Schema.define(version: 2021_06_10_015937) do
 
   create_table "boleto_register_options", force: :cascade do |t|
     t.integer "company_id", null: false
-    t.string "name"
     t.string "token"
     t.string "agency_number"
     t.string "account_number"
+    t.integer "payment_option_id", null: false
+    t.string "name"
+    t.decimal "fee"
+    t.decimal "max_money_fee"
+    t.integer "bank_code_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "bank_code_id", null: false
     t.index ["bank_code_id"], name: "index_boleto_register_options_on_bank_code_id"
     t.index ["company_id"], name: "index_boleto_register_options_on_company_id"
+    t.index ["payment_option_id"], name: "index_boleto_register_options_on_payment_option_id"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -93,11 +97,15 @@ ActiveRecord::Schema.define(version: 2021_06_10_015937) do
 
   create_table "credit_card_register_options", force: :cascade do |t|
     t.integer "company_id", null: false
-    t.string "name"
     t.string "credit_card_operator_token"
+    t.integer "payment_option_id", null: false
+    t.string "name"
+    t.decimal "fee"
+    t.decimal "max_money_fee"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_credit_card_register_options_on_company_id"
+    t.index ["payment_option_id"], name: "index_credit_card_register_options_on_payment_option_id"
   end
 
   create_table "domain_records", force: :cascade do |t|
@@ -149,13 +157,17 @@ ActiveRecord::Schema.define(version: 2021_06_10_015937) do
 
   create_table "pix_register_options", force: :cascade do |t|
     t.integer "company_id", null: false
-    t.string "name"
     t.string "pix_key"
+    t.integer "bank_code_id", null: false
+    t.integer "payment_option_id", null: false
+    t.string "name"
+    t.decimal "fee"
+    t.decimal "max_money_fee"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "bank_code_id", null: false
     t.index ["bank_code_id"], name: "index_pix_register_options_on_bank_code_id"
     t.index ["company_id"], name: "index_pix_register_options_on_company_id"
+    t.index ["payment_option_id"], name: "index_pix_register_options_on_payment_option_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -190,9 +202,11 @@ ActiveRecord::Schema.define(version: 2021_06_10_015937) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "boleto_register_options", "bank_codes"
   add_foreign_key "boleto_register_options", "companies"
+  add_foreign_key "boleto_register_options", "payment_options"
   add_foreign_key "company_clients", "companies"
   add_foreign_key "company_clients", "final_clients"
   add_foreign_key "credit_card_register_options", "companies"
+  add_foreign_key "credit_card_register_options", "payment_options"
   add_foreign_key "domain_records", "companies"
   add_foreign_key "historic_products", "companies"
   add_foreign_key "historic_products", "products"
@@ -200,6 +214,7 @@ ActiveRecord::Schema.define(version: 2021_06_10_015937) do
   add_foreign_key "payment_companies", "payment_options"
   add_foreign_key "pix_register_options", "bank_codes"
   add_foreign_key "pix_register_options", "companies"
+  add_foreign_key "pix_register_options", "payment_options"
   add_foreign_key "products", "companies"
   add_foreign_key "users", "companies"
 end

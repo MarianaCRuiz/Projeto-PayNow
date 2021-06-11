@@ -53,29 +53,29 @@ pay_3 = PaymentOption.where(name: 'PIX').first
 bank1 = BankCode.where(code: '001').first
 bank2 = BankCode.where(code: '029').first
 
-boleto1 = BoletoRegisterOption.new(company: company_1, name: pay_1.name, bank_code: bank1, agency_number: '2050', account_number: '123.555-8')
+boleto1 = BoletoRegisterOption.new(company: company_1, payment_option: pay_1, bank_code: bank1, agency_number: '2050', account_number: '123.555-8')
 if boleto1.save
   byebug
   PaymentCompany.create(company: company_1, payment_option: pay_1)
 end
-creditcard1 = CreditCardRegisterOption.new(company: company_1, name: pay_2.name, credit_card_operator_token: 'jdB8SD923Nmg8fR1GhJm')
+creditcard1 = CreditCardRegisterOption.new(company: company_1, payment_option: pay_2, credit_card_operator_token: 'jdB8SD923Nmg8fR1GhJm')
 if creditcard1.save
   byebug
   PaymentCompany.create(company: company_1, payment_option: pay_2)
 end
-pix1 = PixRegisterOption.new(company: company_1, name: pay_3.name, pix_key: 'AJ86gt4fLBtcF296rTuN', bank_code: bank2)
+pix1 = PixRegisterOption.new(company: company_1, payment_option: pay_3, pix_key: 'AJ86gt4fLBtcF296rTuN', bank_code: bank2)
 if pix1.save
   byebug
   PaymentCompany.create(company: company_1, payment_option: pay_3)
 end
 
 
-boleto2 = BoletoRegisterOption.new(company: company_2, name: pay_1.name, bank_code: bank2, agency_number: '2050', account_number: '123.222-8')
+boleto2 = BoletoRegisterOption.new(company: company_2, payment_option: pay_1, bank_code: bank2, agency_number: '2050', account_number: '123.222-8')
 if boleto2.save
   byebug
   PaymentCompany.create(company: company_2, payment_option: pay_1)
 end
-pix2 = PixRegisterOption.new(company: company_2, name: pay_2.name, pix_key: 'APLB86HpLBtcF296rTuN', bank_code: bank2)
+pix2 = PixRegisterOption.new(company: company_2, payment_option: pay_3, pix_key: 'APLB86HpLBtcF296rTuN', bank_code: bank2)
 if pix2.save
   byebug
   PaymentCompany.create(company: company_2, payment_option: pay_3)

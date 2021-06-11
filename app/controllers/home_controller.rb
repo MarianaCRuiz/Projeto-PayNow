@@ -15,7 +15,7 @@ class HomeController < ApplicationController
   def check_current_user
     if current_user
       domain = current_user.email.split('@').last
-      if domain == "paynow.com.br" && !Admin.where(email: current_user.email).empty?
+      if domain == "paynow.com.br" && !Admin.where(email: current_user.email).empty?        
         current_user.admin!
         puts 'ADMIN'
       elsif DomainRecord.where(domain: domain).empty?
@@ -33,11 +33,10 @@ class HomeController < ApplicationController
         puts 'CLIENT'
       elsif DomainRecord.where(email: current_user.email).empty?
         current_user.client!
-        company_id = DomainRecord.where(domain: domain).first.company_id
-        company = Company.find(company_id)
+        company = DomainRecord.where(domain: domain).first.company
         User.where(email: current_user.email).first.update(company: company)
         current_user.company = User.where(email: current_user.email).first.company
-        DomainRecord.create!(email: current_user.email, domain: domain, company: current_user.company) 
+        DomainRecord.create(email: current_user.email, domain: domain, company: current_user.company) 
         puts 'NEW C'
       end
     end
@@ -55,5 +54,4 @@ class HomeController < ApplicationController
       end
     end
   end
-
 end
