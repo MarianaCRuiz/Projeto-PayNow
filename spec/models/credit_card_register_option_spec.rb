@@ -20,7 +20,7 @@ describe CreditCardRegisterOption do
 
       expect(credit_card_2.errors[:credit_card_operator_token]).to include('já está em uso') 
     end
-    it 'must be uniq justin the same company' do
+    it 'must be uniq just in the same company' do
       company_1 = Company.create!(corporate_name: 'test SA', cnpj: '11.222.333/0001-45' , 
                                   state: 'São Paulo', city: 'Campinas', district: 'Inova', 
                                   street: 'rua 1', number: '12', address_complement: '', 

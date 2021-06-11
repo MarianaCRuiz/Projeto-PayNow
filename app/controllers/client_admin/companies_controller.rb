@@ -9,7 +9,11 @@ class ClientAdmin::CompaniesController < ApplicationController
     end
   end
   def new
-    @company = Company.new
+    if current_user.client_admin? || current_user.client_admin_sign_up?
+      @company = Company.new
+    else
+      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
   end
   def create
     @company = Company.new(company_params)
@@ -22,7 +26,11 @@ class ClientAdmin::CompaniesController < ApplicationController
     end
   end
   def edit
-    @company = Company.find_by(token: params[:token])
+    if current_user.client_admin? || current_user.client_admin_sign_up? 
+      @company = Company.find_by(token: params[:token])
+    else
+      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
   end
 
   def update
@@ -39,7 +47,7 @@ class ClientAdmin::CompaniesController < ApplicationController
     @boletos = @company.boleto_register_options
     @credit_cards = @company.credit_card_register_options
     @pixies = @company.pix_register_options
-    @payments_chosen = @company.payment_companies
+    @payments_chosen = @company.payment_options
   end
 
   private

@@ -7,11 +7,15 @@ pt-BR:
         other: 'Usuários(as)'
     attributes:
       user:
+        email: 'Email'
         password: 'Senha'
         password_confirmation: 'Confirmar senha'
+        current_password: 'Senha atual'
   devise:
     registrations:
       new:
         title: 'Registrar'
         submit: 'Criar conta'
+      edit:
+        submit: 'Atualizar'
           

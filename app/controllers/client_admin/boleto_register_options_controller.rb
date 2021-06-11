@@ -11,6 +11,7 @@ class ClientAdmin::BoletoRegisterOptionsController < ApplicationController
     @boleto_register_option = @company.boleto_register_options.new(boleto_register_option_params)
     @boleto_register_option.name = @payment_option.name
     if @boleto_register_option.save!
+      PaymentCompany.create!(company: @company, payment_option: @payment_option)
       redirect_to payment_chosen_client_admin_companies_path, notice: 'Opção adicionada com sucesso'
     else
       byebug

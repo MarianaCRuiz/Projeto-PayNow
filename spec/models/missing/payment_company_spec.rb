@@ -1,5 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe PaymentCompany, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe PaymentCompany do
+  context 'uniq scope company' do
+    xit 'different companies' do
+      
+    end
+    xit 'same company' do
+      
+    end
+  end
 end
+

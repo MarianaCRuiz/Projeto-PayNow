@@ -9,6 +9,7 @@ class ClientAdmin::CreditCardRegisterOptionsController < ApplicationController
     @credit_card_register_option = @company.credit_card_register_options.new(credit_card_register_option_params)
     @credit_card_register_option.name = @payment_option.name
     if @credit_card_register_option.save!
+      PaymentCompany.create!(company: @company, payment_option: @payment_option)
       redirect_to payment_chosen_client_admin_companies_path, notice: 'Opção adicionada com sucesso'
     else
       byebug

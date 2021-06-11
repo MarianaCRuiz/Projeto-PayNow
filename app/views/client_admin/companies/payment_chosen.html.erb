@@ -11,30 +11,56 @@
     </div>
     <% end %>
   </div>
-  <div>
-    <% @boletos.each do |boleto|%>
-    <div class="container">
-      <p><%= boleto.name %>, Código do Banco: <%= boleto.bank_code.code %>, Agência: <%= boleto.agency_number %>,
-       Conta: <%= boleto.account_number %>
-      </p>
-    </div>
+  <ol class="list-group list-group-numbered">
+    <% if !@boletos.empty?%>
+    <li class="list-group-item d-flex justify-content-between align-items-start">
+      <div class="ms-2 me-auto">
+        <div class="fw-bold">Boletos</div>
+          <% @boletos.each do |boleto|%>
+            <div class="container">
+              <ul>
+                <li><%= boleto.name %></li>
+                <li>Código do Banco: <%= boleto.bank_code.code %></li>
+                <li>Agência: <%= boleto.agency_number %></li>
+                <li>Conta: <%= boleto.account_number %></li>
+              </ul>
+            </div>
+          <% end %>
+      </div>
+    </li>
     <% end %>
-  </div>
-  <div>
-    <% @credit_cards.each do |credit_card|%>
-    <div class="container">
-      <p><%= credit_card.name %> Código da operadora: <%= credit_card.credit_card_operator_token %>
-      </p>
-    </div>
+    <% if !@credit_cards.empty? %>
+    <li class="list-group-item d-flex justify-content-between align-items-start">
+      <div class="ms-2 me-auto">
+        <div class="fw-bold">Cartões de Crédito</div>
+          <% @credit_cards.each do |credit_card|%>
+            <div class="container">
+              <ul>
+               <li><%= credit_card.name %></li>
+                <li>Código da operadora: <%= credit_card.credit_card_operator_token %></li>
+              </ul>
+            </div>
+          <% end %>
+      </div>
+    </li>
     <% end %>
-  </div>
-  <% @pixies.each do |pix|%>
-    <div class="container">
-      <p><%= pix.name %>, Chave PIX <%= pix.pix_key %>, Código do Banco: <%= pix.bank_code.code %>
-      </p>
-    </div>
+    <% if !@pixies.empty? %>
+    <li class="list-group-item d-flex justify-content-between align-items-start">
+      <div class="ms-2 me-auto">
+        <div class="fw-bold">Pix</div>
+          <% @pixies.each do |pix|%>
+            <div class="container">
+              <ul>
+                <li><%= pix.name %></li>
+                <li>Chave PIX <%= pix.pix_key %></li>
+                <li>Código do Banco: <%= pix.bank_code.code %></li>
+              </ul>
+            </div>
+          <% end %>
+      </div>
+    </li>
     <% end %>
-  </div>
+  </ol>
   <% if user_signed_in? %>
       <%= link_to 'Adicionar opção de pagamento', client_admin_payment_options_path , class:"btn btn-primary btn-sm" %>
   <% end %>

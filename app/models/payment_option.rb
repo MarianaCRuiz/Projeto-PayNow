@@ -13,9 +13,9 @@ class PaymentOption < ApplicationRecord
   def set_photo
     return if icon.attached?
     if PaymentOption.last.name.include?('Boleto')
-      icon.attach(io: File.open(Rails.root.join('app/assets/images/Boleto.jpg')), filename: 'Boleto.jpg')
+      icon.attach(io: File.open(Rails.root.join('app/assets/images/Boleto.png')), filename: 'Boleto.png')
     elsif PaymentOption.last.name.include?('Cartão de Crédito')
-      icon.attach(io: File.open(Rails.root.join('app/assets/images/CreditCard.jpg')), filename: 'CreditCard.jpg')
+      icon.attach(io: File.open(Rails.root.join('app/assets/images/CreditCard.png')), filename: 'CreditCard.png')
     elsif PaymentOption.last.name.include?('PIX') || PaymentOption.last.name.include?('Pix')
       icon.attach(io: File.open(Rails.root.join('app/assets/images/Pix.png')), filename: 'Pix.png')
     end

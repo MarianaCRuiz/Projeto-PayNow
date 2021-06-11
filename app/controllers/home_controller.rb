@@ -1,5 +1,7 @@
 class HomeController < ApplicationController
+  before_action :check_client_admin
   before_action :check_current_user
+  
   def index
     if user_signed_in?
       if current_user.client? || current_user.client_admin?
@@ -33,11 +35,23 @@ class HomeController < ApplicationController
         current_user.client!
         company_id = DomainRecord.where(domain: domain).first.company_id
         company = Company.find(company_id)
-        user = User.where(email: current_user.email).first
-        user.update(company: company)
+        User.where(email: current_user.email).first.update(company: company)
         current_user.company = User.where(email: current_user.email).first.company
         DomainRecord.create!(email: current_user.email, domain: domain, company: current_user.company) 
         puts 'NEW C'
+      end
+    end
+  end
+  def check_client_admin
+    if current_user
+      if current_user.client_admin? || current_user.client_admin_sign_up?
+        domain = current_user.email.split('@').last
+        if DomainRecord.where(email_client_admin: current_user.email).empty?
+          if DomainRecord.where(domain: domain).first
+            email = DomainRecord.where(domain: domain).first.email_client_admin
+            DomainRecord.where(email_client_admin: email).first.update(email_client_admin: current_user.email)
+          end
+        end
       end
     end
   end
