@@ -10,8 +10,8 @@ Rails.application.routes.draw do
     end
     resources :payment_options, only: %i[index] do
       resources :boleto_register_options, only: %i[new create edit update]
-      resources :credit_card_register_options, only: %i[new create]
-      resources :pix_register_options, only: %i[new create]
+      resources :credit_card_register_options, only: %i[new create edit update]
+      resources :pix_register_options, only: %i[new create edit update]
     end
   end
   namespace :clients do
@@ -22,7 +22,10 @@ Rails.application.routes.draw do
   end
   namespace :api do
     namespace :v1 do
-      resources :final_clients, only: %i[index show], param: :token
+      resources :tokens, only: [], param: :token do
+        post 'final_clients', on: :member
+        
+      end
     end
   end
   namespace :admin do

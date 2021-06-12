@@ -1,22 +1,55 @@
 class Admin::PaymentOptionsController < ApplicationController
-  
+  before_action :authenticate_user!
   def index
-    @payment_options = PaymentOption.all
+    if current_user.admin?
+      @payment_options = PaymentOption.all
+    else
+      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
   end
   def new
-    @payment_option = PaymentOption.new
+    if current_user.admin?
+      @payment_option = PaymentOption.new
+    else
+      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
   end
   def create
-     @payment_option = PaymentOption.new(payment_option_params)
-    if @payment_option.save
+    if current_user.admin?
+      @payment_option = PaymentOption.new(payment_option_params)
+      if @payment_option.save
         redirect_to admin_payment_options_path(@payment_option)
+      else
+        render :new
+      end
     else
-      render :new
+      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
+  end
+  def edit
+    if current_user.admin? 
+      @payment_option = PaymentOption.find(params[:id])
+    else
+      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
+  end
+
+  def update
+    if current_user.admin?
+      @payment_option = PaymentOption.find(params[:id])
+      if 
+        @payment_option.update(payment_option_params)
+        redirect_to admin_payment_options_path(@payment_option)
+      else
+        render :edit
+      end
+    else
+      redirect_to root_path, notice: 'Acesso não autorizado'
     end
   end
   
   private
   def payment_option_params
-    params.require(:payment_option).permit(:name, :fee, :max_money_fee, :state, :icon)
+    params.require(:payment_option).permit(:name, :fee, :max_money_fee, :state, :icon, :state, :type)
   end
 end

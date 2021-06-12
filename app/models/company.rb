@@ -16,11 +16,11 @@ class Company < ApplicationRecord
   has_many :company_clients
   has_many :final_clients, through: :company_clients
   
-  validates :corporate_name, :cnpj, :state, :city, :district, :street, :number, :billing_email, presence: true
-
+  validates :corporate_name, :cnpj, :state, :city, :district, :street, :number, :billing_email, :token, presence: true
   validates :corporate_name, :cnpj, :billing_email, uniqueness: true
 
-  before_create do    #before_validate ou before_save
+  
+  before_validation(on: :create) do
     token = self.token = SecureRandom.base58(20)
     same = true
     while same == true do
@@ -33,4 +33,18 @@ class Company < ApplicationRecord
     end
     self.token
   end
+  
+  #before_create do    #before_validate ou before_save
+  #  token = self.token = SecureRandom.base58(20)
+  #  same = true
+  #  while same == true do
+  #    if Company.where(token: token).empty?
+  #      self.token = token
+  #      same = false
+  #    else
+  #      self.token = SecureRandom.base58(20)
+  #    end
+  #  end
+  #  self.token
+  #end
 end

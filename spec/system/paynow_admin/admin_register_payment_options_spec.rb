@@ -10,6 +10,7 @@ describe 'payment options' do
       visit root_path
       click_on 'Registro de opções de pagamento'
       click_on 'Adicionar opções de pagamento'
+      select "Boleto", from: 'Tipo'
       fill_in 'Nome', with: 'Boleto'
       fill_in 'Taxa', with: 1.5
       fill_in 'Taxa máxima', with: 10
@@ -29,6 +30,7 @@ describe 'payment options' do
       visit root_path
       click_on 'Registro de opções de pagamento'
       click_on 'Adicionar opções de pagamento'
+      select "PIX", from: 'Tipo'
       fill_in 'Nome', with: 'PIX'
       fill_in 'Taxa', with: 1.2
       fill_in 'Taxa máxima', with: 12
@@ -46,6 +48,7 @@ describe 'payment options' do
       visit root_path
       click_on 'Registro de opções de pagamento'
       click_on 'Adicionar opções de pagamento'
+      select "Cartão de Crédito", from: 'Tipo'
       fill_in 'Nome', with: 'Cartão de Crédito MASTERCHEF'
       fill_in 'Taxa', with: 1.1
       fill_in 'Taxa máxima', with: 11
@@ -65,6 +68,7 @@ describe 'payment options' do
       visit root_path
       click_on 'Registro de opções de pagamento'
       click_on 'Adicionar opções de pagamento'
+      select "Boleto", from: 'Tipo'
       fill_in 'Nome', with: ''
       fill_in 'Taxa', with: ''
       fill_in 'Taxa máxima', with: ''
@@ -72,30 +76,21 @@ describe 'payment options' do
   
       expect(page).to have_content('não pode ficar em branco', count: 3)
     end
-    it 'name uniq' do
+    xit 'name uniq' do
       Admin.create!(email: 'admin1@paynow.com.br')
-      PaymentOption.create!(name: 'Cartão de Crédito MASTERCHEF', fee: 1.1, max_money_fee: 12)
+      PaymentOption.create!(name: 'Cartão de Crédito MASTERCHEF', fee: 1.1, max_money_fee: 12, type: 1)
       
       login_as user, scope: :user
       visit root_path
       click_on 'Registro de opções de pagamento'
       click_on 'Adicionar opções de pagamento'
+      select "Cartão de Crédito", from: 'Tipo'
       fill_in 'Nome', with: 'Cartão de Crédito MASTERCHEF'
       fill_in 'Taxa', with: 1.1
       fill_in 'Taxa máxima', with: 11
       expect{ click_on 'Adicionar' }.to change{ PaymentOption.count }.by(0)
 
       expect(page).to have_content('já está em uso')
-    end
-  end
-  context 'deactivated option' do
-    xit 'must be logged in' do
-    end
-    xit 'cannot show boleto deactivated' do
-    end
-    xit 'cannot show PIX deactivated' do
-    end
-    xit 'cannot show creditcard deactivated' do
     end
   end
 end

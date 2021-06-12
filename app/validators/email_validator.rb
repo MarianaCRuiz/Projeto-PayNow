@@ -12,9 +12,9 @@ class EmailValidator < ActiveModel::EachValidator
       if m.domain == 'paynow.com.br' && Admin.where(email: m.address).empty?
         r = false
       end
-      if m.domain == 'paynow.com.br' && Admin.where(email: m.address).first.rejected?
-        r = false
-      end
+      #if m.domain == 'paynow.com.br' && Admin.where(email: m.address).first.rejected?
+      #  r = false
+      #end
     rescue
       r = false
     end

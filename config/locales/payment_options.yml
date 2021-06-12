@@ -23,3 +23,11 @@ pt-BR:
         name: 'Nome'
         fee: 'Taxa'
         max_money_fee: 'Taxa máxima'
+        payment_types:
+          boleto: 'Boleto'
+          credit_card: 'Cartão de Crédito'
+          pix: 'PIX'
+      payment_option/state:
+        active: 'Ativo'
+        inactive: 'Inativo'
+        

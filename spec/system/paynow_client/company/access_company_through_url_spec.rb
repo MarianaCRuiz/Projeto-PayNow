@@ -30,8 +30,11 @@ describe 'cannot access through url' do
       expect(current_path).to eq(new_user_session_path)
       expect(page).to have_content('Para continuar, efetue login ou registre-se')
     end
-    xit 'payment chosen' do
-      
+    it 'payment chosen' do
+      visit "/client_admin/companies/payment_chosen"
+
+      expect(current_path).to eq(new_user_session_path)
+      expect(page).to have_content('Para continuar, efetue login ou registre-se')
     end
   end
   context 'client' do
@@ -70,9 +73,6 @@ describe 'cannot access through url' do
 
       expect(current_path).to eq(root_path)
       expect(page).to have_content('Acesso não autorizado')
-    end
-    xit 'payment chosen' do
-      
     end
   end
 end

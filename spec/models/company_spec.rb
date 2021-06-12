@@ -30,6 +30,9 @@ describe Company do
       expect(company_2.errors[:cnpj]).to include('já está em uso') 
       expect(company_2.errors[:billing_email]).to include('já está em uso')   
     end
+    xit 'must have a token created' do
+      
+    end
   end
   context 'validates_associated' do
     xit 'users' do

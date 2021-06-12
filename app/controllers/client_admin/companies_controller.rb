@@ -16,13 +16,17 @@ class ClientAdmin::CompaniesController < ApplicationController
     end
   end
   def create
-    @company = Company.new(company_params)
-    if @company.save
-      DomainRecord.where(email_client_admin: current_user.email).first.company_id = @company.id
-      current_user.company = @company
-      redirect_to client_admin_company_path(@company[:token])     
+    if current_user.client_admin? || current_user.client_admin_sign_up?
+      @company = Company.new(company_params)
+      if @company.save
+        DomainRecord.where(email_client_admin: current_user.email).first.company_id = @company.id
+        current_user.company = @company
+        redirect_to client_admin_company_path(@company[:token])     
+      else
+        render :new
+      end
     else
-      render :new
+      redirect_to root_path, notice: 'Acesso não autorizado'
     end
   end
   def edit
@@ -34,11 +38,15 @@ class ClientAdmin::CompaniesController < ApplicationController
   end
 
   def update
-    @company = Company.find_by(token: params[:token])
-    if @company.update(company_params)
-      redirect_to client_admin_company_path(@company[:token])
+    if current_user.client_admin? || current_user.client_admin_sign_up?
+      @company = Company.find_by(token: params[:token])
+      if @company.update(company_params)
+        redirect_to client_admin_company_path(@company[:token])
+      else
+        render :edit
+      end
     else
-      render :edit
+      redirect_to root_path, notice: 'Acesso não autorizado'
     end
   end
 
@@ -47,7 +55,7 @@ class ClientAdmin::CompaniesController < ApplicationController
     @boletos = @company.boleto_register_options
     @credit_cards = @company.credit_card_register_options
     @pixies = @company.pix_register_options
-    @payments_chosen = @company.payment_options
+    @payments_chosen = @company.payment_options 
   end
 
   private

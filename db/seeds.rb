@@ -10,46 +10,50 @@ email_admin_1 = 'adminteste1@paynow.com.br'
 email_admin_2 = 'adminteste2@paynow.com.br'
 email_admin_3 = 'adminteste3@paynow.com.br'
 
-Admin.create(email: email_admin_1, permitted: 0)
-Admin.create(email: email_admin_2, permitted: 0)
-Admin.create(email: email_admin_3, permitted: 1)
+Admin.create(email: email_admin_1)
+Admin.create(email: email_admin_2)
+User.create(email:email_admin_1, password: '123456', role: 2)
 
 comp_1 = 'Codeplay SA'
-user_comp_1 = 'user@codeplay.com'
+#token_1 = 'kamd38Jn73hV29H785Vg'
 admin_comp_1 = 'admin@codeplay.com'
+user_comp_1 = 'user@codeplay.com'
+
 comp_2 = 'Empresa1 SA'
-user_comp_2 = 'user@empresa1.com'
+#token_2 = 'Kao34Lmn914HbcienHGA'
 admin_comp_2 = 'admin@empresa1.com'
+user_comp_2 = 'user@empresa1.com'
+
 
 company_1 = Company.create(corporate_name: comp_1, cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
                             city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
                             address_complement: '', billing_email: 'faturamento@codeplay.com')
 
-User.create(email:user_comp_1, password: '123456', role: 0, company: company_1)
 User.create(email:admin_comp_1, password: '123456', role: 1, company: company_1)
+User.create(email:user_comp_1, password: '123456', role: 0, company: company_1)
 DomainRecord.create(email_client_admin: admin_comp_1, domain: 'codeplay.com', company: company_1)
 DomainRecord.create(email: user_comp_1, domain: 'codeplay.com', company: company_1)
 
 company_2 = Company.create(corporate_name: comp_2, cnpj: '44.212.343/0001-42' , state: 'São Paulo', 
                             city: 'Campinas', district: 'Csmpos', street: 'rua 2', number: '13', 
                             address_complement: '', billing_email: 'faturamento@empresa1.com')
-User.create(email: user_comp_2 , password: '123456', role: 0, company: company_2)
 User.create(email: admin_comp_2, password: '123456', role: 1, company: company_2)
+User.create(email: user_comp_2 , password: '123456', role: 0, company: company_2)
 DomainRecord.create(email_client_admin: admin_comp_2, domain: 'empresa1.com', company: company_2)
 DomainRecord.create(email: user_comp_2, domain: 'empresa1.com', company: company_2)
 
-PaymentOption.create(name: 'Boleto', fee: 1.9, max_money_fee: 20)
-PaymentOption.create(name: 'PIX', fee: 1.3, max_money_fee: 21)
-PaymentOption.create(name: 'Cartão de Crédito MasterChef', fee: 1.2, max_money_fee: 24)
+PaymentOption.create(name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0)
+PaymentOption.create(name: 'PIX', fee: 1.3, max_money_fee: 21, payment_type: 1)
+PaymentOption.create(name: 'Cartão de Crédito MasterChef', fee: 1.2, max_money_fee: 24, payment_type:2)
 
 BankCode.create(code: '001', bank:'Banco do Brasil S.A.')
 BankCode.create(code: '029', bank:'Banco Itaú Consignado S.A.')
 
 company_1 = Company.where(corporate_name: comp_1).first
 company_2 = Company.where(corporate_name: comp_2).first
-pay_1 = PaymentOption.where(name: 'Boleto').first
-pay_2 = PaymentOption.where(name: 'Cartão de Crédito MasterChef').first
-pay_3 = PaymentOption.where(name: 'PIX').first
+pay_1 = PaymentOption.where(payment_type: 0).first
+pay_2 = PaymentOption.where(payment_type: 1).first
+pay_3 = PaymentOption.where(payment_type: 2).first
 bank1 = BankCode.where(code: '001').first
 bank2 = BankCode.where(code: '029').first
 

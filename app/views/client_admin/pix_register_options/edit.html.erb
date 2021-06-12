@@ -1,0 +1,20 @@
+<% if @pix_register_option.errors.any? %>
+  <p>Foram encontrados <%= @pix_register_option.errors.count %> erro(s):</p>
+  <ul>
+    <%  @pix_register_option.errors.full_messages.each do |error| %>
+      <li><%= error %></li>
+    <% end %>
+  </ul>
+<% end %>
+<%= form_with model: [:client_admin, @payment_option, @pix_register_option] do |f| %>
+  <div class="field form-group">
+    <%= f.label :pix_key %>
+    <%= f.text_field :pix_key, class:"form-control" %>
+  </div>
+  <div class="field form-group">
+    <%= f.label :bank_code_id %>
+    <%= f.collection_select :bank_code_id, @bank_codes, :id, :display_name, class:"form-control" %>
+  </div>
+  <%= f.submit t('.submit'), class:"btn btn-success mb-1 mt-1" %>
+<% end %>
+<%= link_to 'Cancelar', payment_chosen_client_admin_companies_path, class:"btn btn-dark btn-sm mb-1 mt-1" %>

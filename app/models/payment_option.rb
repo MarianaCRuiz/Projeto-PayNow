@@ -1,5 +1,6 @@
 class PaymentOption < ApplicationRecord
   enum state: {active: 0, inactive: 1}
+  enum payment_type: {boleto: 0, credit_card: 1, pix: 2}
 
   has_one_attached :icon
   after_create_commit :set_photo

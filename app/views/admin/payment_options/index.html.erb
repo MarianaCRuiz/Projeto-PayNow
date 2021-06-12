@@ -1,20 +1,31 @@
 <div class="container">
-  <h2>Opções de pagamento</h2> <br>
-  <div>
-    <% @payment_options.each do |option|%>
-    <div class="container">
-      <p><% if option.icon.persisted? %>
-        <%= image_tag option.icon, size:'50' %>
-        <% end %>
-      <%= option.name %>, Taxa(%): <%= option.fee %>, Taxa máxima(R$): <%= option.max_money_fee %>
-      </p>
-    </div>
-    <% end %>
-  </div>
   <% if user_signed_in? %>
     <% if current_user.admin? %>
       <%= link_to 'Adicionar opções de pagamento', new_admin_payment_option_path , class:"btn btn-primary btn-sm" %>
     <% end %>
   <% end %>
-  <%= link_to 'Voltar', root_path, class:"btn btn-primary btn-sm" %>
+  <%= link_to 'Voltar', root_path, class:"btn btn-primary btn-sm" %> <br> <br>
+  <ol class="list-group list-group-numbered">
+    <li class="list-group-item d-flex justify-content-between align-items-start">
+      <div class="ms-2 me-auto">
+        <div class="fw-bold">Opções de pagamento</div>
+          <% @payment_options.each do |option|%>
+            <div class="container">
+              <ul>
+                <li><% if option.icon.persisted? %> <%= image_tag option.icon, size:'50' %> <% end %><%= option.name %></li>
+                <li>Taxa(%): <%= option.fee %></li>
+                <li>Taxa máxima(R$): <%= option.max_money_fee %></li>
+                <li><% if option.active? %> 
+                <span class="badge bg-success"><%= PaymentOption.human_attribute_name("state.#{option.state}") %></span>
+                <% else %>
+                <span class="badge bg-warning text-dark"><%= PaymentOption.human_attribute_name("state.#{option.state}") %></span>
+                <% end %>
+                </li>
+                <%= link_to "Atualizar #{option.name}", edit_admin_payment_option_path(option) , class:"btn btn-primary btn-sm" %>
+              </ul>
+            </div> <br>
+          <% end %>
+      </div>
+    </li>
+  </ol>
 </div>
