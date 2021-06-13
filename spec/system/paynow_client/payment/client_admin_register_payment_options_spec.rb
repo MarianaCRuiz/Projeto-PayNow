@@ -19,9 +19,9 @@ describe 'register payment options' do
     click_on 'Opções de pagamento'
     click_on 'Adicionar opção de pagamento'
 
-    expect(page).to have_content('Adicionar Boleto')
-    expect(page).to have_content('Adicionar PIX')
-    expect(page).to have_content('Cartão de Crédito_1')
+    expect(page).to have_content('Adicionar: Boleto')
+    expect(page).to have_content('Adicionar: PIX')
+    expect(page).to have_content('Adicionar: Cartão de Crédito_1')
   end
   it 'do not see unavailables payment options' do
     boleto = pay_1
@@ -33,9 +33,9 @@ describe 'register payment options' do
     click_on 'Opções de pagamento'
     click_on 'Adicionar opção de pagamento'
 
-    expect(page).to have_content('Adicionar Boleto')
-    expect(page).to have_content('Adicionar PIX')
-    expect(page).to_not have_content('Cartão de Crédito_1')
+    expect(page).to have_content('Adicionar: Boleto')
+    expect(page).to have_content('Adicionar: PIX')
+    expect(page).to_not have_content('Adicionar: Cartão de Crédito_1')
   end
   it 'client_admin see payment options chosen' do  
     bank = BankCode.create(code: '001', bank:'Banco do Brasil S.A.')

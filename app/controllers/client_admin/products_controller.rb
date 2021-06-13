@@ -27,13 +27,17 @@ class ClientAdmin::ProductsController < ApplicationController
     end
   end
   def create
-    @company = current_user.company
-    @product = @company.products.new(product_params)
-    if @product.save
-      HistoricProduct.create!(product: @product, company: @company, price: @product.price)
-      redirect_to client_admin_company_product_path(@company.token, @product.token), notice: 'Opção adicionada com sucesso'
+    if current_user.client_admin? || current_user.client_admin_sign_up? 
+      @company = current_user.company
+      @product = @company.products.new(product_params)
+      if @product.save
+        HistoricProduct.create!(product: @product, company: @company, price: @product.price)
+        redirect_to client_admin_company_product_path(@company.token, @product.token), notice: 'Opção adicionada com sucesso'
+      else
+        render :new
+      end
     else
-      render :new
+      redirect_to root_path, notice: 'Acesso não autorizado'
     end
   end
   def edit
@@ -46,7 +50,7 @@ class ClientAdmin::ProductsController < ApplicationController
   end
 
   def update
-    #if current_user.client_admin? || current_user.client_admin_sign_up? 
+    if current_user.client_admin? || current_user.client_admin_sign_up? 
       @company = current_user.company
       @product = Product.find_by(token: params[:token])
       if @product.update(product_params)
@@ -55,9 +59,9 @@ class ClientAdmin::ProductsController < ApplicationController
       else
         render :edit
       end
-    #else
-    #  redirect_to root_path, notice: 'Acesso não autorizado'
-    #end
+    else
+      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
   end
   private
   def product_params

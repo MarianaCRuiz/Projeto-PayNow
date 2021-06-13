@@ -1,7 +1,7 @@
 <div class="container">
   <h2>Opções de pagamento escolhidas</h2> <br>
   <% if user_signed_in? %>
-    <%= link_to 'Adicionar opção de pagamento', client_admin_payment_options_path , class:"btn btn-primary btn-sm" %>
+    <%= link_to 'Adicionar opção de pagamento', client_admin_payment_options_path, class:"btn btn-primary btn-sm" %>
   <% end %>
   <%= link_to 'Voltar', client_admin_company_path(current_user.company.token) , class:"btn btn-primary btn-sm" %> <br> <br>
   <div>

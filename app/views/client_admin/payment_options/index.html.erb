@@ -3,20 +3,31 @@
   <div>
     <% @payment_options.each do |option|%>
     <div class="container">
-      <p><% if option.icon.persisted? %>
-        <%= image_tag option.icon, size:'50' %>
+      <p>
+        <% if !@company.payment_options.include?(option) %>
+          <% if option.icon.persisted? %>
+            <%= image_tag option.icon, size:'50' %>
+          <% end %>
         <% end %>
-      <% if option.name.include?('Boleto') && option.active? %>
-      <%= link_to "Adicionar #{option.name}", new_client_admin_payment_option_boleto_register_option_path(option) %>, Taxa(%): <%= option.fee %>, Taxa máxima(R$): <%= option.max_money_fee %>
-      <% elsif option.name.include?('PIX') || option.name.include?('Pix') %>
-        <% if option.active? %>
-          <%= link_to "Adicionar #{option.name}", new_client_admin_payment_option_pix_register_option_path(option) %>, Taxa(%): <%= option.fee %>, Taxa máxima(R$): <%= option.max_money_fee %>
+        <% if option.boleto? && option.active? %>
+          <% if !@company.payment_companies.include?(option) %>
+            <%= link_to "Adicionar: #{option.name}", new_client_admin_payment_option_boleto_register_option_path(option) %>, Taxa(%): <%= option.fee %>, Taxa máxima(R$): <%= option.max_money_fee %>
+          <% else %>
+            Já Adicionanda: <%= option.name %>, Taxa(%): <%= option.fee %>, Taxa máxima(R$): <%= option.max_money_fee %>
+          <% end %>
+        <% elsif option.pix? && option.active? %>
+          <% if !@company.payment_companies.include?(option) %>
+            <%= link_to "Adicionar: #{option.name}", new_client_admin_payment_option_pix_register_option_path(option) %>, Taxa(%): <%= option.fee %>, Taxa máxima(R$): <%= option.max_money_fee %>
+          <% else %>
+            Já Adicionanda: <%= option.name %>, Taxa(%): <%= option.fee %>, Taxa máxima(R$): <%= option.max_money_fee %>
+          <% end %>
+        <% elsif option.credit_card? && option.active? %>
+          <% if !@company.payment_companies.include?(option) %>
+            <%= link_to "Adicionar: #{option.name}", new_client_admin_payment_option_credit_card_register_option_path(option) %>, Taxa(%): <%= option.fee %>, Taxa máxima(R$): <%= option.max_money_fee %>
+          <% else %>
+            Já Adicionanda: <%= option.name %>, Taxa(%): <%= option.fee %>, Taxa máxima(R$): <%= option.max_money_fee %>
+          <% end %>
         <% end %>
-      <% elsif option.name.include?('Cartão de Crédito') || option.name.include?('Cartão de crédito')%>
-        <% if option.active? %>
-          <%= link_to "Adicionar #{option.name}", new_client_admin_payment_option_credit_card_register_option_path(option) %>, Taxa(%): <%= option.fee %>, Taxa máxima(R$): <%= option.max_money_fee %>
-        <% end %>
-      <% end %>
       </p>
     </div>
     <% end %>

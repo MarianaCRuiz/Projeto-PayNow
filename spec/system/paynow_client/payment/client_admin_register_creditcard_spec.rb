@@ -15,7 +15,7 @@ describe 'register credit card option' do
     visit client_admin_company_path(company[:token])
     click_on 'Opções de pagamento'
     click_on 'Adicionar opção de pagamento'
-    click_on "#{pay.name}"
+    click_on "Adicionar: #{pay.name}"
     fill_in 'Código operadora', with: token
     click_on 'Registrar cartão'
   
@@ -31,7 +31,7 @@ describe 'register credit card option' do
     visit client_admin_company_path(company[:token])
     click_on 'Opções de pagamento'
     click_on 'Adicionar opção de pagamento'
-    click_on "#{pay.name}"
+    click_on "Adicionar: #{pay.name}"
     fill_in 'Código operadora', with: ''
     click_on 'Registrar cartão'
   
@@ -45,7 +45,7 @@ describe 'register credit card option' do
     visit client_admin_company_path(company[:token])
     click_on 'Opções de pagamento'
     click_on 'Adicionar opção de pagamento'
-    click_on "#{pay.name}"
+    click_on "Adicionar: #{pay.name}"
     fill_in 'Código operadora', with: 'haBN7S9kM726bhz5d1pB'
     click_on 'Registrar cartão'
   

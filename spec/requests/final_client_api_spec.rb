@@ -1,14 +1,12 @@
 require 'rails_helper'
 
 describe 'final client api' do
+  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
+                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
+                address_complement: '', billing_email: 'faturamento@codeplay.com')}
   context 'POST final client api' do
     it 'generating final client token successfully' do
-      token = 'kamd38Jn73hV29H785Vg'
-      company = Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , 
-                                state: 'São Paulo', city: 'Campinas', district: 'Inova', 
-                                street: 'rua 1', number: '12', address_complement: '', 
-                                billing_email: 'faturamento@codeplay.com', token: token)
-      company.update(token: 'kamd38Jn73hV29H785Vg')
+      company1 = company
 
       post "/api/v1/tokens/#{company.token}/final_clients", params: {final_client: {name: 'Client final 1', cpf: '11122233344'}}
 
@@ -20,34 +18,44 @@ describe 'final client api' do
       expect(parsed_body['cpf']).to eq('11122233344')
     end
     it 'missing data' do
-      token = 'kamd38Jn73ha9nH785Vg'
-      company = Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , 
-                                state: 'São Paulo', city: 'Campinas', district: 'Inova', 
-                                street: 'rua 1', number: '12', address_complement: '', 
-                                billing_email: 'faturamento@codeplay.com')
-      company.update(token: token)
+      company1 = company
 
       post "/api/v1/tokens/#{company.token}/final_clients", params: {final_client: {name: '', cpf: ''}}
 
-      expect(response).to have_http_status(400)
-      expect(response.body).to be_empty
+      expect(response).to have_http_status(412)
+      parsed_body = JSON.parse(response.body)
+      expect(response.content_type).to include('application/json')
+      expect(parsed_body['name']).to eq(['não pode ficar em branco'])
+      expect(parsed_body['cpf']).to include('não pode ficar em branco')
     end
-    xit 'params must be uniq' do
-    end
-    xit 'token must be uniq' do
-    end
-    context 'authetication' do
-      xit 'just admin' do
-      end
-    end
-  end
+    it 'params must be uniq' do
+      company1 = company
+      final_client = FinalClient.create!(name: 'Teste 1', cpf: '11122233344')
+      CompanyClient.create!(final_client: final_client, company: company)
 
-  context 'GET api/v1/final_client' do  #provavelmente não será necessário
-    it 'should get final client token' do
+      post "/api/v1/tokens/#{company.token}/final_clients", params: {final_client: {name: 'Teste 1', cpf: '11122233344'}}
+
+      expect(response).to have_http_status(412)
+      parsed_body = JSON.parse(response.body)
+      expect(response.content_type).to include('application/json')
+      expect(parsed_body['cpf']).to eq(['já está em uso'])
     end
-    xit 'returns no final client' do
-    end
-    xit 'should not find by token' do
+    it 'final client register from another company' do
+      company1 = company
+      final_client = FinalClient.create!(name: 'Teste 1', cpf: '11122233344')
+      CompanyClient.create!(final_client: final_client, company: company)
+      company2 = Company.create!(corporate_name: 'Empresa 1 SA', cnpj: '11.444.555/0001-44' , state: 'São Paulo', 
+                                  city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
+                                  address_complement: '', billing_email: 'faturamento@empresa1.com')
+      token = final_client.token
+      post "/api/v1/tokens/#{company2.token}/final_clients", params: {final_client: {name: 'Teste 1', cpf: '11122233344'}}
+
+      expect(response).to have_http_status(202)
+      expect(response.content_type).to include('application/json')
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body['token']).to eq("#{token}")
+      expect(parsed_body['name']).to eq('Teste 1')
+      expect(parsed_body['cpf']).to eq('11122233344')
     end
   end
 end

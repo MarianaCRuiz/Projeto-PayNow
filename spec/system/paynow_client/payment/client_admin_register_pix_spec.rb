@@ -16,7 +16,7 @@ describe 'register PIX option' do
     visit client_admin_company_path(company[:token])
     click_on 'Opções de pagamento'
     click_on 'Adicionar opção de pagamento'
-    click_on 'Adicionar PIX_1'
+    click_on 'Adicionar: PIX_1'
     fill_in 'Chave PIX', with: token
     select "#{bank.code} - #{bank.bank}", from: 'Código do banco'
     click_on 'Registrar PIX'
@@ -34,7 +34,7 @@ describe 'register PIX option' do
     visit client_admin_company_path(company[:token])
     click_on 'Opções de pagamento'
     click_on 'Adicionar opção de pagamento'
-    click_on 'Adicionar PIX_1'
+    click_on 'Adicionar: PIX_1'
     fill_in 'Chave PIX', with: ''
     select "#{bank.code} - #{bank.bank}", from: 'Código do banco'
     click_on 'Registrar PIX'
@@ -52,7 +52,7 @@ describe 'register PIX option' do
     visit client_admin_company_path(company[:token])
     click_on 'Opções de pagamento'
     click_on 'Adicionar opção de pagamento'
-    click_on 'Adicionar PIX_1'
+    click_on 'Adicionar: PIX_1'
     fill_in 'Chave PIX', with: token
     select "#{bank.code} - #{bank.bank}", from: 'Código do banco'
     click_on 'Registrar PIX'

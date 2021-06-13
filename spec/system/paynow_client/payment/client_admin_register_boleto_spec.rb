@@ -17,7 +17,7 @@ describe 'register Boleto' do
     visit client_admin_company_path(company[:token])
     click_on 'Opções de pagamento'
     click_on 'Adicionar opção de pagamento'
-    click_on 'Adicionar Boleto'
+    click_on 'Adicionar: Boleto'
     select "#{bank.code} - #{bank.bank}", from: 'Código do banco'
     fill_in 'Agência', with: '3040'
     fill_in 'Número da conta', with: '111.222-3'
@@ -38,7 +38,7 @@ describe 'register Boleto' do
     visit client_admin_company_path(company[:token])
     click_on 'Opções de pagamento'
     click_on 'Adicionar opção de pagamento' #Boleto PIX CC
-    click_on 'Adicionar Boleto'
+    click_on 'Adicionar: Boleto'
     select "#{bank.code} - #{bank.bank}", from: 'Código do banco'
     fill_in 'Agência', with: ''
     fill_in 'Número da conta', with: ''
@@ -55,7 +55,7 @@ describe 'register Boleto' do
       visit client_admin_company_path(company[:token])
       click_on 'Opções de pagamento'
       click_on 'Adicionar opção de pagamento' #Boleto PIX CC
-      click_on 'Adicionar Boleto'
+      click_on 'Adicionar: Boleto'
       select "#{bank.code} - #{bank.bank}", from: 'Código do banco'
       fill_in 'Agência', with: '2050'
       fill_in 'Número da conta', with: '123.555-8'
@@ -72,7 +72,7 @@ describe 'register Boleto' do
       visit client_admin_company_path(company[:token])
       click_on 'Opções de pagamento'
       click_on 'Adicionar opção de pagamento' #Boleto PIX CC
-      click_on 'Adicionar Boleto'
+      click_on 'Adicionar: Boleto'
       select "#{bank_2.code} - #{bank_2.bank}", from: 'Código do banco'
       fill_in 'Agência', with: '2050'
       fill_in 'Número da conta', with: '123.555-8'
@@ -91,7 +91,7 @@ describe 'register Boleto' do
       visit client_admin_company_path(company[:token])
       click_on 'Opções de pagamento'
       click_on 'Adicionar opção de pagamento' #Boleto PIX CC
-      click_on 'Adicionar Boleto'
+      click_on 'Adicionar: Boleto'
       select "#{bank.code} - #{bank.bank}", from: 'Código do banco'
       fill_in 'Agência', with: '3020'
       fill_in 'Número da conta', with: '123.555-8'
