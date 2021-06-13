@@ -9,12 +9,12 @@ describe 'authentication' do
   
   context 'visitor' do
     it 'POST' do
-      post admin_payment_options_path, params: {payment_option: {name: 'Boleto', fee: 1.9, max_money_fee: 20}}
+      post admin_payment_options_path, params: {payment_option: {name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0}}
 
       expect(response).to redirect_to(new_user_session_path)
     end
     it 'PATCH' do
-      option = PaymentOption.create(name: 'Boleto', fee: 1.9, max_money_fee: 20)
+      option = PaymentOption.create!(name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0)
       
       patch admin_payment_option_path(option)
         
@@ -25,7 +25,7 @@ describe 'authentication' do
     it 'POST' do
       
       login_as user_admin, scope: :user
-      post admin_payment_options_path, params: {payment_option: {name: 'Boleto', fee: 1.9, max_money_fee: 20}}
+      post admin_payment_options_path, params: {payment_option: {name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0}}
   
       expect(response).to redirect_to(root_path)
     end
@@ -33,7 +33,7 @@ describe 'authentication' do
       DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
       
       login_as user_admin, scope: :user
-      option = PaymentOption.create(name: 'Boleto', fee: 1.9, max_money_fee: 20)
+      option = PaymentOption.create(name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0)
         
       patch admin_payment_option_path(option)
           
@@ -46,7 +46,7 @@ describe 'authentication' do
       DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
         
       login_as user_admin, scope: :user
-      post admin_payment_options_path, params: {payment_option: {name: 'Boleto', fee: 1.9, max_money_fee: 20}}
+      post admin_payment_options_path, params: {payment_option: {name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0}}
     
       expect(response).to redirect_to(root_path)
     end
@@ -55,7 +55,7 @@ describe 'authentication' do
       DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
         
       login_as user_admin, scope: :user
-      option = PaymentOption.create(name: 'Boleto', fee: 1.9, max_money_fee: 20)
+      option = PaymentOption.create(name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0)
           
       patch admin_payment_option_path(option)
             

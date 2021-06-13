@@ -6,10 +6,10 @@ describe 'view company' do
       company = Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
                                   city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
                                   address_complement: '', billing_email: 'faturamento@codeplay.com')
-      user_client_admin = User.create!(email:'user1@codeplay.com', password: '123456', role: 1, company: company)
-      DomainRecord.create!(email_client_admin: user_client_admin.email, domain: 'codeplay.com', company: company)
+      user_admin = User.create!(email:'user1@codeplay.com', password: '123456', role: 1, company: company)
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
 
-      login_as user_client_admin, scope: :user
+      login_as user_admin, scope: :user
       visit root_path
       click_on 'Codeplay SA'
       
@@ -25,18 +25,14 @@ describe 'view company' do
       expect(page).to have_content('faturamento@codeplay.com')
       expect(page).to have_link('Atualizar dados da empresa')
     end
-    it 'not client_admin cannot see client_admin company profile' do
-      company = Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
-                                  city: 'Campinas', district: 'Inova', street: 'rua 1', number: '123', 
-                                  address_complement: '', billing_email: 'faturamento@codeplay.com')
-      user_client = User.create!(email:'user1@codeplay.com', password: '123456', role: 0, company: company)
-      DomainRecord.create!(email: user_client.email, domain: 'codeplay.com', company: company)
-  
-      login_as user_client, scope: :user
+    it 'company not registered' do
+      user_admin = User.create!(email:'user1@codeplay.com', password: '123456', role: 3)
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com')
+
+      login_as user_admin, scope: :user
       visit root_path
-      click_on 'Codeplay SA'
-  
-      expect(page).to_not have_link('Atualizar dados da empresa')
+
+      expect(page).to_not have_link('Codeplay SA')
     end
   end
 end

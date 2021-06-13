@@ -6,7 +6,7 @@ describe 'authentication' do
                 address_complement: '', billing_email: 'faturamento@codeplay.com')}
   let(:user_admin) {User.create!(email: 'admin@codeplay.com', password: '123456', role: 1, company: company)}
   let(:user) {User.create!(email: 'user@codeplay.com', password: '123456', role: 0, company: company)}    
-  let(:pay_3) {PaymentOption.create!(name: 'PIX_1', fee: 1.9, max_money_fee: 20)}
+  let(:pay_3) {PaymentOption.create!(name: 'PIX_1', fee: 1.9, max_money_fee: 20, payment_type: 2)}
   let(:bank) {BankCode.create!(code: '001', bank:'Banco do Brasil S.A.')}
   let(:pix_option) {PixRegisterOption.create!(company: company, payment_option: pay_3, pix_key: 'AJ86gt4fLBtcF296rTuN', bank_code: bank)}
   

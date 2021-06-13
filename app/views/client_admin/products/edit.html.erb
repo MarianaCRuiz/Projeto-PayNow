@@ -6,7 +6,7 @@
     <% end %>
   </ul>
 <% end %>
-<%= form_with url: client_admin_company_products_path(@company.token), model: [:client_admin, @company, @product] do |f| %>
+<%= form_with url: client_admin_company_product_path(@company.token, @product.token), model: [:client_admin, @company, @product] do |f| %>
   <div class="field form-group">
     <%= f.label :name %>
     <%= f.text_field :name, class:"form-control" %>
@@ -29,4 +29,4 @@
   </div>
   <%= f.submit t('.submit'), class:"btn btn-success mb-1 mt-1" %>
 <% end %>
-<%= link_to 'Cancelar', client_admin_company_path(@company.token), class:"btn btn-dark btn-sm mb-1 mt-1" %>
+<%= link_to 'Cancelar', client_admin_company_product_path(@company.token, @product.token), class:"btn btn-dark btn-sm mb-1 mt-1" %>

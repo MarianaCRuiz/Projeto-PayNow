@@ -33,16 +33,6 @@ describe 'client_admin register' do
     end
   end
   context 'company first register failure' do
-    it 'client_admin create account missing information' do
-      visit root_path
-      click_on 'Registrar-se'
-      fill_in 'Email', with: ''
-      fill_in 'Senha', with: ''
-      fill_in 'Confirmar senha', with: ''
-      click_on 'Criar conta'
-
-      expect(page).to have_content('não pode ficar em branco', count: 3)
-    end
     it 'client_admin register company missing information' do
       login_as user_client_admin, scope: :user
       visit root_path
@@ -59,6 +49,9 @@ describe 'client_admin register' do
       click_on 'Registrar'
 
       expect(page).to have_content('não pode ficar em branco', count: 8)
+    end
+    xit 'cannot register same company again' do
+      
     end
   end
 end

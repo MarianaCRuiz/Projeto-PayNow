@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'manage product' do
   context 'register' do
-    it 'successfully' do
+    xit 'successfully' do
       company = Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
                                 city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
                                 address_complement: '', billing_email: 'person1@codeplay.com')

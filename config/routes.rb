@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   namespace :client_admin do
     resources :companies, only: %i[show new create edit update], param: :token do
       get 'payment_chosen', on: :collection
-      resources :products, only: %i[index show new create], param: :token
+      resources :products, only: %i[index show new create edit update], param: :token
     end
     resources :payment_options, only: %i[index] do
       resources :boleto_register_options, only: %i[new create edit update]
@@ -17,14 +17,13 @@ Rails.application.routes.draw do
   namespace :clients do
     resources :companies, only: %i[show], param: :token do
       get 'payment_chosen', on: :collection
-      resources :products, only: %i[index show new create], param: :token
+      #resources :products, only: %i[index show new create edit update], param: :token
     end
   end
   namespace :api do
     namespace :v1 do
       resources :tokens, only: [], param: :token do
         post 'final_clients', on: :member
-        
       end
     end
   end

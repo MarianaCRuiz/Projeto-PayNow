@@ -1,12 +1,15 @@
 <div class="container">
-  <h2>Produtos cadastrados</h2> <br>
+  <h2>
+    <% if @products.empty? %>
+      Nenhum produto cadastrado
+    <% else %>
+      Produtos cadastrados
+    <% end %>
+  </h2> <br>
   <div>
     <% @products.each do |product|%>
     <div class="container">
-      <p>Nome: <%= product.name %>, Preço: R$ <%= product.price %>, 
-        Desconto Boleto(%): <%= product.boleto_discount %>, 
-        Desconto Cartão de Crédito(%): <%= product.credit_card_discount %>, 
-        Desconto PIX(%): <%= product.pix_discount %></p>
+      <p>Nome: <%= link_to "#{product.name}", client_admin_company_product_path(product.company.token, product.token), class:"btn btn-success" %>, Preço: R$ <%= product.price %></p>
     </div>
     <% end %>
   </div>

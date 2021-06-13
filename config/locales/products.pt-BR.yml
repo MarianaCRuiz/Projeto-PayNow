@@ -22,6 +22,6 @@ pt-BR:
       product:
         name: 'Nome'
         price: 'Preço'
-        boleto_discount: 'Desconto Boleto'
-        credit_card_discount: 'Desconto Cartão de Crédito'
-        pix_discount: 'Desconto PIX'
+        boleto_discount: 'Desconto no Boleto'
+        credit_card_discount: 'Desconto no Cartão de Crédito'
+        pix_discount: 'Desconto no PIX'
