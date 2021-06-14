@@ -40,19 +40,3 @@ describe Company do
     end
   end
 end
-
-
-#describe Enrollment do
-#  let(:student) {Student.create!(email:'teste7@gmail.com', password: '123456')}
-#  it 'and cannot buy a company twice' do
-#    instructor = Instructor.create!(name: 'Tico') 
-#    company = Course.create!(name: 'Ruby', description: 'Um curso de Ruby')
-#    Enrollment.create!(company_id: company.id, price: 10, student_id: student.id)     
-#    enrollment = Enrollment.new(company_id: company.id, price: 18, student_id: student.id)
-  
-#    enrollment.valid?
-    
-#    expect(enrollment.errors[:company]).to include("Não pode comprar duas vezes")
-
-#  end
-#end
