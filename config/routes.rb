@@ -22,11 +22,9 @@ Rails.application.routes.draw do
   end
   namespace :api do
     namespace :v1 do
-      resources :companies, only: [], param: :token do
-        post 'final_clients', on: :member
-        post 'charges', on: :member
-      end
-      # ?  'charge_consult', to: 'api/v1/companies#charge_consult'
+      post 'final_clients', to: 'companies#final_clients'
+      post 'charges', to: 'companies#charges'
+      #'charge_consult', to: 'companies#charge_consult'
     end
   end
   namespace :admin do

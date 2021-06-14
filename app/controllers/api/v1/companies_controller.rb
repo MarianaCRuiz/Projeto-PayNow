@@ -47,8 +47,8 @@ class Api::V1::CompaniesController < Api::V1::ApiController
 
 
   def final_clients
-    @company = Company.find_by(token: params[:token])
     @final_client = FinalClient.new(final_client_params)
+    @company = Company.find_by(token: params[:final_client][:company_token])
     @final_client.save!
     @company.company_clients.create!(final_client: @final_client)
     render json: @final_client, status: 201
