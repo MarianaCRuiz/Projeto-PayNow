@@ -12,26 +12,28 @@ class Api::V1::CompaniesController < Api::V1::ApiController
     @charge.product = @product
     @final_client = FinalClient.find_by(cpf: charge_params[:client_cpf])
     @charge.final_client = @final_client
-    @charge.price = @product.price
-
-    @boleto = BoletoRegisterOption.find_by(id: charge_params[:boleto_register_option_id])
-    @credit_card = CreditCardRegisterOption.find_by(id: charge_params[:credit_card_register_option_id])
-    @pix = PixRegisterOption.find_by(id: charge_params[:pix_register_option_id])
-    if @boleto
-      @charge.payment_method = @boleto.payment_option.name
-      @charge.discount = @charge.price*@product.boleto_discount/100
-    elsif @credti_card
-      @charge.payment_method = @credit.payment_option.name
-      @charge.discount = @charge.price*@product.credit_card_discount/100
-    elsif @pix
-      @charge.payment_method = @pix.payment_option.name
-      @charge.discount = @charge.price*@product.pix_discount/100
-    end
-    @charge.product_name = @product.name
-    if  @charge.discount
-      @charge.charge_price = @charge.price - @charge.discount
-    else
-      @charge.charge_price = @charge.price
+    if @product 
+      @charge.price = @product.price
+      @boleto = BoletoRegisterOption.find_by(id: charge_params[:boleto_register_option_id])
+      @credit_card = CreditCardRegisterOption.find_by(id: charge_params[:credit_card_register_option_id])
+      @pix = PixRegisterOption.find_by(id: charge_params[:pix_register_option_id])
+      if @boleto
+        @charge.payment_method = @boleto.payment_option.payment_type
+        @charge.discount = @charge.price*@product.boleto_discount/100
+      elsif @credit_card
+        @charge.payment_method = @credit_card.payment_option.payment_type
+        @charge.discount = @charge.price*@product.credit_card_discount/100
+      elsif @pix
+        @charge.payment_method = @pix.payment_option.payment_type
+        @charge.discount = @charge.price*@product.pix_discount/100
+      end
+   
+      @charge.product_name = @product.name
+      if  @charge.discount
+        @charge.charge_price = @charge.price - @charge.discount
+      else
+        @charge.charge_price = @charge.price
+      end
     end
     if @boleto == nil && @credit_card == nil && @pix == nil
       head 412
@@ -39,6 +41,8 @@ class Api::V1::CompaniesController < Api::V1::ApiController
       @charge.save!
       render json: @charge.as_json(only: [:product_name, :price, :discount, :charge_price, :client_name, :client_cpf, :payment_method]), status: 201
     end
+  rescue ActiveRecord::RecordInvalid
+    render json: @charge.errors, status: :precondition_failed
   end
 
 
