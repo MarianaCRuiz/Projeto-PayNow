@@ -5,6 +5,12 @@ csv.each do |row|
   code, bank = row.to_s.split(' ', 2)
   BankCode.create(code: code, bank: bank)
 end
+csv_text2 = File.read("#{Rails.root}/public/charge_status_options.csv")
+csv2 = CSV.parse(csv_text2, :headers => true)
+csv2.each do |row|
+  code, description = row.to_s.split(' ', 2)
+  StatusCharge.create(code: code, description: description)
+end
 
 email_admin_1 = 'adminteste1@paynow.com.br'
 email_admin_2 = 'adminteste2@paynow.com.br'
@@ -43,8 +49,8 @@ DomainRecord.create(email_client_admin: admin_comp_2, domain: 'empresa1.com', co
 DomainRecord.create(email: user_comp_2, domain: 'empresa1.com', company: company_2)
 
 PaymentOption.create(name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0)
-PaymentOption.create(name: 'PIX', fee: 1.3, max_money_fee: 21, payment_type: 1)
-PaymentOption.create(name: 'Cartão de Crédito MasterChef', fee: 1.2, max_money_fee: 24, payment_type:2)
+PaymentOption.create(name: 'Cartão de Crédito MasterChef', fee: 1.2, max_money_fee: 24, payment_type:1)
+PaymentOption.create(name: 'PIX', fee: 1.3, max_money_fee: 21, payment_type: 2)
 
 BankCode.create(code: '001', bank:'Banco do Brasil S.A.')
 BankCode.create(code: '029', bank:'Banco Itaú Consignado S.A.')

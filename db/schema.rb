@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_12_063955) do
+ActiveRecord::Schema.define(version: 2021_06_14_044219) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -69,6 +69,41 @@ ActiveRecord::Schema.define(version: 2021_06_12_063955) do
     t.index ["bank_code_id"], name: "index_boleto_register_options_on_bank_code_id"
     t.index ["company_id"], name: "index_boleto_register_options_on_company_id"
     t.index ["payment_option_id"], name: "index_boleto_register_options_on_payment_option_id"
+  end
+
+  create_table "charges", force: :cascade do |t|
+    t.string "client_name"
+    t.string "client_cpf"
+    t.string "product_token"
+    t.string "company_token"
+    t.string "payment_method"
+    t.string "client_address"
+    t.string "card_number"
+    t.string "card_name"
+    t.string "cvv_code"
+    t.decimal "price"
+    t.decimal "discount"
+    t.string "product_name"
+    t.decimal "charge_price"
+    t.date "due_deadline"
+    t.date "payment_date"
+    t.date "attempt_date"
+    t.integer "company_id", null: false
+    t.integer "product_id", null: false
+    t.integer "final_client_id", null: false
+    t.integer "boleto_register_option_id"
+    t.integer "credit_card_register_option_id"
+    t.integer "pix_register_option_id"
+    t.integer "status_charge_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["boleto_register_option_id"], name: "index_charges_on_boleto_register_option_id"
+    t.index ["company_id"], name: "index_charges_on_company_id"
+    t.index ["credit_card_register_option_id"], name: "index_charges_on_credit_card_register_option_id"
+    t.index ["final_client_id"], name: "index_charges_on_final_client_id"
+    t.index ["pix_register_option_id"], name: "index_charges_on_pix_register_option_id"
+    t.index ["product_id"], name: "index_charges_on_product_id"
+    t.index ["status_charge_id"], name: "index_charges_on_status_charge_id"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -184,6 +219,13 @@ ActiveRecord::Schema.define(version: 2021_06_12_063955) do
     t.index ["company_id"], name: "index_products_on_company_id"
   end
 
+  create_table "status_charges", force: :cascade do |t|
+    t.string "code"
+    t.string "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -204,6 +246,13 @@ ActiveRecord::Schema.define(version: 2021_06_12_063955) do
   add_foreign_key "boleto_register_options", "bank_codes"
   add_foreign_key "boleto_register_options", "companies"
   add_foreign_key "boleto_register_options", "payment_options"
+  add_foreign_key "charges", "boleto_register_options"
+  add_foreign_key "charges", "companies"
+  add_foreign_key "charges", "credit_card_register_options"
+  add_foreign_key "charges", "final_clients"
+  add_foreign_key "charges", "pix_register_options"
+  add_foreign_key "charges", "products"
+  add_foreign_key "charges", "status_charges"
   add_foreign_key "company_clients", "companies"
   add_foreign_key "company_clients", "final_clients"
   add_foreign_key "credit_card_register_options", "companies"
