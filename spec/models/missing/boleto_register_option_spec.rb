@@ -20,7 +20,7 @@ describe BoletoRegisterOption do
     expect(boleto.errors[:agency_number]).to include('não pode ficar em branco')
     expect(boleto.errors[:account_number]).to include('não pode ficar em branco')
   end
-  it ' must be uniq scope agency and bank' do
+  it 'must be uniq scope agency and bank' do
     BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
     boleto_2 = BoletoRegisterOption.new(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
     boleto_2.valid?
