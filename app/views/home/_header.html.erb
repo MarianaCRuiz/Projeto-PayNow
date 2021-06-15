@@ -25,12 +25,29 @@
             </li>
           <% else %>
             <li class="nav-item active">
+              <%= link_to "#{current_user.company.corporate_name}", client_admin_company_path(current_user.company.token), class:"nav-link" %>
+            </li>
+            <li class="nav-item active">
               <%= link_to 'Atualizar dados da empresa', '#', class:"nav-link" %>
             </li>
           <% end %>
+        <% elsif current_user.client_admin? %>
+          <li class="nav-item active">
+            <%= link_to "#{current_user.company.corporate_name}", client_admin_company_path(current_user.company.token), class:"nav-link" %>
+          </li>
+          <li class="nav-item active">
+            <%= link_to 'Atualizar dados da empresa', edit_client_admin_company_path(current_user.company.token), class:"nav-link" %>
+          </li>
+        <% elsif current_user.client? %>
+          <li class="nav-item active">
+            <%= link_to "#{current_user.company.corporate_name}", clients_company_path(current_user.company.token), class:"nav-link" %>
+          </li>
         <% elsif current_user.admin? %>
           <li class="nav-item active">
             <%= link_to 'Registro de opções de pagamento', admin_payment_options_path, class:"nav-link" %>
+          </li>
+          <li class="nav-item active">
+            <%= link_to 'Empresas cadastradas', admin_companies_path, class:"nav-link" %>
           </li>
         <% end %>
       <% else %>

@@ -5,6 +5,8 @@ class PaymentOption < ApplicationRecord
   has_one_attached :icon
   after_create_commit :set_photo
   
+  has_many :charges
+
   has_many :payment_companies
   has_many :companies, through: :payment_companies
 

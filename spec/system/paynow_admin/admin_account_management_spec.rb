@@ -41,19 +41,6 @@ describe 'account admin' do
       
       expect(page).to have_content('Confirmar senha não é igual a Senha') 
     end
-    xit 'status rejected' do  #Resultado NAO FAZ SENTIDO.. passa no nil... não deveria passar.... :p
-      a = Admin.create!(email: 'admin1@paynow.com.br', permitted: 1)
-      user = User.create!(email:'admin1@paynow.com.br', password: '123456', role: 2)
-      #a.update(permitted: 1)
-
-      visit root_path
-      click_on 'Entrar'
-      fill_in 'Email', with: 'admin1@paynow.com.br'
-      fill_in 'Senha', with: '123456'
-      click_on 'Log in'
-      
-      expect(page).to have_content('email inválido') 
-    end
   end
   context 'login and recognize admin' do
     it 'successfully' do
@@ -118,10 +105,6 @@ describe 'account admin' do
       click_on 'Atualizar'
 
       expect(page).to have_content('Senha atual não é válido')
-    end
-  end
-  context 'blcok admin' do
-    xit 'successfully' do
     end
   end     
 end

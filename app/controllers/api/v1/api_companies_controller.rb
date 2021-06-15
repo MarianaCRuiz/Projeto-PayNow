@@ -2,7 +2,6 @@ class Api::V1::ApiCompaniesController < Api::V1::ApiController
   before_action :status_charge_generate, only: %i[charges]
   def charges
     @status = StatusCharge.find_by(code: '01')
-    byebug
     @charge = Charge.new(charge_params)
     
     @company = Company.find_by(token: charge_params[:company_token])
@@ -39,7 +38,7 @@ class Api::V1::ApiCompaniesController < Api::V1::ApiController
       head 412
     else
       @charge.save!
-      render json: @charge.as_json(only: [:product_name, :price, :discount, :charge_price, :client_name, :client_cpf, :payment_method]), status: 201
+      render json: @charge.as_json(only: [:product_name, :price, :discount, :charge_price, :client_name, :client_cpf, :payment_method, :token]), status: 201
     end
   rescue ActiveRecord::RecordInvalid
     render json: @charge.errors, status: :precondition_failed
@@ -73,17 +72,20 @@ class Api::V1::ApiCompaniesController < Api::V1::ApiController
     params.require(:final_client).permit(:name, :cpf)
   end
   def charge_params
-    params.require(:charge).permit(:client_name, :client_cpf, :company_token, :product_token, :payment_method,
-      :boleto_register_option_id, :credit_card_register_option_id, :pix_register_option_id, 
-      :client_address, :card_number, :card_name, :cvv_code, :due_deadline)
+    params.require(:charge).permit(:client_name, :client_cpf, :company_token, :product_token, 
+      :payment_method, :boleto_register_option_id, :credit_card_register_option_id, 
+      :pix_register_option_id, :client_address, :card_number, 
+      :card_name, :cvv_code, :due_deadline)
   end
   def status_charge_generate
     require 'csv'
-    csv_text = File.read("#{Rails.root}/public/charge_status_options.csv")
-    csv2 = CSV.parse(csv_text, :headers => true)
-    csv2.each do |row|
-      code, description = row.to_s.split(' ', 2)
-      status = StatusCharge.create(code: code, description: description)
+    if StatusCharge.count < 5
+      csv_text = File.read("#{Rails.root}/public/charge_status_options.csv")
+      csv2 = CSV.parse(csv_text, :headers => true)
+      csv2.each do |row|
+        code, description = row.to_s.split(' ', 2)
+        status = StatusCharge.create(code: code, description: description)
+      end
     end
   end
 end

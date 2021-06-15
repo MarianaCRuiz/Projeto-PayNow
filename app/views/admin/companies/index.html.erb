@@ -1,0 +1,18 @@
+<h2>Empresas</h2>
+<% @companies.each do |company|%>
+  <ul class="list-group list-group-numbered">
+    <li class="list-group-item d-flex justify-content-between align-items-start">
+      <div class="ms-2 me-auto">
+        <div class="fw-bold">Dados</div>
+          <div class="container">
+            <ul>
+              <li><%= link_to "#{company.corporate_name}", admin_company_path(company.token) , class:"btn btn-primary btn-sm" %></li>
+              <li>CNPJ: <%= company.cnpj %></li>
+              <li>Email de faturamento: <%= company.billing_email %></li>
+              <li>Token: <%= company.token %></li>
+            </ul>
+          </div>
+      </div>
+    </li>
+  </ul>
+<% end %>

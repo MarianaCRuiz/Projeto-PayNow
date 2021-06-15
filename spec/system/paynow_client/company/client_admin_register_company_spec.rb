@@ -29,7 +29,7 @@ describe 'client_admin register' do
       expect(page).to have_content('123')
       expect(page).to have_content('Email de faturamento')
       expect(page).to have_content('faturamento@codeplay.com')
-      expect(page).to have_link('Atualizar dados da empresa')
+      expect(HistoricCompany.count).to eq(1)  
     end
   end
   context 'company first register failure' do
@@ -49,9 +49,6 @@ describe 'client_admin register' do
       click_on 'Registrar'
 
       expect(page).to have_content('não pode ficar em branco', count: 8)
-    end
-    xit 'cannot register same company again' do
-      
     end
   end
 end

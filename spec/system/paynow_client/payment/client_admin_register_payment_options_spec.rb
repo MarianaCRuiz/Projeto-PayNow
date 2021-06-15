@@ -9,7 +9,10 @@ describe 'register payment options' do
   let(:pay_2) {PaymentOption.create!(name: 'Cartão de Crédito MASTERCHEF', fee: 1.9, max_money_fee: 20, payment_type: 1)}
   let(:pay_3) {PaymentOption.create!(name: 'PIX_1', fee: 1.9, max_money_fee: 20, payment_type: 2)}
 
-  xit 'see availables payment options' do
+  it 'see availables payment options chosen' do
+    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company )
+    PaymentCompany.create(company: company, payment_option: pay_1)
+    PaymentCompany.create!(company: company, payment_option: pay_2)
     boleto = pay_1
     cc = pay_2
     pix = pay_3
@@ -17,13 +20,13 @@ describe 'register payment options' do
     login_as user_admin, scope: :user
     visit client_admin_company_path(company[:token])
     click_on 'Opções de pagamento'
-    click_on 'Adicionar opção de pagamento'
 
-    expect(page).to have_content('Adicionar: Boleto')
-    expect(page).to have_content('Adicionar: PIX')
-    expect(page).to have_content('Adicionar: Cartão de Crédito_1')
+    expect(page).to have_content('Boleto')
+    expect(page).to have_content('Cartão de Crédito MASTERCHEF')
+    expect(page).to_not have_content('PIX_1')
   end
-  it 'do not see unavailables payment options' do
+  it 'see availables payment options' do
+    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company )
     boleto = pay_1
     cc = pay_2
     pix = pay_3
@@ -34,8 +37,8 @@ describe 'register payment options' do
     click_on 'Adicionar opção de pagamento'
 
     expect(page).to have_content('Adicionar: Boleto')
-    expect(page).to have_content('Adicionar: PIX')
-    expect(page).to_not have_content('Adicionar: Cartão de Crédito_1')
+    expect(page).to have_content('Adicionar: PIX_1')
+    expect(page).to have_content('Adicionar: Cartão de Crédito MASTERCHEF')
   end
   it 'client_admin see payment options chosen' do  
     bank = BankCode.create(code: '001', bank:'Banco do Brasil S.A.')
@@ -45,6 +48,7 @@ describe 'register payment options' do
     PaymentCompany.create(company: company, payment_option: pay_1)
     PaymentCompany.create!(company: company, payment_option: pay_2)
     PaymentCompany.create!(company: company, payment_option: pay_3)
+    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
 
     login_as user_admin, scope: :user
     visit client_admin_company_path(company[:token])
@@ -63,6 +67,7 @@ describe 'register payment options' do
     PaymentCompany.create(company: company, payment_option: pay_1)
     PaymentCompany.create!(company: company, payment_option: pay_2)
     PaymentCompany.create!(company: company, payment_option: pay_3)
+    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
     
     login_as user_admin, scope: :user
     visit client_admin_company_path(company[:token])

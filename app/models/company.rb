@@ -1,6 +1,8 @@
 class Company < ApplicationRecord
   has_many :users
  
+  has_many :charges
+
   has_many :boleto_register_options
   has_many :credit_card_register_options
   has_many :pix_register_options
@@ -21,7 +23,8 @@ class Company < ApplicationRecord
 
   
   before_validation(on: :create) do
-    token = self.token = SecureRandom.base58(20)
+    self.token = SecureRandom.base58(20)
+    token = self.token
     same = true
     while same == true do
       if Company.where(token: token).empty?

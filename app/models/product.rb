@@ -1,6 +1,7 @@
 class Product < ApplicationRecord
   belongs_to :company
   has_many :historic_products
+  has_many :charges
 
   validates :name, :price, :token, :company_id, presence: true
   validates :name, :token, uniqueness: {scope: :company_id, message: 'Produto já cadastrado'}

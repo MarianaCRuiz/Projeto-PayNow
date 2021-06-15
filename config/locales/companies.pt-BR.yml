@@ -15,6 +15,21 @@ pt-BR:
       destroy:
         failure: ''
         success: ''
+  admin:
+    companies:
+      new:
+        title: 'Cadastro'
+        submit: 'Registrar'
+      edit:
+        title: ''
+        submit: 'Atualizar'
+      create:
+        success: ''
+      update:
+        success: 'Dados atualizados com sucesso'
+      destroy:
+        failure: ''
+        success: ''
   activerecord:
     models:
       company: 'Empresa'

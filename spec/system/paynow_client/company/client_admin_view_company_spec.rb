@@ -1,6 +1,6 @@
 require 'rails_helper'  
 
-describe 'view company' do
+describe 'client_admin view company' do
   context 'company profile' do
     it 'client_admin view company profile' do
       company = Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 

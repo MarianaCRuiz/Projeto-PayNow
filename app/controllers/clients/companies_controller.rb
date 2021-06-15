@@ -8,7 +8,7 @@ class Clients::CompaniesController < ApplicationController
       redirect_to root_path, notice: 'Acesso não autorizado'
     end
   end
-  def payment_chosen #get
+  def payments_chosen #get
     @company = current_user.company
     @boletos = @company.boleto_register_options
     @credit_cards = @company.credit_card_register_options

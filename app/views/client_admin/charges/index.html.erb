@@ -1,0 +1,22 @@
+<div class="container">
+  <h2>Cobranças pendentes</h2> <br>
+  <%= link_to 'Voltar', client_admin_company_path(current_user.company.token) , class:"btn btn-primary btn-sm" %>
+  <%= link_to 'Todas as cobranças', all_charges_client_admin_charges_path , class:"btn btn-primary btn-sm" %> <br> <br>
+  <% @charges.each do |charge|%>
+  <ul class="list-group">
+    <li class="list-group-item d-flex justify-content-between align-items-start">
+      <div class="ms-2 me-auto">
+        <div class="fw-bold"><%= charge.payment_method %></div>
+          <ul>
+            <li>Produto: <%= charge.product.name %></li>
+            <li>Valor: R$ <%= charge.charge_price %></li>
+            <li>Vencimento da fatura: <%= charge.due_deadline.strftime("%d/%m/%Y") %></li>
+            <li>Data de emissão: <%= charge.created_at.strftime("%d/%m/%Y") %></li>
+            <li>Status: <%= charge.status_charge.description %></li>
+            <%= link_to "Atualizar Status: #{charge.token}", edit_client_admin_charge_path(charge.token), class:"btn btn-primary btn-sm"%>
+          </ul>
+      </div>
+    </li>
+  </ul>
+  <% end %>
+</div>

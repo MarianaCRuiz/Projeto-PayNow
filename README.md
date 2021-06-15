@@ -40,7 +40,7 @@ Os testes utilizam framework RSpec. Para executá-los, rode rspec no terminal ab
 
 * Apenas funcionários da Paynow, com o domínio de email @paynow.com.br, são passíveis de serem administradores.
 * Não há página específica para registro de administradores, para adicionar um administrador é necessário adicionar seu email ao model Admin, isso permitirá que ele seja reconhecido com o status de administrador (admin). Adicionado o email no model Admin, o funcionário pode fazer o registro padrão da aplicação, como os demais usuários.
-* O cliente da Paynow, quando registra sua empresa no site, é reconhecido automaticamente como o administrador daquela empresa (client_admin), podendo modificar opções de pagamento escolhidas.
+* O cliente da Paynow, quando registra sua empresa no site, é reconhecido automaticamente como o administrador daquela empresa (client_admin), podendo modificar opções de pagamento escolhidas, alterar dados cadastrados e modificar o status de uma cobrança.
 * Os demais funcionários das empresas cadastradas são reconhecidos como client
 * Domínios de email públicos não são aceitos para cadastro.
 
@@ -49,15 +49,13 @@ Os testes utilizam framework RSpec. Para executá-los, rode rspec no terminal ab
 * Clone o projeto no computador, entre na respectiva pasta e execute o comando bin/setup
 * Caso vá adcionar administradores, rode o rails c e cadastre os emails no model Admin, seguindo o exemplo:
 ```
-Admin.create(email: 'email_a_ser_cadastrado@paynow.com.br')
+Admin.create(email: 'email@paynow.com.br')
 ```
-* rode rail s no terminal e, no navegador, abra o endereço http://localhost:3000/ para ver a aplicaçao funcionado. No site, o administrador já cadastrado no model Admin, irá se registrar, no caso de primero acesso, ou entrar, no caso de já ter se registrado.
+* rode rail s no terminal e, no navegador, abra o endereço http://localhost:3000/ para ver a aplicação funcionando. No site, o administrador já cadastrado no model Admin, irá se registrar, no caso de primero acesso, ou entrar, no caso de já ter se registrado.
 
 ### Populando banco de dados
 
 * rode o comando rails db:seed para adicionar dados ao banco, isso irá criar cadastros de usuários, empresas, meios de pagamento, produtos e de clientes finais, que são os clientes das empresas cadastradas (final_client).
-
-* É necessario popular o banco de dados para carregar os dados com os códigos dos bancos e com os códigos de status de cobrança. Eles estão em formato csv na pasta public e, durante a execução do rails db:seed, são lidos e o gravados no banco para uso na aplicação.
 
 ## API
 
@@ -98,7 +96,7 @@ Admin.create(email: 'email_a_ser_cadastrado@paynow.com.br')
             client_cpf: 'cpf do cliente final',
             company_token: 'token da companhia',
             product_token: 'token do produto',
-            payment_method: 'nome do meio de pagamento utilizado (ex: Boleto)',
+            payment_method: 'nome do meio de pagamento utilizado, escolhido na plataforma (ex: Boleto)',
             client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
             due_deadline: 'data de vencimento da cobrança'
         }
@@ -113,7 +111,7 @@ Admin.create(email: 'email_a_ser_cadastrado@paynow.com.br')
             client_cpf: 'cpf do cliente final',
             company_token: 'token da companhia',
             product_token: 'token do produto',
-            payment_method: 'nome do meio de pagamento utilizado (ex: cartão de crédito MasterChef)',
+            payment_method: 'nome do meio de pagamento utilizado, escolhido na plataforma (ex: cartão de crédito MasterChef)',
             card_number: 'número do cartão',
             card_name: 'nome impresso no cartão', 
             cvv_code: 'código de segurança do cartão',
@@ -130,7 +128,7 @@ Admin.create(email: 'email_a_ser_cadastrado@paynow.com.br')
             client_cpf: 'cpf do cliente final',
             company_token: 'token da companhia',
             product_token: 'token do produto',
-            payment_method: 'nome do meio de pagamento utilizado (ex: Pix)',
+            payment_method: 'nome do meio de pagamento utilizado, escolhido na plataforma (ex: Pix)',
             due_deadline: 'data de vencimento da cobrança'
         }
     }

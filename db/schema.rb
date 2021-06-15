@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_14_222315) do
+ActiveRecord::Schema.define(version: 2021_06_15_094432) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 2021_06_14_222315) do
   end
 
   create_table "charges", force: :cascade do |t|
+    t.string "token"
     t.string "client_name"
     t.string "client_cpf"
     t.string "product_token"
@@ -98,6 +99,7 @@ ActiveRecord::Schema.define(version: 2021_06_14_222315) do
     t.integer "payment_option_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "status_returned"
     t.index ["boleto_register_option_id"], name: "index_charges_on_boleto_register_option_id"
     t.index ["company_id"], name: "index_charges_on_company_id"
     t.index ["credit_card_register_option_id"], name: "index_charges_on_credit_card_register_option_id"
@@ -162,6 +164,23 @@ ActiveRecord::Schema.define(version: 2021_06_14_222315) do
     t.string "token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "historic_companies", force: :cascade do |t|
+    t.integer "company_id", null: false
+    t.string "token"
+    t.string "corporate_name"
+    t.string "cnpj"
+    t.string "state"
+    t.string "city"
+    t.string "district"
+    t.string "street"
+    t.string "number"
+    t.string "address_complement"
+    t.string "billing_email"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_historic_companies_on_company_id"
   end
 
   create_table "historic_products", force: :cascade do |t|
@@ -261,6 +280,7 @@ ActiveRecord::Schema.define(version: 2021_06_14_222315) do
   add_foreign_key "credit_card_register_options", "companies"
   add_foreign_key "credit_card_register_options", "payment_options"
   add_foreign_key "domain_records", "companies"
+  add_foreign_key "historic_companies", "companies"
   add_foreign_key "historic_products", "companies"
   add_foreign_key "historic_products", "products"
   add_foreign_key "payment_companies", "companies"

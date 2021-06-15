@@ -1,16 +1,16 @@
 require 'csv'
 csv_text = File.read("#{Rails.root}/public/bank_codes3.csv")
 csv = CSV.parse(csv_text, :headers => true)
-csv.each do |row|
-  code, bank = row.to_s.split(' ', 2)
-  BankCode.create(code: code, bank: bank)
-end
+#csv.each do |row|
+#  code, bank = row.to_s.split(' ', 2)
+#  BankCode.create(code: code, bank: bank)
+#end
 csv_text2 = File.read("#{Rails.root}/public/charge_status_options.csv")
 csv2 = CSV.parse(csv_text2, :headers => true)
-csv2.each do |row|
-  code, description = row.to_s.split(' ', 2)
-  StatusCharge.create(code: code, description: description)
-end
+#csv2.each do |row|
+#  code, description = row.to_s.split(' ', 2)
+#  StatusCharge.create(code: code, description: description)
+#end
 
 email_admin_1 = 'adminteste1@paynow.com.br'
 email_admin_2 = 'adminteste2@paynow.com.br'
@@ -21,12 +21,10 @@ Admin.create(email: email_admin_2)
 User.create(email:email_admin_1, password: '123456', role: 2)
 
 comp_1 = 'Codeplay SA'
-#token_1 = 'kamd38Jn73hV29H785Vg'
 admin_comp_1 = 'admin@codeplay.com'
 user_comp_1 = 'user@codeplay.com'
 
 comp_2 = 'Empresa1 SA'
-#token_2 = 'Kao34Lmn914HbcienHGA'
 admin_comp_2 = 'admin@empresa1.com'
 user_comp_2 = 'user@empresa1.com'
 
@@ -55,13 +53,13 @@ PaymentOption.create(name: 'PIX', fee: 1.3, max_money_fee: 21, payment_type: 2)
 BankCode.create(code: '001', bank:'Banco do Brasil S.A.')
 BankCode.create(code: '029', bank:'Banco Itaú Consignado S.A.')
 
-company_1 = Company.where(corporate_name: comp_1).first
-company_2 = Company.where(corporate_name: comp_2).first
-pay_1 = PaymentOption.where(payment_type: 0).first
-pay_2 = PaymentOption.where(payment_type: 1).first
-pay_3 = PaymentOption.where(payment_type: 2).first
-bank1 = BankCode.where(code: '001').first
-bank2 = BankCode.where(code: '029').first
+company_1 = Company.find_by(corporate_name: comp_1)
+company_2 = Company.find_by(corporate_name: comp_2)
+pay_1 = PaymentOption.find_by(payment_type: 0)
+pay_2 = PaymentOption.find_by(payment_type: 1)
+pay_3 = PaymentOption.find_by(payment_type: 2)
+bank1 = BankCode.find_by(code: '001')
+bank2 = BankCode.find_by(code: '029')
 
 boleto1 = BoletoRegisterOption.new(company: company_1, payment_option: pay_1, bank_code: bank1, agency_number: '2050', account_number: '123.555-8')
 if boleto1.save
@@ -75,7 +73,6 @@ pix1 = PixRegisterOption.new(company: company_1, payment_option: pay_3, pix_key:
 if pix1.save
   PaymentCompany.create(company: company_1, payment_option: pay_3)
 end
-
 
 boleto2 = BoletoRegisterOption.new(company: company_2, payment_option: pay_1, bank_code: bank2, agency_number: '2050', account_number: '123.222-8')
 if boleto2.save
@@ -98,10 +95,45 @@ product_3 = Product.new(name:'Produto 3', price: 45, pix_discount: 3, company: c
 if product_3.save
   HistoricProduct.create(product: product_3, company: company_1, price: product_3.price)
 end
+
+product_1 = Product.where(name: 'Produto 1').first
+product_2 = Product.where(name: 'Produto 2').first
+FinalClient.create(name: 'Cliente 1', cpf: '11122233344')
+FinalClient.create(name: 'Cliente 2', cpf: '55522233344')
+StatusCharge.create(code: '01', description: 'Pendente de cobrança')
+final_client_1 = FinalClient.find_by(cpf: '11122233344')
+final_client_2 = FinalClient.find_by(cpf: '55522233344')
+status_charge = StatusCharge.find_by(code: '01')
+
+Charge.create(client_name: final_client_1.name, client_cpf: final_client_1.cpf, 
+              company_token:company_1.token, product_token: product_1.token, 
+              payment_method: pay_1.name, client_address: 'algum endereço', 
+              due_deadline: '24/12/2023', company: company_1, final_client: final_client_1,
+              status_charge: status_charge, product: product_1,
+              payment_option: pay_1, price: 50, charge_price: 45 )
+Charge.create(client_name: final_client_1.name, client_cpf: final_client_1.cpf, 
+              company_token:company_1.token, product_token: product_2.token, 
+              payment_method: pay_1.name, client_address: 'algum endereço', 
+              due_deadline: '30/12/2024', company: company_1, final_client: final_client_1,
+              status_charge: status_charge, product: product_2,
+              payment_option: pay_1, price: 60, charge_price: 54)
+Charge.create(client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
+              company_token:company_1.token, product_token: product_1.token, 
+              payment_method: pay_2.name, card_number: '1111 2222 3333 4444',
+              card_name: 'CLIENTE XY', cvv_code: '123', 
+              due_deadline: '25/12/2023', company: company_1, final_client: final_client_2,
+              status_charge: status_charge, product: product_1,
+              payment_option: pay_2, price: 50, charge_price: 45 )
+Charge.create(client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
+              company_token:company_1.token, product_token: product_2.token, 
+              payment_method: pay_3.name, due_deadline: '30/12/2024', 
+              company: company_1, final_client: final_client_2,
+              status_charge: status_charge, product: product_2,
+              payment_option: pay_3, price: 60, charge_price: 54)
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 #
 # Examples:
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+#   Character.create(name: 'Luke', movie: movies)

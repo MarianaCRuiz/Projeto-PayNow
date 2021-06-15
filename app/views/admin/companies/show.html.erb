@@ -2,7 +2,9 @@
 <ul>
   <li>CNPJ: <%= @company.cnpj %></li>
   <li>Email de faturamento: <%= @company.billing_email %></li>
+  <li>Token: <%= @company.token %></li>
 </ul>
+<%= link_to 'Novo token', token_new_admin_company_path(@company.token), method: :patch,class:"btn btn-warning" %> <br> <br>
 <div>
   <p>Endereço de faturamento:</p>
   <li>Estado: <%= @company.state %></li>
@@ -12,6 +14,4 @@
   <li>Número: <%= @company.number %></li>
   <li>Complemento: <%= @company.address_complement %></li>
 </div>
-
-<%= link_to 'Opções de pagamento', payments_chosen_clients_companies_path , class:"btn btn-primary" %>
-<%# link_to 'Produtos', clients_company_products_path(@company.token) , class:"btn btn-primary" %>
+<%= link_to 'Atualizar dados da empresa', edit_admin_company_path(@company.token), class:"btn btn-primary" %>

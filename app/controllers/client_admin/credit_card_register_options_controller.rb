@@ -19,7 +19,7 @@ class ClientAdmin::CreditCardRegisterOptionsController < ApplicationController
       @credit_card_register_option.max_money_fee = @payment_option.max_money_fee
       if @credit_card_register_option.save
         PaymentCompany.create!(company: @company, payment_option: @payment_option)
-        redirect_to payment_chosen_client_admin_companies_path, notice: 'Opção adicionada com sucesso'
+        redirect_to payments_chosen_client_admin_companies_path, notice: 'Opção adicionada com sucesso'
       else
         render :new
       end
@@ -41,7 +41,7 @@ class ClientAdmin::CreditCardRegisterOptionsController < ApplicationController
     if current_user.client_admin? || current_user.client_admin_sign_up? 
       @credit_card_register_option = CreditCardRegisterOption.find(params[:id])
       if @credit_card_register_option.update(credit_card_register_option_params)
-        redirect_to payment_chosen_client_admin_companies_path, notice: 'Opção atualizada com sucesso'
+        redirect_to payments_chosen_client_admin_companies_path, notice: 'Opção atualizada com sucesso'
       else
         @payment_option = PaymentOption.find(params[:payment_option_id])
         @bank_codes = BankCode.all

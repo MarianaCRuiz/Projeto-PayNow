@@ -3,12 +3,4 @@
   <h4>Bem vindos a PayNow</h4>
   <p>Somos uma plataforma de pagamento</p>
   <p>Organize e gerencie suas vendas</p>
-  <% if user_signed_in? %>
-    <% if current_user.client_admin? %>
-      <%= link_to "#{@company.corporate_name}", client_admin_company_path(@company.token), class:"btn btn-primary btn-sm" %>
-    <% end %>
-    <% if current_user.client? %>
-      <%= link_to "#{@company.corporate_name}", clients_company_path(@company.token), class:"btn btn-primary btn-sm" %>
-    <% end %>
-  <% end %>
 </div>

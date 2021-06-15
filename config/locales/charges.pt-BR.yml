@@ -1,0 +1,25 @@
+---
+pt-BR:
+  client_admin:
+    charges:
+      new:
+        title: 'Cadastro'
+        submit: 'Registrar'
+      edit:
+        title: ''
+        submit: 'Atualizar'
+      create:
+        success: ''
+      update:
+        success: 'Dados atualizados com sucesso'
+      destroy:
+        failure: ''
+        success: ''
+  activerecord:
+    models:
+      charge: 'Cobrança'
+    attributes:
+      charge:
+        payment_date: 'Data efetiva do pagamento'
+        attempt_date: 'Data da tentativa de pagamento'
+        status_charge_id: 'Status'
