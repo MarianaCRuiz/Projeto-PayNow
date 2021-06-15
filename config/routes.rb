@@ -22,9 +22,9 @@ Rails.application.routes.draw do
   end
   namespace :api do
     namespace :v1 do
-      post 'final_clients', to: 'companies#final_clients'
-      post 'charges', to: 'companies#charges'
-      #'charge_consult', to: 'companies#charge_consult'
+      post 'final_clients', to: 'api_companies#final_clients'
+      post 'charges', to: 'api_companies#charges'
+      #'charge_consult', to: 'api_companies#charge_consult'
     end
   end
   namespace :admin do

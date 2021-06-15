@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_14_044219) do
+ActiveRecord::Schema.define(version: 2021_06_14_222315) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -95,12 +95,14 @@ ActiveRecord::Schema.define(version: 2021_06_14_044219) do
     t.integer "credit_card_register_option_id"
     t.integer "pix_register_option_id"
     t.integer "status_charge_id", null: false
+    t.integer "payment_option_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["boleto_register_option_id"], name: "index_charges_on_boleto_register_option_id"
     t.index ["company_id"], name: "index_charges_on_company_id"
     t.index ["credit_card_register_option_id"], name: "index_charges_on_credit_card_register_option_id"
     t.index ["final_client_id"], name: "index_charges_on_final_client_id"
+    t.index ["payment_option_id"], name: "index_charges_on_payment_option_id"
     t.index ["pix_register_option_id"], name: "index_charges_on_pix_register_option_id"
     t.index ["product_id"], name: "index_charges_on_product_id"
     t.index ["status_charge_id"], name: "index_charges_on_status_charge_id"
@@ -250,6 +252,7 @@ ActiveRecord::Schema.define(version: 2021_06_14_044219) do
   add_foreign_key "charges", "companies"
   add_foreign_key "charges", "credit_card_register_options"
   add_foreign_key "charges", "final_clients"
+  add_foreign_key "charges", "payment_options"
   add_foreign_key "charges", "pix_register_options"
   add_foreign_key "charges", "products"
   add_foreign_key "charges", "status_charges"

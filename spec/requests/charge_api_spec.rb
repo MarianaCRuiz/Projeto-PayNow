@@ -22,9 +22,10 @@ describe 'charge api' do
         pay1 = pay_1
         boleto1 = boleto
         HistoricProduct.create(product: product, company: company, price: product.price)
+        PaymentCompany.create!(company: company, payment_option: pay_1)
 
         post "/api/v1/charges", params: {charge: {client_name: final_client.name, client_cpf: final_client.cpf, 
-            company_token: company.token, product_token: product.token, boleto_register_option_id: boleto.id, 
+            company_token: company.token, product_token: product.token, payment_method: pay_1.name, 
             client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
             due_deadline: '24/12/2023'}}
 
@@ -37,7 +38,7 @@ describe 'charge api' do
         expect(parsed_body['charge_price']).to eq('45.0')
         expect(parsed_body['client_name']).to eq('Cliente final 1')
         expect(parsed_body['client_cpf']).to eq('11122255599')
-        expect(parsed_body['payment_method']).to eq('boleto')
+        expect(parsed_body['payment_method']).to eq('Boleto')
       end
       it 'credit card' do
         CompanyClient.create!(final_client: final_client, company: company)
@@ -48,7 +49,7 @@ describe 'charge api' do
         HistoricProduct.create(product: product, company: company, price: product.price)
 
         post "/api/v1/charges", params: {charge: {client_name: final_client.name, client_cpf: final_client.cpf, 
-            company_token: company.token, product_token: product.token, credit_card_register_option_id: credit_card.id, 
+            company_token: company.token, product_token: product.token, payment_method: pay_2.name, 
             card_number: '1111 2222 333 4444', card_name: 'FULANO A C', cvv_code: '444', 
             due_deadline: '24/12/2023'}}
 
@@ -61,18 +62,18 @@ describe 'charge api' do
         expect(parsed_body['charge_price']).to eq('46.0')
         expect(parsed_body['client_name']).to eq('Cliente final 1')
         expect(parsed_body['client_cpf']).to eq('11122255599')
-        expect(parsed_body['payment_method']).to eq('credit_card')
+        expect(parsed_body['payment_method']).to eq('Cartão de Crédito MasterChef')
       end
       it 'pix' do
         CompanyClient.create!(final_client: final_client, company: company)
         product1 = product
         bank1 = bank
-        pay1 = pay_2
+        pay1 = pay_3
         pix1 = pix
         HistoricProduct.create(product: product, company: company, price: product.price)
 
         post "/api/v1/charges", params: {charge: {client_name: final_client.name, client_cpf: final_client.cpf, 
-            company_token: company.token, product_token: product.token, pix_register_option_id: pix.id, 
+            company_token: company.token, product_token: product.token, payment_method: pay_3.name, 
             due_deadline: '24/12/2023'}}
 
         expect(response).to have_http_status(201)
@@ -84,7 +85,7 @@ describe 'charge api' do
         expect(parsed_body['charge_price']).to eq('50.0')
         expect(parsed_body['client_name']).to eq('Cliente final 1')
         expect(parsed_body['client_cpf']).to eq('11122255599')
-        expect(parsed_body['payment_method']).to eq('pix')
+        expect(parsed_body['payment_method']).to eq('PIX')
       end
     end
     context 'failure' do
@@ -95,7 +96,8 @@ describe 'charge api' do
         pay1 = pay_1
         boleto1 = boleto
         final_client1 = final_client
-        HistoricProduct.create(product: product, company: company, price: product.price)
+        HistoricProduct.create!(product: product, company: company, price: product.price)
+        
 
         post "/api/v1/charges", params: {charge: {client_name: final_client.name, client_cpf: final_client.cpf, 
             company_token: company.token, product_token: product.token, 
@@ -104,7 +106,7 @@ describe 'charge api' do
 
         expect(response).to have_http_status(412)
       end
-      it 'params must present' do
+      it 'final client params must be present' do
         company1 = company
         product1 = product
         bank1 = bank
@@ -113,7 +115,22 @@ describe 'charge api' do
         final_client1 = final_client
         HistoricProduct.create(product: product, company: company, price: product.price)
 
-        post "/api/v1/charges", params: {charge: {boleto_register_option_id: boleto.id, 
+        post "/api/v1/charges", params: {charge: {company_token: company.token, product_token: product.token, payment_method: pay_1.name, 
+            client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
+            due_deadline: '24/12/2023'}}
+
+        expect(response).to have_http_status(412)
+      end
+      it 'company and product params must be present' do
+        company1 = company
+        product1 = product
+        bank1 = bank
+        pay1 = pay_1
+        boleto1 = boleto
+        final_client1 = final_client
+        HistoricProduct.create(product: product, company: company, price: product.price)
+
+        post "/api/v1/charges", params: {charge: {client_name: final_client.name, client_cpf: final_client.cpf, payment_method: pay_1.name, 
             client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
             due_deadline: '24/12/2023'}}
 

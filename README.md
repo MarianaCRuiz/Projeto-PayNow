@@ -26,7 +26,7 @@ CodePlay no nosso contexto.
 * Testes:
     * Rspec
     * Capybara
-* Gems adicionadas
+* Gems extras adicionadas
     * 'rspec-rails'
     * 'capybara'
     * 'devise'
@@ -41,7 +41,7 @@ Os testes utilizam framework RSpec. Para executá-los, rode rspec no terminal ab
 * Apenas funcionários da Paynow, com o domínio de email @paynow.com.br, são passíveis de serem administradores.
 * Não há página específica para registro de administradores, para adicionar um administrador é necessário adicionar seu email ao model Admin, isso permitirá que ele seja reconhecido com o status de administrador (admin). Adicionado o email no model Admin, o funcionário pode fazer o registro padrão da aplicação, como os demais usuários.
 * O cliente da Paynow, quando registra sua empresa no site, é reconhecido automaticamente como o administrador daquela empresa (client_admin), podendo modificar opções de pagamento escolhidas.
-* Os demais funcionários da empresas cadastradas são reconhecidos como client
+* Os demais funcionários das empresas cadastradas são reconhecidos como client
 * Domínios de email públicos não são aceitos para cadastro.
 
 ### Instalação
@@ -51,24 +51,90 @@ Os testes utilizam framework RSpec. Para executá-los, rode rspec no terminal ab
 ```
 Admin.create(email: 'email_a_ser_cadastrado@paynow.com.br')
 ```
-* rode rail s no terminal e, no navegador, abra o endereço http://localhost:3000/ para ver a aplicaçao funcionado. No site, o administrador, se já cadastrado no model Admin, irá se registrar, no caso de primero acesso, ou entrar, no caso de já ter se registrado.
+* rode rail s no terminal e, no navegador, abra o endereço http://localhost:3000/ para ver a aplicaçao funcionado. No site, o administrador já cadastrado no model Admin, irá se registrar, no caso de primero acesso, ou entrar, no caso de já ter se registrado.
 
 ### Populando banco de dados
 
 * rode o comando rails db:seed para adicionar dados ao banco, isso irá criar cadastros de usuários, empresas, meios de pagamento, produtos e de clientes finais, que são os clientes das empresas cadastradas (final_client).
 
-* Step-by-step bullets
-```
-code blocks for commands
-```
+* É necessario popular o banco de dados para carregar os dados com os códigos dos bancos e com os códigos de status de cobrança. Eles estão em formato csv na pasta public e, durante a execução do rails db:seed, são lidos e o gravados no banco para uso na aplicação.
 
 ## API
 
 ### Registro de Client final
 
+* Este é um endpoint utilizado no cadastro de clientes das empresas registradas na plataforma, reconhecidos como final_client, gerando um token para o mesmo e associando-o ao token da empresa. O token do cliente final é único, associado a seu cpf e nome, caso esse cliente já tenha sido cadastrado por outra empresa, não ocorre um novo cadastro e geração de token, apenas ocorre a associação desse cliente com o token da nova empresa. 
+* Para o uso desse endpoint, segue a rota e os paramentros necessários: 
+    * rota: post "/api/v1/final_clients"
+    * parâmetros:
+
+    ```
+    {
+        final_client: 
+        {
+            name: 'nome do client', 
+            cpf: 'cpf do client'
+        }, 
+        company_token: 'token_da_empresa_cadastrada'
+    }
+    ```
+* Possíveis respostas:
+    * HTTP status 201: Cadastro realizado com sucesso
+    * HTTP status 202: Cliente, já cadastrado por outra empresa, foi associado ao token da empresa requerente
+    * HTTP status 409: Parâmetros de cliente final já cadastrados por essa empresa
+    * HTTP status 412: Há parâmetros inválidos ou ausentes
+    
 ### Emissão de cobrança
 
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
+* Este é um endpoint utilizado para emitir cobranças para as empresas cadastradas na plataforma. A cobrança será associada à empresa, ao produto, ao cliente final e ao meio de pagamento. Os parâmetros necessários variam com o meio de pagamento escolhido.
+* Para o uso desse endpoint, segue a rota e os paramentros necessários: 
+    * rota:  post "/api/v1/charges"
+    * parâmetros - meio de pagamento: boleto    
+    ```
+    {
+        charge: 
+        {
+            client_name: 'nome do cliente final', 
+            client_cpf: 'cpf do cliente final',
+            company_token: 'token da companhia',
+            product_token: 'token do produto',
+            payment_method: 'nome do meio de pagamento utilizado (ex: Boleto)',
+            client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
+            due_deadline: 'data de vencimento da cobrança'
+        }
+    }
+    ```
+    * parâmetros - meio de pagamento: cartão de crédito
+    ```
+    {
+        charge: 
+        {
+            client_name: 'nome do cliente final', 
+            client_cpf: 'cpf do cliente final',
+            company_token: 'token da companhia',
+            product_token: 'token do produto',
+            payment_method: 'nome do meio de pagamento utilizado (ex: cartão de crédito MasterChef)',
+            card_number: 'número do cartão',
+            card_name: 'nome impresso no cartão', 
+            cvv_code: 'código de segurança do cartão',
+            due_deadline: 'data de vencimento da cobrança'
+        }
+    }
+    ```
+    * parâmetros - meio de pagamento: pix    
+    ```
+    {
+        charge: 
+        {
+            client_name: 'nome do cliente final', 
+            client_cpf: 'cpf do cliente final',
+            company_token: 'token da companhia',
+            product_token: 'token do produto',
+            payment_method: 'nome do meio de pagamento utilizado (ex: Pix)',
+            due_deadline: 'data de vencimento da cobrança'
+        }
+    }
+    ```
+* Possíveis respostas:
+    * HTTP status 201: Cobrança criada com sucesso
+    * HTTP status 412: Há parâmetros inválidos ou ausentes

@@ -6,7 +6,9 @@ class Charge < ApplicationRecord
   belongs_to :credit_card_register_option, optional: true
   belongs_to :pix_register_option, optional: true
   belongs_to :status_charge
-  validates :client_name, :client_cpf, :company_token, :product_token, presence: true
+  belongs_to :payment_option
+
+  validates :client_name, :client_cpf, :company_token, :product_token, :payment_method, :due_deadline, presence: true
   validates :card_number, :card_name, :cvv_code, presence: true, if: :paid_with_card?
   validates :client_address, presence: true, if: :paid_with_boleto?
   def paid_with_card?
