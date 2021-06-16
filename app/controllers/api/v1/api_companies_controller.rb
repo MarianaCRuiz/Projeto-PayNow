@@ -6,15 +6,17 @@ class Api::V1::ApiCompaniesController < Api::V1::ApiController
     
     @company = Company.find_by(token: charge_params[:company_token])
     @product = Product.find_by(token: charge_params[:product_token])
-    @final_client = FinalClient.find_by(cpf: charge_params[:client_cpf])
+    @final_client = FinalClient.find_by(token: charge_params[:client_token])
     @payment_option = PaymentOption.find_by(name: charge_params[:payment_method])
-    
     @charge.status_charge = @status
     @charge.company = @company
     @charge.product = @product
     @charge.final_client = @final_client
     @charge.payment_option = @payment_option
-    
+    if @final_client
+      @charge.client_name = @final_client.name
+      @charge.client_cpf = @final_client.cpf
+    end
     if @product && @company && @payment_option
       @charge.price = @product.price
       @boleto = @company.boleto_register_options.find_by(payment_option: @payment_option)
@@ -72,7 +74,7 @@ class Api::V1::ApiCompaniesController < Api::V1::ApiController
     params.require(:final_client).permit(:name, :cpf)
   end
   def charge_params
-    params.require(:charge).permit(:client_name, :client_cpf, :company_token, :product_token, 
+    params.require(:charge).permit(:client_token, :company_token, :product_token, 
       :payment_method, :boleto_register_option_id, :credit_card_register_option_id, 
       :pix_register_option_id, :client_address, :card_number, 
       :card_name, :cvv_code, :due_deadline)

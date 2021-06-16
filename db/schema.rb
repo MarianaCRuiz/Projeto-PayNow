@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_15_094432) do
+ActiveRecord::Schema.define(version: 2021_06_15_225043) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -42,7 +42,6 @@ ActiveRecord::Schema.define(version: 2021_06_15_094432) do
 
   create_table "admins", force: :cascade do |t|
     t.string "email"
-    t.integer "permitted", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -75,6 +74,7 @@ ActiveRecord::Schema.define(version: 2021_06_15_094432) do
     t.string "token"
     t.string "client_name"
     t.string "client_cpf"
+    t.string "client_token"
     t.string "product_token"
     t.string "company_token"
     t.string "payment_method"
@@ -240,6 +240,16 @@ ActiveRecord::Schema.define(version: 2021_06_15_094432) do
     t.index ["company_id"], name: "index_products_on_company_id"
   end
 
+  create_table "receipts", force: :cascade do |t|
+    t.date "due_deadline"
+    t.date "payment_date"
+    t.string "authorization_token"
+    t.integer "charge_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["charge_id"], name: "index_receipts_on_charge_id"
+  end
+
   create_table "status_charges", force: :cascade do |t|
     t.string "code"
     t.string "description"
@@ -289,5 +299,6 @@ ActiveRecord::Schema.define(version: 2021_06_15_094432) do
   add_foreign_key "pix_register_options", "companies"
   add_foreign_key "pix_register_options", "payment_options"
   add_foreign_key "products", "companies"
+  add_foreign_key "receipts", "charges"
   add_foreign_key "users", "companies"
 end

@@ -61,11 +61,61 @@ describe 'authentication' do
     end
   end
   context 'admin controller' do
-    xit 'POST' do
-      
+    context 'visitor' do
+      it 'PATCH UPDATE' do
+        company_1 = company
+        patch admin_company_path(company_1.token)
+        expect(response).to redirect_to(new_user_session_path)
+      end
+      it 'PATCH new token' do
+        company_1 = company
+        patch token_new_admin_company_path(company_1.token)
+        expect(response).to redirect_to(new_user_session_path)
+      end
     end
-    xit 'PATCH UPDATE' do
-      
+    context 'client_admin' do
+      it 'PATCH UPDATE' do
+        DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+        company_1 = company
+
+        login_as user_admin, scope: :user
+        patch admin_company_path(company_1.token)
+              
+        expect(response).to redirect_to(root_path)
+      end
+      it 'PATCH new token' do
+        DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+        company_1 = company
+
+        login_as user_admin, scope: :user
+        patch token_new_admin_company_path(company_1.token)
+        
+        expect(response).to redirect_to(root_path)
+      end
+    end
+    context 'client' do
+      it 'PATCH UPDATE' do
+        DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+        company_1 = company
+
+        login_as user, scope: :user
+        patch admin_company_path(company_1.token)
+              
+        expect(response).to redirect_to(root_path)
+      end
+      it 'PATCH new token' do
+        DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+        company_1 = company
+
+        login_as user, scope: :user
+        patch token_new_admin_company_path(company_1.token)
+        
+        expect(response).to redirect_to(root_path)
+      end
     end
   end
 end       

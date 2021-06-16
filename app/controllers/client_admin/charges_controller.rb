@@ -38,6 +38,9 @@ class ClientAdmin::ChargesController < ApplicationController
         @charge.status_charge = StatusCharge.find_by(code: '01')
       end
       if @charge.update(charge_params)
+        if @status_returned.code == '05'
+          Receipt.create(due_deadline: @charge.due_deadline, payment_date: @charge.payment_date, charge: @charge)
+        end 
         redirect_to client_admin_charges_path
       else
         @status_charges = StatusCharge.all

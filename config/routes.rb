@@ -24,13 +24,15 @@ Rails.application.routes.draw do
       #resources :products, only: %i[index show new create edit update], param: :token
     end
   end
+
   namespace :api do
     namespace :v1 do
       post 'final_clients', to: 'api_companies#final_clients'
       post 'charges', to: 'api_companies#charges'
-      #'charge_consult', to: 'api_companies#charge_consult'
+      #charge_consult', to: 'api_companies#charge_consult'
     end
   end
+
   namespace :admin do
     resources :payment_options, only: %i[index new create edit update]
     resources :companies, only: %i[index show edit update], param: :token do

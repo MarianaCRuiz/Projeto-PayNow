@@ -28,9 +28,9 @@ describe 'client_admin register product' do
     click_on 'Produtos cadastrados'
 
     expect(page).to have_link('Produto 1')
-    expect(page).to have_content('Preço: R$ 10.0')
+    expect(page).to have_content('Preço: R$ 10,00')
     expect(page).to have_link('Produto 2')
-    expect(page).to have_content('Preço: R$ 20.0')
+    expect(page).to have_content('Preço: R$ 20,00')
     expect(page).to have_link('Registrar produto')
   end
   it 'show' do
@@ -43,7 +43,7 @@ describe 'client_admin register product' do
     
     
     expect(page).to have_content('Produto 1')
-    expect(page).to have_content('Preço: R$ 10.0')
-    expect(page).to have_content('Desconto no Boleto(%): 2.0')
+    expect(page).to have_content('Preço: R$ 10,00')
+    expect(page).to have_content('Desconto no Boleto: 2,00%')
   end
 end

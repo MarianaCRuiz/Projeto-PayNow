@@ -21,7 +21,7 @@ describe Charge do
       expect(charge1.errors[:company_token]).to include('não pode ficar em branco') 
       expect(charge1.errors[:product_token]).to include('não pode ficar em branco') 
       expect(charge1.errors[:payment_method]).to include('não pode ficar em branco') 
-      expect(charge1.errors[:due_deadline]).to include('não pode ficar em branco')
+      expect(charge1.errors[:due_deadline]).to_not include('não pode ficar em branco')
       expect(charge1.errors[:client_address]).to_not include('não pode ficar em branco')
       expect(charge1.errors[:card_number]).to_not include('não pode ficar em branco')
       expect(charge1.errors[:card_name]).to_not include('não pode ficar em branco')
@@ -46,7 +46,6 @@ describe Charge do
       expect(charge1.errors[:client_cpf]).to include('não pode ficar em branco') 
       expect(charge1.errors[:company_token]).to include('não pode ficar em branco') 
       expect(charge1.errors[:product_token]).to include('não pode ficar em branco') 
-      expect(charge1.errors[:due_deadline]).to include('não pode ficar em branco')
       expect(charge1.errors[:card_number]).to include('não pode ficar em branco')
       expect(charge1.errors[:card_name]).to include('não pode ficar em branco')
       expect(charge1.errors[:cvv_code]).to include('não pode ficar em branco') 
@@ -59,7 +58,6 @@ describe Charge do
       expect(charge1.errors[:client_cpf]).to include('não pode ficar em branco') 
       expect(charge1.errors[:company_token]).to include('não pode ficar em branco') 
       expect(charge1.errors[:product_token]).to include('não pode ficar em branco') 
-      expect(charge1.errors[:due_deadline]).to include('não pode ficar em branco')
       expect(charge1.errors[:payment_date]).to include('não pode ficar em branco')
     end
     it 'presence additional data for payment failure' do
@@ -70,7 +68,6 @@ describe Charge do
       expect(charge1.errors[:client_cpf]).to include('não pode ficar em branco') 
       expect(charge1.errors[:company_token]).to include('não pode ficar em branco') 
       expect(charge1.errors[:product_token]).to include('não pode ficar em branco') 
-      expect(charge1.errors[:due_deadline]).to include('não pode ficar em branco')
       expect(charge1.errors[:attempt_date]).to include('não pode ficar em branco')
     end
   end

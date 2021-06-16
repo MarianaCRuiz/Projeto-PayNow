@@ -105,26 +105,30 @@ final_client_1 = FinalClient.find_by(cpf: '11122233344')
 final_client_2 = FinalClient.find_by(cpf: '55522233344')
 status_charge = StatusCharge.find_by(code: '01')
 
-Charge.create(client_name: final_client_1.name, client_cpf: final_client_1.cpf, 
+Charge.create(client_token: final_client_1.token, 
+              client_name: final_client_1.name, client_cpf: final_client_1.cpf, 
               company_token:company_1.token, product_token: product_1.token, 
               payment_method: pay_1.name, client_address: 'algum endereço', 
               due_deadline: '24/12/2023', company: company_1, final_client: final_client_1,
               status_charge: status_charge, product: product_1,
               payment_option: pay_1, price: 50, charge_price: 45 )
-Charge.create(client_name: final_client_1.name, client_cpf: final_client_1.cpf, 
+Charge.create(client_token: final_client_1.token,
+              client_name: final_client_1.name, client_cpf: final_client_1.cpf, 
               company_token:company_1.token, product_token: product_2.token, 
               payment_method: pay_1.name, client_address: 'algum endereço', 
               due_deadline: '30/12/2024', company: company_1, final_client: final_client_1,
               status_charge: status_charge, product: product_2,
               payment_option: pay_1, price: 60, charge_price: 54)
-Charge.create(client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
+Charge.create(client_token: final_client_2.token, 
+              client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
               company_token:company_1.token, product_token: product_1.token, 
               payment_method: pay_2.name, card_number: '1111 2222 3333 4444',
               card_name: 'CLIENTE XY', cvv_code: '123', 
               due_deadline: '25/12/2023', company: company_1, final_client: final_client_2,
               status_charge: status_charge, product: product_1,
               payment_option: pay_2, price: 50, charge_price: 45 )
-Charge.create(client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
+Charge.create(client_token: final_client_2.token, 
+              client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
               company_token:company_1.token, product_token: product_2.token, 
               payment_method: pay_3.name, due_deadline: '30/12/2024', 
               company: company_1, final_client: final_client_2,

@@ -15,14 +15,12 @@ describe 'client_admin register product' do
     click_on 'Registrar produto'
     fill_in 'Nome', with: 'Produto 1'
     fill_in 'Preço', with: '10'
-    fill_in 'Desconto no Boleto', with: ''
-    fill_in 'Desconto no Cartão de Crédito', with: '2'
-    fill_in 'Desconto no PIX', with: ''
+    fill_in 'Desconto no Cartão de Crédito', with: 2
     expect{ click_on 'Registrar'}.to change{ Product.count }.by(1)
 
     expect(page).to have_content('Produto 1')
-    expect(page).to have_content('Preço: R$ 10')
-    expect(page).to have_content('Desconto no Cartão de Crédito(%): 2')
+    expect(page).to have_content('Preço: R$ 10,00')
+    expect(page).to have_content('Desconto no Cartão de Crédito: 2,00%')
     expect(HistoricProduct.count).to be(1)
   end
   it 'same product but diferent companies' do
@@ -39,14 +37,12 @@ describe 'client_admin register product' do
     click_on 'Registrar produto'
     fill_in 'Nome', with: 'Produto 2'
     fill_in 'Preço', with: '53'
-    fill_in 'Desconto no Boleto', with: ''
-    fill_in 'Desconto no Cartão de Crédito', with: '4'
-    fill_in 'Desconto no PIX', with: ''
+    fill_in 'Desconto no Cartão de Crédito', with: 3
     click_on 'Registrar produto'
 
     expect(page).to have_content('Produto 2')
-    expect(page).to have_content('Preço: R$ 53')
-    expect(page).to have_content('Desconto no Cartão de Crédito(%): 4')  
+    expect(page).to have_content('Preço: R$ 53,00')
+    expect(page).to have_content('Desconto no Cartão de Crédito: 3,00%')  
     expect(HistoricProduct.count).to be(2)
   end 
   context 'failure' do
@@ -59,9 +55,9 @@ describe 'client_admin register product' do
       click_on 'Registrar produto'
       fill_in 'Nome', with: ''
       fill_in 'Preço', with: ''
-      fill_in 'Desconto no Boleto', with: ''
+
       fill_in 'Desconto no Cartão de Crédito', with: ''
-      fill_in 'Desconto no PIX', with: ''
+
       click_on 'Registrar produto'
 
       expect(page).to have_content('não pode ficar em branco', count: 2) 
@@ -79,13 +75,47 @@ describe 'client_admin register product' do
       click_on 'Registrar produto'
       fill_in 'Nome', with: 'Produto 2'
       fill_in 'Preço', with: '23'
+
+      fill_in 'Desconto no Cartão de Crédito', with: ''
+
+      click_on 'Registrar produto'
+
+      expect(page).to have_content('Produto já cadastrado') 
+      expect(HistoricProduct.count).to be(1) 
+    end
+    it 'discount must be a number' do
+      DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
+      
+      login_as user_admin, scope: :user
+      visit client_admin_company_path(company[:token])
+      click_on 'Produtos cadastrados'
+      click_on 'Registrar produto'
+      fill_in 'Nome', with: 'Produto 2'
+      fill_in 'Preço', with: '23'
       fill_in 'Desconto no Boleto', with: ''
       fill_in 'Desconto no Cartão de Crédito', with: ''
       fill_in 'Desconto no PIX', with: ''
       click_on 'Registrar produto'
 
-      expect(page).to have_content('Produto já cadastrado') 
-      expect(HistoricProduct.count).to be(1) 
+      expect(page).to have_content('não é um número', count: 3)
+      expect(HistoricProduct.count).to be(0) 
+    end
+    it 'discount cannot be negative' do
+      DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
+      
+      login_as user_admin, scope: :user
+      visit client_admin_company_path(company[:token])
+      click_on 'Produtos cadastrados'
+      click_on 'Registrar produto'
+      fill_in 'Nome', with: 'Produto 2'
+      fill_in 'Preço', with: '23'
+      fill_in 'Desconto no Boleto', with: -1
+      fill_in 'Desconto no Cartão de Crédito', with: -1
+      fill_in 'Desconto no PIX', with: -1
+      click_on 'Registrar produto'
+
+      expect(page).to have_content('deve ser maior ou igual a 0.0', count: 3)
+      expect(HistoricProduct.count).to be(0) 
     end
   end
 end

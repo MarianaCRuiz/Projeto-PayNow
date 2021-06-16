@@ -9,7 +9,7 @@
         <div class="fw-bold"><%= charge.payment_method %></div>
           <ul>
             <li>Produto: <%= charge.product.name %></li>
-            <li>Valor: R$ <%= charge.charge_price %></li>
+            <li>Valor: <%= number_to_currency charge.charge_price %></li>
             <li>Vencimento da fatura: <%= charge.due_deadline.strftime("%d/%m/%Y") %></li>
             <li>Data de emissão: <%= charge.created_at.strftime("%d/%m/%Y") %></li>
             <li>Status: <%= charge.status_charge.description %></li>

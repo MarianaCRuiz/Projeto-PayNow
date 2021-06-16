@@ -12,7 +12,7 @@
             <% if option.icon.persisted? %>
               <%= image_tag option.icon, size:'50' %>
             <% end %>
-            <%= option.name %>, Taxa(%): <%= option.fee %>, Taxa máxima(R$): <%= option.max_money_fee %>
+            <%= option.name %>, Taxa: <%= number_to_percentage(option.fee, precision: 2) %>, Taxa máxima: <%= number_to_currency option.max_money_fee %>
           </p>
         </div>
       <% end %>
@@ -57,11 +57,11 @@
       </div>
     </li>
     <% end %>
-    <% if !@pixies.empty? %>
+    <% if !@pixes.empty? %>
     <li class="list-group-item d-flex justify-content-between align-items-start">
       <div class="ms-2 me-auto">
         <div class="fw-bold">Pix</div>
-          <% @pixies.each do |pix|%>
+          <% @pixes.each do |pix|%>
             <% if pix.payment_option.active? %>
               <div class="container">
                 <ul>

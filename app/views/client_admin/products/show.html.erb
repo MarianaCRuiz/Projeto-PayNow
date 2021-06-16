@@ -1,10 +1,10 @@
 <div class="container">
   <h2><%= @product.name %></h2>
   <ul>
-    <li>Preço: R$ <%= @product.price %></li>
-    <li>Desconto no Boleto(%): <%= @product.boleto_discount %></li>
-    <li>Desconto no Cartão de Crédito(%): <%= @product.credit_card_discount %></li>
-    <li>Desconto no PIX(%): <%= @product.pix_discount %></li>
+    <li>Preço: <%= number_to_currency @product.price %></li>
+    <li>Desconto no Boleto: <%= number_to_percentage(@product.boleto_discount, precision: 2) %></li>
+    <li>Desconto no Cartão de Crédito: <%= number_to_percentage(@product.credit_card_discount, precision: 2) %></li>
+    <li>Desconto no PIX: <%= number_to_percentage(@product.pix_discount, precision: 2) %></li>
   </ul>
   <%= link_to 'Produtos', client_admin_company_products_path(current_user.company.token) , class:"btn btn-primary" %>
   <%= link_to 'Atualizar dados', edit_client_admin_company_product_path(current_user.company.token, @product.token) , class:"btn btn-primary" %>

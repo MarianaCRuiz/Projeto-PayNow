@@ -9,7 +9,7 @@
   <div>
     <% @products.each do |product|%>
     <div class="container">
-      <p>Nome: <%= link_to "#{product.name}", client_admin_company_product_path(product.company.token, product.token), class:"btn btn-success" %>, Preço: R$ <%= product.price %></p>
+      <p>Nome: <%= link_to "#{product.name}", client_admin_company_product_path(product.company.token, product.token), class:"btn btn-success" %>, Preço: <%= number_to_currency product.price %></p>
     </div>
     <% end %>
   </div>

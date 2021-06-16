@@ -92,8 +92,7 @@ Admin.create(email: 'email@paynow.com.br')
     {
         charge: 
         {
-            client_name: 'nome do cliente final', 
-            client_cpf: 'cpf do cliente final',
+            client_token: 'token do cliente final', 
             company_token: 'token da companhia',
             product_token: 'token do produto',
             payment_method: 'nome do meio de pagamento utilizado, escolhido na plataforma (ex: Boleto)',
@@ -107,8 +106,7 @@ Admin.create(email: 'email@paynow.com.br')
     {
         charge: 
         {
-            client_name: 'nome do cliente final', 
-            client_cpf: 'cpf do cliente final',
+            client_token: 'token do cliente final', 
             company_token: 'token da companhia',
             product_token: 'token do produto',
             payment_method: 'nome do meio de pagamento utilizado, escolhido na plataforma (ex: cartão de crédito MasterChef)',
@@ -124,8 +122,7 @@ Admin.create(email: 'email@paynow.com.br')
     {
         charge: 
         {
-            client_name: 'nome do cliente final', 
-            client_cpf: 'cpf do cliente final',
+            client_token: 'token do cliente final', 
             company_token: 'token da companhia',
             product_token: 'token do produto',
             payment_method: 'nome do meio de pagamento utilizado, escolhido na plataforma (ex: Pix)',

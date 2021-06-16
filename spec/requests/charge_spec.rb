@@ -15,7 +15,7 @@ describe 'authentication' do
   let(:product_2) {Product.create!(name:'Produto 2', price: 60, boleto_discount: 10, company: company)}
   let(:final_client) {FinalClient.create!(name: 'Cliente final 1', cpf: '11122255599')}
   let(:status_charge) {StatusCharge.create!(code: '01', description: 'Pendente de cobrança')}
-  let(:charge) {Charge.create!(client_name: 'Cliente 1', client_cpf: '11133355588', 
+  let(:charge) {Charge.create!(client_token: final_client.token, client_name: 'Cliente 1', client_cpf: '11133355588', 
                                 company_token:company.token, product_token: product.token, 
                                 payment_method: pay_1.name, client_address: 'algum endereço', 
                                 due_deadline: '24/12/2023', company: company, final_client: final_client,
@@ -29,6 +29,7 @@ describe 'authentication' do
         HistoricProduct.create(product: product, company: company, price: product.price)
         company_1 = company
         charge1 = charge
+        final_client1 = final_client
         patch client_admin_charge_path(charge.token)
         expect(response).to redirect_to(new_user_session_path)
       end
@@ -40,6 +41,7 @@ describe 'authentication' do
         DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
         DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
         company_1 = company
+        final_client1 = final_client
 
         login_as user, scope: :user
         patch client_admin_charge_path(charge.token)

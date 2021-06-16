@@ -14,13 +14,15 @@ describe 'client_admin consult charges' do
   let(:product_2) {Product.create!(name:'Produto 2', price: 60, boleto_discount: 10, company: company)}
   let(:final_client) {FinalClient.create!(name: 'Cliente final 1', cpf: '11122255599')}
   let(:status_charge) {StatusCharge.create!(code: '01', description: 'Pendente de cobrança')}
-  let(:charge_1) {Charge.create!(client_name: 'Cliente 1', client_cpf: '11133355588', 
+  let(:charge_1) {Charge.create!(client_token: final_client.token, 
+                                client_name: 'Cliente 1', client_cpf: '11133355588', 
                                 company_token:company.token, product_token: product.token, 
                                 payment_method: pay_1.name, client_address: 'algum endereço', 
                                 due_deadline: '24/12/2023', company: company, final_client: final_client,
                                 status_charge: status_charge, product: product,
                                 payment_option: pay_1, price: 50, charge_price: 45 )}
-  let(:charge_11) {Charge.create!(client_name: 'Cliente 2', client_cpf: '22233355588', 
+  let(:charge_11) {Charge.create!(client_token: final_client.token, 
+                                client_name: 'Cliente 2', client_cpf: '22233355588', 
                                 company_token:company.token, product_token: product.token, 
                                 payment_method: pay_1.name, client_address: 'algum endereço', 
                                 due_deadline: '30/12/2024', company: company, final_client: final_client,
@@ -45,10 +47,10 @@ describe 'client_admin consult charges' do
     click_on 'Consultar cobranças pendentes'
       
     expect(page).to have_content('Produto 1')
-    expect(page).to have_content("#{charge_1.charge_price}")
+    expect(page).to have_content("45,00")
     expect(page).to have_content('Vencimento da fatura: 24/12/2023')
     expect(page).to have_content('Produto 2')
-    expect(page).to have_content("#{charge_11.charge_price}")
+    expect(page).to have_content("54,00")
     expect(page).to have_content('Vencimento da fatura: 30/12/2024')
     expect(page).to have_content('Boleto')
   end
@@ -73,10 +75,10 @@ describe 'client_admin consult charges' do
     click_on 'Atualizar'
 
     expect(page).to_not have_content('Produto 1')
-    expect(page).to_not have_content("#{charge_1.charge_price}")
+    expect(page).to_not have_content("45,00")
     expect(page).to_not have_content('Vencimento da fatura: 24/12/2023')
     expect(page).to have_content('Produto 2')
-    expect(page).to have_content("#{charge_11.charge_price}")
+    expect(page).to have_content("54,00")
     expect(page).to have_content('Vencimento da fatura: 30/12/2024')
     expect(page).to have_content('Boleto')
   end
@@ -141,10 +143,10 @@ describe 'client_admin consult charges' do
     click_on "Todas as cobranças"
 
     expect(page).to have_content('Produto 1')
-    expect(page).to have_content("#{charge_1.charge_price}")
+    expect(page).to have_content("45,00")
     expect(page).to have_content('Vencimento da fatura: 24/12/2023')
     expect(page).to have_content('Produto 2')
-    expect(page).to have_content("#{charge_11.charge_price}")
+    expect(page).to have_content("54,00")
     expect(page).to have_content('Vencimento da fatura: 30/12/2024')
     expect(page).to have_content('Boleto')
   end

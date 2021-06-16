@@ -4,6 +4,7 @@ class CreateCharges < ActiveRecord::Migration[6.1]
       t.string :token
       t.string :client_name
       t.string :client_cpf
+      t.string :client_token
       t.string :product_token
       t.string :company_token
       t.string :payment_method

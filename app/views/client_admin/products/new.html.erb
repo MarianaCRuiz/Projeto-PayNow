@@ -13,19 +13,19 @@
   </div>
   <div class="field form-group">
     <%= f.label :price %>
-    <%= f.text_field :price, class:"form-control" %>
+    <%= f.number_field :price, class:"form-control" %>
   </div>
   <div class="field form-group">
     <%= f.label :boleto_discount %>
-    <%= f.text_field :boleto_discount, class:"form-control" %>
+    <%= f.number_field :boleto_discount, class:"form-control" %>
   </div>
     <div class="field form-group">
     <%= f.label :credit_card_discount %>
-    <%= f.text_field :credit_card_discount, class:"form-control" %>
+    <%= f.number_field :credit_card_discount, class:"form-control" %>
   </div>
     <div class="field form-group">
     <%= f.label :pix_discount %>
-    <%= f.text_field :pix_discount, class:"form-control" %>
+    <%= f.number_field :pix_discount, class:"form-control" %>
   </div>
   <%= f.submit t('.submit'), class:"btn btn-success mb-1 mt-1" %>
 <% end %>

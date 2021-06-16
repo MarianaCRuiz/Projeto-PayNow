@@ -18,8 +18,8 @@ describe 'payment options' do
       expect{ click_on 'Adicionar' }.to change{ PaymentOption.count }.by(1)
   
       expect(page).to have_content('Boleto')
-      expect(page).to have_content('1.5')
-      expect(page).to have_content('10.0')
+      expect(page).to have_content('1,50')
+      expect(page).to have_content('10,00')
       expect(page).to have_link('Voltar')
       expect(page).to have_css('img[src*="Boleto.jpg"]')
     end
@@ -37,8 +37,8 @@ describe 'payment options' do
       expect{ click_on 'Adicionar' }.to change{ PaymentOption.count }.by(1)
   
       expect(page).to have_content('PIX')
-      expect(page).to have_content('1.2')
-      expect(page).to have_content('12.0')
+      expect(page).to have_content('1,20')
+      expect(page).to have_content('12,00')
       expect(page).to have_link('Voltar')
     end
     it 'creditcard' do                        
@@ -55,8 +55,8 @@ describe 'payment options' do
       expect{ click_on 'Adicionar' }.to change{ PaymentOption.count }.by(1)
   
       expect(page).to have_content('Cartão de Crédito MASTERCHEF')
-      expect(page).to have_content('1.1')
-      expect(page).to have_content('11.0')
+      expect(page).to have_content('1,10')
+      expect(page).to have_content('11,00')
       expect(page).to have_link('Voltar')
     end
   end
@@ -76,9 +76,9 @@ describe 'payment options' do
   
       expect(page).to have_content('não pode ficar em branco', count: 3)
     end
-    xit 'name uniq' do
+    it 'name uniq' do
       Admin.create!(email: 'admin1@paynow.com.br')
-      PaymentOption.create!(name: 'Cartão de Crédito MASTERCHEF', fee: 1.1, max_money_fee: 12, type: 1)
+      PaymentOption.create!(name: 'Cartão de Crédito MASTERCHEF', fee: 1.1, max_money_fee: 12, payment_type: 1)
       
       login_as user, scope: :user
       visit root_path

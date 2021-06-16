@@ -13,8 +13,8 @@
             <div class="container">
               <ul>
                 <li><% if option.icon.persisted? %> <%= image_tag option.icon, size:'50' %> <% end %><%= option.name %></li>
-                <li>Taxa(%): <%= option.fee %></li>
-                <li>Taxa máxima(R$): <%= option.max_money_fee %></li>
+                <li>Taxa: <%= number_to_percentage(option.fee, precision: 2) %></li>
+                <li>Taxa máxima: <%= number_to_currency option.max_money_fee %></li>
                 <li><% if option.active? %> 
                 <span class="badge bg-success"><%= PaymentOption.human_attribute_name("state.#{option.state}") %></span>
                 <% else %>

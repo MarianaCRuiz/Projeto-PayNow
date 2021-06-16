@@ -17,8 +17,8 @@ describe 'payment options' do
       expect{ click_on 'Atualizar' }.to change{ PaymentOption.count }.by(0)
   
       expect(page).to have_content('Boleto')
-      expect(page).to have_content('1.2')
-      expect(page).to have_content('12.0')
+      expect(page).to have_content('1,20')
+      expect(page).to have_content('12,00')
       expect(page).to have_link('Voltar')
     end
     it 'status' do
@@ -36,8 +36,8 @@ describe 'payment options' do
       expect{ click_on 'Atualizar' }.to change{ PaymentOption.count }.by(0)
   
       expect(page).to have_content('PIX')
-      expect(page).to have_content('1.2')
-      expect(page).to have_content('12.0')
+      expect(page).to have_content('1,20')
+      expect(page).to have_content('12,00')
       expect(page).to have_content('Inativo')
       expect(page).to have_link('Voltar')
     end
@@ -90,8 +90,8 @@ describe 'payment options' do
     expect{ click_on 'Atualizar' }.to change{ PaymentOption.count }.by(0)
   
     expect(page).to have_content('Boleto')
-    expect(page).to have_content('1.2')
-    expect(page).to have_content('12.0')
+    expect(page).to have_content('1,20')
+    expect(page).to have_content('12,00')
     expect(page).to have_content('Inativo')
   end
 end
