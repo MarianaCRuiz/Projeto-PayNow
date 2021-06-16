@@ -10,6 +10,8 @@ describe 'register PIX option' do
   let(:pix_option) {PixRegisterOption.create!(company: company, payment_option: pay_3, pix_key: 'AJ86gt4fLBtcF296rTuN', bank_code: bank_code)}
   
   it 'client_admin register pix succesfully' do
+    PaymentCompany.create!(company: company, payment_option: pay_3)
+    DomainRecord.create!(email_client_admin: user_admin, domain: 'empresa3.com', company: company)
     bank = bank_code
     token = SecureRandom.base58(20)
     pay = pay_3
@@ -28,6 +30,8 @@ describe 'register PIX option' do
     expect(page).to have_content('PIX_1')
   end
   it 'cannot be blank' do
+    PaymentCompany.create!(company: company, payment_option: pay_3)
+    DomainRecord.create!(email_client_admin: user_admin, domain: 'empresa3.com', company: company)
     bank = bank_code
     token = SecureRandom.base58(20)
     bank = bank_code
@@ -45,6 +49,8 @@ describe 'register PIX option' do
     expect(page).to have_content('não pode ficar em branco')
   end
   it 'PIX key uniq' do
+    PaymentCompany.create!(company: company, payment_option: pay_3)
+    DomainRecord.create!(email_client_admin: user_admin, domain: 'empresa3.com', company: company)
     bank = bank_code
     token = 'abc123ABC456DEF98nm2'
     pay = pay_3

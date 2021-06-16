@@ -27,8 +27,8 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      post 'final_clients', to: 'companies#final_clients'
       post 'charges', to: 'companies#charges'
+      post 'final_clients', to: 'companies#final_clients'
       resources :companies, only: [], param: :token do
         get 'consult_charges', to: 'companies#consult_charges'
       end

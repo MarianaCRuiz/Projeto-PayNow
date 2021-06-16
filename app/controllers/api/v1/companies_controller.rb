@@ -1,5 +1,6 @@
-class Api::V1::CompaniesController < Api::V1::ApiController
+class Api::V1::CompaniesController < Api::V1::ApiController  #< ActionController::API
   before_action :status_charge_generate, only: %i[charges consult_charges]
+  
   def charges
     @status = StatusCharge.find_by(code: '01')
     @charge = Charge.new(charge_params)
@@ -48,7 +49,6 @@ class Api::V1::CompaniesController < Api::V1::ApiController
     render json: @charge.errors, status: :precondition_failed
   end
 
-
   def final_clients
     @final_client = FinalClient.new(final_client_params)
     @company = Company.find_by(token: params[:company_token])
@@ -57,13 +57,10 @@ class Api::V1::CompaniesController < Api::V1::ApiController
     render json: @final_client, status: 201
   rescue ActiveRecord::RecordInvalid                       #ActionController::ParameterMissing
     @client = FinalClient.where(cpf: @final_client.cpf).first
-
-    if @client && CompanyClient.where(company: @company, final_client: @client).empty?
-      if !FinalClient.where(cpf: @client.cpf).empty?
-        @final_client = FinalClient.where(cpf: @client.cpf).first
-        @company_client = @company.company_clients.create!(final_client: @client)
-        render json: FinalClient.where(cpf: @client.cpf).first, status: 202
-      end
+    if @client && CompanyClient.where(company: @company, final_client: @client).empty? && !FinalClient.where(cpf: @client.cpf).empty?
+      @final_client = FinalClient.find_by(cpf: @client.cpf)
+      @company_client = @company.company_clients.create!(final_client: @client)
+      render json: FinalClient.find_by(cpf: @client.cpf), status: 202
     elsif @client && !CompanyClient.where(company: @company, final_client: @client).empty?
       render json: @final_client.errors, status: 409
     else
@@ -73,30 +70,80 @@ class Api::V1::CompaniesController < Api::V1::ApiController
   
   def consult_charges
     @company = Company.find_by(token: params[:company_token])
-    @due_deadline = params[:due_deadline]
-    @due_deadline_max = params[:due_deadline_max]
-    @status = StatusCharge.all
-    if @due_deadline
-      @charges = @company.charges.where(due_deadline: @due_deadline)
-    elsif @due_deadline_max
-      @charges = @company.charges.where("due_deadline <= ?", @due_deadline_max.strftime("%Y-%m-%d"))
-      byebug
-    else
-      @charges = @company.charges
+    @due_deadline = consult_params[:due_deadline]
+    @due_deadline_max = consult_params[:due_deadline_max]
+    @due_deadline_min = consult_params[:due_deadline_min]
+    @payment_method = consult_params[:payment_method]
+    if consult_params[:status_charge_id]
+      @status_charge = StatusCharge.find(consult_params[:status_charge_id])
     end
-    render json: @charges
+    if @status_charge
+      @charge = Charge.find_by(token: consult_params[:charge_id])
+      if @charge
+        @charge.status_charge = @status_charge
+        @charge.save!
+        render json: @charge
+      else
+        head 404
+      end
+    else
+      if !@payment_method
+        if @due_deadline
+          @charges = @company.charges.where(due_deadline: @due_deadline)
+        elsif @due_deadline_max && @due_deadline_min
+          @charges = @company.charges.where("due_deadline <= ? and due_deadline >= ?", @due_deadline_max.to_date.strftime("%Y-%m-%d"), @due_deadline_min.to_date.strftime("%Y-%m-%d"))
+        elsif @due_deadline_max
+          @charges = @company.charges.where("due_deadline <= ?", @due_deadline_max.to_date.strftime("%Y-%m-%d"))
+        elsif @due_deadline_min
+          @charges = @company.charges.where("due_deadline >= ?", @due_deadline_min.to_date.strftime("%Y-%m-%d")) 
+        else
+          @charges = @company.charges
+        end
+      else
+        @charges = @company.charges.where(payment_method: @payment_method)
+        if @due_deadline
+          @charges = @charges.where(due_deadline: @due_deadline)
+        elsif @due_deadline_max && @due_deadline_min
+          @charges = @charges.where("due_deadline <= ? and due_deadline >= ?", @due_deadline_max.to_date.strftime("%Y-%m-%d"), @due_deadline_min.to_date.strftime("%Y-%m-%d"))
+        elsif @due_deadline_max
+          @charges = @charges.where("due_deadline <= ?", @due_deadline_max.to_date.strftime("%Y-%m-%d"))
+        elsif @due_deadline_min
+          @charges = @charges.where("due_deadline >= ?", @due_deadline_min.to_date.strftime("%Y-%m-%d"))
+        end
+      end
+      if @due_deadline_max && @due_deadline_min && @due_deadline_max < @due_deadline_min
+        head 416
+      else
+        if !@charges.empty?
+          render json: @charges
+        elsif @payment_method && @company.payment_options.where(name: @payment_method).empty?
+          head 404
+        else
+          render json: @charges, status: 204
+        end
+      end
+    end
+  rescue ActiveRecord::RecordInvalid
+    render json: @charge.errors, status: :precondition_failed
   end
 
   private
+
   def final_client_params
     params.require(:final_client).permit(:name, :cpf)
   end
+
   def charge_params
     params.require(:charge).permit(:client_token, :company_token, :product_token, 
       :payment_method, :boleto_register_option_id, :credit_card_register_option_id, 
       :pix_register_option_id, :client_address, :card_number, 
       :card_name, :cvv_code, :due_deadline)
   end
+
+  def consult_params
+    params.require(:consult).permit(:payment_method, :due_deadline, :due_deadline_min, :due_deadline_max, :status_charge_id, :charge_id)
+  end
+  
   def status_charge_generate
     require 'csv'
     if StatusCharge.count < 5

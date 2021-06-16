@@ -7,7 +7,8 @@ describe 'register credit card option' do
   let(:user_admin) {User.create!(email: 'admin@codeplay.com', password: '123456', role: 1, company: company)}
   let(:pay_2) {PaymentOption.create!(name: 'Cartão de Crédito MASTERCHEF', fee: 1.9, max_money_fee: 20, payment_type: 1)}
   
-  it 'client_admin register credit card succesfully' do    
+  it 'client_admin register credit card succesfully' do   
+    DomainRecord.create!(email_client_admin: user_admin, domain: 'empresa3.com', company: company) 
     pay = pay_2
     token = SecureRandom.base58(20)
 
@@ -24,6 +25,7 @@ describe 'register credit card option' do
     expect(page).to have_content('Cartão de Crédito MASTERCHEF')
   end
   it 'cannot be blank' do
+    DomainRecord.create!(email_client_admin: user_admin, domain: 'empresa3.com', company: company)
     pay = pay_2
     token = SecureRandom.base58(20)
 
@@ -38,6 +40,7 @@ describe 'register credit card option' do
     expect(page).to have_content('não pode ficar em branco', count: 1)
   end
   it 'bank token uniq' do
+    DomainRecord.create!(email_client_admin: user_admin, domain: 'empresa3.com', company: company)
     pay = pay_2
     CreditCardRegisterOption.create!(payment_option: pay_2, company: company, credit_card_operator_token: 'haBN7S9kM726bhz5d1pB')
     
