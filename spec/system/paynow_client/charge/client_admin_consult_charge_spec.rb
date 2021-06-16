@@ -13,22 +13,22 @@ describe 'client_admin consult charges' do
   let(:product) {Product.create!(name:'Produto 1', price: 50, boleto_discount: 10, company: company)}
   let(:product_2) {Product.create!(name:'Produto 2', price: 60, boleto_discount: 10, company: company)}
   let(:final_client) {FinalClient.create!(name: 'Cliente final 1', cpf: '11122255599')}
+  let(:final_client_2) {FinalClient.create!(name: 'Cliente final 2', cpf: '11133355599')}
   let(:status_charge) {StatusCharge.create!(code: '01', description: 'Pendente de cobrança')}
   let(:charge_1) {Charge.create!(client_token: final_client.token, 
-                                client_name: 'Cliente 1', client_cpf: '11133355588', 
+                                client_name: final_client.name, client_cpf: final_client.cpf, 
                                 company_token:company.token, product_token: product.token, 
                                 payment_method: pay_1.name, client_address: 'algum endereço', 
                                 due_deadline: '24/12/2023', company: company, final_client: final_client,
                                 status_charge: status_charge, product: product,
                                 payment_option: pay_1, price: 50, charge_price: 45 )}
-  let(:charge_11) {Charge.create!(client_token: final_client.token, 
-                                client_name: 'Cliente 2', client_cpf: '22233355588', 
+  let(:charge_11) {Charge.create!(client_token: final_client_2.token, 
+                                client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
                                 company_token:company.token, product_token: product.token, 
                                 payment_method: pay_1.name, client_address: 'algum endereço', 
                                 due_deadline: '30/12/2024', company: company, final_client: final_client,
                                 status_charge: status_charge, product: product_2,
                                 payment_option: pay_1, price: 60, charge_price: 54)}
-
 
   it 'client_admin view charges' do
     DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
@@ -85,6 +85,8 @@ describe 'client_admin consult charges' do
   it 'change charge status missing payment date' do
     DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
     PaymentCompany.create(company: company, payment_option: pay_1)
+    CompanyClient.create!(final_client: final_client, company: company)
+    CompanyClient.create!(final_client: final_client_2, company: company)
     HistoricProduct.create(product: product, company: company, price: product.price)
     HistoricProduct.create(product: product_2, company: company, price: product_2.price)
     status_2 = StatusCharge.create!(code: "05", description: "Cobrança efetivada com sucesso")
@@ -108,6 +110,8 @@ describe 'client_admin consult charges' do
     PaymentCompany.create(company: company, payment_option: pay_1)
     HistoricProduct.create(product: product, company: company, price: product.price)
     HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+    CompanyClient.create!(final_client: final_client, company: company)
+    CompanyClient.create!(final_client: final_client_2, company: company)
     boleto1 = boleto
     status = status_charge
     charge1 = charge_1
@@ -129,6 +133,8 @@ describe 'client_admin consult charges' do
     PaymentCompany.create(company: company, payment_option: pay_1)
     HistoricProduct.create(product: product, company: company, price: product.price)
     HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+    CompanyClient.create!(final_client: final_client, company: company)
+    CompanyClient.create!(final_client: final_client_2, company: company)
     status_2 = StatusCharge.create!(code: '05', description: "Cobrança efetivada com sucesso\n")
     boleto1 = boleto
     charge1 = charge_1

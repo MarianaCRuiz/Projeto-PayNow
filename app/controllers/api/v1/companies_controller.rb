@@ -1,5 +1,5 @@
-class Api::V1::ApiCompaniesController < Api::V1::ApiController
-  before_action :status_charge_generate, only: %i[charges]
+class Api::V1::CompaniesController < Api::V1::ApiController
+  before_action :status_charge_generate, only: %i[charges consult_charges]
   def charges
     @status = StatusCharge.find_by(code: '01')
     @charge = Charge.new(charge_params)
@@ -26,8 +26,10 @@ class Api::V1::ApiCompaniesController < Api::V1::ApiController
         @charge.discount = @charge.price*@product.boleto_discount/100
       elsif @credit_card
         @charge.discount = @charge.price*@product.credit_card_discount/100
+        @charge.due_deadline = @charge.created_at
       elsif @pix
         @charge.discount = @charge.price*@product.pix_discount/100
+        @charge.due_deadline = @charge.created_at
       end
       @charge.product_name = @product.name
       if  @charge.discount
@@ -69,6 +71,22 @@ class Api::V1::ApiCompaniesController < Api::V1::ApiController
     end
   end
   
+  def consult_charges
+    @company = Company.find_by(token: params[:company_token])
+    @due_deadline = params[:due_deadline]
+    @due_deadline_max = params[:due_deadline_max]
+    @status = StatusCharge.all
+    if @due_deadline
+      @charges = @company.charges.where(due_deadline: @due_deadline)
+    elsif @due_deadline_max
+      @charges = @company.charges.where("due_deadline <= ?", @due_deadline_max.strftime("%Y-%m-%d"))
+      byebug
+    else
+      @charges = @company.charges
+    end
+    render json: @charges
+  end
+
   private
   def final_client_params
     params.require(:final_client).permit(:name, :cpf)
