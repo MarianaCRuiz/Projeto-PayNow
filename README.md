@@ -47,11 +47,11 @@ Os testes utilizam framework RSpec. Para executá-los, rode rspec no terminal ab
 ### Instalação
 
 * Clone o projeto no computador, entre na respectiva pasta e execute o comando bin/setup
-* Caso vá adcionar administradores, rode o rails c e cadastre os emails no model Admin, seguindo o exemplo:
+* Caso vá adicionar administradores, rode o rails c e cadastre os emails no model Admin, seguindo o exemplo:
 ```
 Admin.create(email: 'email@paynow.com.br')
 ```
-* rode rail s no terminal e, no navegador, abra o endereço http://localhost:3000/ para ver a aplicação funcionando. No site, o administrador já cadastrado no model Admin, irá se registrar, no caso de primero acesso, ou entrar, no caso de já ter se registrado.
+* rode rail s no terminal e, no navegador, abra o endereço http://localhost:3000/ para ver a aplicação funcionando. No site, o administrador já cadastrado no model Admin, irá se registrar, no caso de primeiro acesso, ou entrar, no caso de já ter se registrado.
 
 ### Populando banco de dados
 
@@ -62,10 +62,9 @@ Admin.create(email: 'email@paynow.com.br')
 ### Registro de Client final
 
 * Este é um endpoint utilizado no cadastro de clientes das empresas registradas na plataforma, reconhecidos como final_client, gerando um token para o mesmo e associando-o ao token da empresa. O token do cliente final é único, associado a seu cpf e nome, caso esse cliente já tenha sido cadastrado por outra empresa, não ocorre um novo cadastro e geração de token, apenas ocorre a associação desse cliente com o token da nova empresa. 
-* Para o uso desse endpoint, segue a rota e os paramentros necessários: 
+* Para o uso desse endpoint, segue a rota e os parâmetros necessários: 
     * rota: post "/api/v1/final_clients"
     * parâmetros:
-
     ```
     {
         final_client: 
@@ -85,9 +84,9 @@ Admin.create(email: 'email@paynow.com.br')
 ### Emissão de cobrança
 
 * Este é um endpoint utilizado para emitir cobranças para as empresas cadastradas na plataforma. A cobrança será associada à empresa, ao produto, ao cliente final e ao meio de pagamento. Os parâmetros necessários variam com o meio de pagamento escolhido.
-* Para o uso desse endpoint, segue a rota e os paramentros necessários: 
+* Para o uso desse endpoint, segue a rota e os parâmetros necessários: 
     * rota:  post "/api/v1/charges"
-    * parâmetros - meio de pagamento: boleto    
+    * parâmetros - meio de pagamento: boleto
     ```
     {
         charge: 
@@ -112,8 +111,7 @@ Admin.create(email: 'email@paynow.com.br')
             payment_method: 'nome do meio de pagamento utilizado, escolhido na plataforma (ex: cartão de crédito MasterChef)',
             card_number: 'número do cartão',
             card_name: 'nome impresso no cartão', 
-            cvv_code: 'código de segurança do cartão',
-            due_deadline: 'data de vencimento da cobrança'
+            cvv_code: 'código de segurança do cartão'
         }
     }
     ```
@@ -125,11 +123,110 @@ Admin.create(email: 'email@paynow.com.br')
             client_token: 'token do cliente final', 
             company_token: 'token da companhia',
             product_token: 'token do produto',
-            payment_method: 'nome do meio de pagamento utilizado, escolhido na plataforma (ex: Pix)',
-            due_deadline: 'data de vencimento da cobrança'
+            payment_method: 'nome do meio de pagamento utilizado, escolhido na plataforma (ex: Pix)'
         }
     }
     ```
 * Possíveis respostas:
     * HTTP status 201: Cobrança criada com sucesso
     * HTTP status 412: Há parâmetros inválidos ou ausentes
+
+### Consulta de cobranças
+
+* Este é um endpoint utilizado para consulta de cobranças pelas as empresas cadastradas na plataforma, podendo ser filtrada em função de data de vencimento e método de pagamento. Também é possível alterar o status de uma cobrança, inclusive gerando um recibo quando o status mude para cobrança efetivada com sucesso. Os parâmetros necessários variam com o objetivo, consulta ou mudança de status. A data de vencimento é um dado entrada no caso de pagamento via boleto mas no caso de cartão ou pix foi considerado a data que a cobrança foi gerada.
+* Para o uso desse endpoint, segue a rota e os parâmetros necessários: 
+    * rota:  get "/api/v1/consult_charges"
+    * parâmetros - consulta data de vencimento específica
+     ```
+    {
+        consult: 
+        {
+            due_deadline: 'data de vencimento da cobrança'
+        }, 
+        company_token: company.token
+    }
+    ```
+    * parâmetros - consulta as datas de vencimento com relação a uma data mínima (buscar o que estiver a partir dela >=)
+    ```
+    {
+        consult: 
+        {
+            due_deadline_min: 'data mínima'
+        }, 
+        company_token: company.token
+    }
+    ```
+    * parâmetros - consulta as datas de vencimento com relação a uma data máxima (buscar o que estiver até ela dela <=)
+    ```
+    {
+        consult: 
+        {
+            due_deadline_max: 'data máxima'
+        }, 
+        company_token: company.token
+    }
+    ```
+    * parâmetros - consulta as datas de vencimento no intervalo
+    ```
+    {
+        consult: 
+        {
+            due_deadline_min: 'data mínima',
+            due_deadline_max: 'data máxima'
+        }, 
+        company_token: company.token
+    }
+    ```
+    * parâmetros - consulta pelo método de pagamento
+    ```
+    {
+        consult: 
+        {
+            payment_method: 'nome do meio de pagamento utilizado, escolhido na plataforma (ex: cartão de crédito MasterChef)'
+        }, 
+        company_token: company.token
+    }
+    ```
+    * parâmetros - consulta mista
+    ```
+    {
+        consult: 
+        {
+            payment_method: 'nome do meio de pagamento utilizado, escolhido na plataforma (ex: cartão de crédito MasterChef)',
+            due_deadline_min: 'data mínima',
+            due_deadline_max: 'data máxima'
+        }, 
+        company_token: company.token
+    }
+    ```
+    * parâmetros - mudança de status para aprovada
+     ```
+    {
+        consult: 
+        {
+            charge_id: 'token da cobrança',
+            status_charge_code: 'código do status (05)',
+            payment_date: 'data efetiva de pagamento'
+        }, 
+        company_token: company.token
+    }
+    ```
+    * parâmetros - mudança de status para cobrança rejeitada
+    ```
+    {
+        consult: 
+        {
+            charge_id: 'token da cobrança',
+            status_charge_code: 'código do status',
+            attempt_date: 'data da tentativa de pagamento'
+        }, 
+        company_token: company.token
+    }
+    ```    
+* Possíveis respostas:
+    * HTTP status 200: Cobranças obtidas com sucesso
+    * HTTP status 204: Nenhuma cobrança encontrada
+    * HTTP status 404: Não foi possível encontrar código do status, token da cobrança ou o método de pagamento ou estes não foram fornecidos
+    * HTTP status 412: Há parâmetros inválidos ou ausentes
+    * HTTP status 416: Consulta por vencimento com data mínima maior do que a máxima
+

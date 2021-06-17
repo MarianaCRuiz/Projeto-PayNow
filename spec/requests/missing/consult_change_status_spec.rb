@@ -24,12 +24,14 @@ describe 'consult charges changing status api' do
       CompanyClient.create!(final_client: final_client, company: company)
       HistoricProduct.create(product: product, company: company, price: product.price)
       PaymentCompany.create!(company: company, payment_option: pay_1)
-      status_2 = StatusCharge.create!(code: "05", description: "Cobrança efetivada com sucesso")
+      #status_2 = StatusCharge.create!(code: "05", description: "Cobrança efetivada com sucesso")
       bank1 = bank
       boleto1 = boleto
       charge1 = charge_1
 
-      get api_v1_company_consult_charges_path(company.token), params: {consult: {status_charge_id: status_2.id, charge_id: charge_1.token}}
+      get "/api/v1/consult_charges", params: {consult: {status_charge_code: '05', 
+                                                        charge_id: charge_1.token, payment_date: '16/06/2021'},
+                                                        company_token: company.token}
 
       expect(response).to have_http_status(200)
       expect(response.content_type).to include('application/json')
@@ -38,7 +40,7 @@ describe 'consult charges changing status api' do
       expect(parsed_body['client_cpf']).to eq('11122255599')
       expect(parsed_body['client_address']).to eq('algum endereço')
       expect(parsed_body['payment_method']).to eq('Boleto')
-      expect(parsed_body['status_charge_id']).to eq(status_2.id)
+      expect(parsed_body['status_returned']).to eq('05')
     end
   end
 
@@ -47,12 +49,67 @@ describe 'consult charges changing status api' do
       CompanyClient.create!(final_client: final_client, company: company)
       HistoricProduct.create(product: product, company: company, price: product.price)
       PaymentCompany.create!(company: company, payment_option: pay_1)
+      bank1 = bank
+      boleto1 = boleto
+      charge1 = charge_1
+
+      get "/api/v1/consult_charges", params: {consult: {status_charge_code: 10, charge_id: charge_1.token}, company_token: company.token}
+
+      expect(response).to have_http_status(412)
+    end
+    it 'missing payment date' do
+      CompanyClient.create!(final_client: final_client, company: company)
+      HistoricProduct.create(product: product, company: company, price: product.price)
+      PaymentCompany.create!(company: company, payment_option: pay_1)
       status_2 = StatusCharge.create!(code: "05", description: "Cobrança efetivada com sucesso")
       bank1 = bank
       boleto1 = boleto
       charge1 = charge_1
 
-      get api_v1_company_consult_charges_path(company.token), params: {consult: {status_charge_id: 10, charge_id: charge_1.token}}
+      get "/api/v1/consult_charges", params: {consult: {status_charge_code: status_2.code, charge_id: charge_1.token}, company_token: company.token}
+
+      expect(response).to have_http_status(412)
+
+
+      expect(response.content_type).to include('application/json')
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body['payment_date']).to eq(['não pode ficar em branco'])
+    end
+    it 'missing attempt date' do
+      CompanyClient.create!(final_client: final_client, company: company)
+      HistoricProduct.create(product: product, company: company, price: product.price)
+      PaymentCompany.create!(company: company, payment_option: pay_1)
+      bank1 = bank
+      boleto1 = boleto
+      charge1 = charge_1
+
+      get "/api/v1/consult_charges", params: {consult: {status_charge_code: '11', charge_id: charge_1.token}, company_token: company.token}
+
+      expect(response).to have_http_status(412)
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body['attempt_date']).to eq(['não pode ficar em branco'])
+    end
+    it 'missing charge_id' do
+      CompanyClient.create!(final_client: final_client, company: company)
+      HistoricProduct.create(product: product, company: company, price: product.price)
+      PaymentCompany.create!(company: company, payment_option: pay_1)
+      bank1 = bank
+      boleto1 = boleto
+      charge1 = charge_1
+
+      get "/api/v1/consult_charges", params: {consult: {status_charge_code: '11'}, company_token: company.token}
+
+      expect(response).to have_http_status(404)
+    end
+    it 'missing status_charge_code' do
+      CompanyClient.create!(final_client: final_client, company: company)
+      HistoricProduct.create(product: product, company: company, price: product.price)
+      PaymentCompany.create!(company: company, payment_option: pay_1)
+      bank1 = bank
+      boleto1 = boleto
+      charge1 = charge_1
+
+      get "/api/v1/consult_charges", params: {consult: {charge_id: charge_1.token}, company_token: company.token}
 
       expect(response).to have_http_status(404)
     end

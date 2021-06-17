@@ -57,7 +57,7 @@ describe 'consult charges api' do
       charge2 = charge_11
       charge3 = charge_12
 
-      get api_v1_company_consult_charges_path(company.token), params: {consult: {due_deadline: nil}}
+      get "/api/v1/consult_charges", params: {consult: {due_deadline: nil}, company_token: company.token}
 
       expect(response).to have_http_status(200)
       expect(response.content_type).to include('application/json')
@@ -90,7 +90,7 @@ describe 'consult charges api' do
     it 'all charges' do
       company1 = company
   
-      get api_v1_company_consult_charges_path(company.token), params: {consult: {due_deadline: nil}}
+      get "/api/v1/consult_charges", params: {consult: {due_deadline: nil}, company_token: company.token}
 
       expect(response).to have_http_status(204)
       expect(response.body).to be_empty 

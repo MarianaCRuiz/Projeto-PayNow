@@ -50,8 +50,7 @@ describe 'charge api' do
 
         post "/api/v1/charges", params: {charge: {client_token: final_client.token, 
             company_token: company.token, product_token: product.token, payment_method: pay_2.name, 
-            card_number: '1111 2222 333 4444', card_name: 'FULANO A C', cvv_code: '444', 
-            due_deadline: '24/12/2023'}}
+            card_number: '1111 2222 333 4444', card_name: 'FULANO A C', cvv_code: '444'}}
 
         expect(response).to have_http_status(201)
         expect(response.content_type).to include('application/json')
@@ -73,8 +72,7 @@ describe 'charge api' do
         HistoricProduct.create(product: product, company: company, price: product.price)
 
         post "/api/v1/charges", params: {charge: {client_token: final_client.token, 
-            company_token: company.token, product_token: product.token, payment_method: pay_3.name, 
-            due_deadline: '24/12/2023'}}
+            company_token: company.token, product_token: product.token, payment_method: pay_3.name}}
 
         expect(response).to have_http_status(201)
         expect(response.content_type).to include('application/json')
@@ -97,8 +95,7 @@ describe 'charge api' do
         boleto1 = boleto
         final_client1 = final_client
         HistoricProduct.create!(product: product, company: company, price: product.price)
-        
-
+      
         post "/api/v1/charges", params: {charge: {client_token: final_client.token, 
             company_token: company.token, product_token: product.token, 
             client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
@@ -115,9 +112,10 @@ describe 'charge api' do
         final_client1 = final_client
         HistoricProduct.create(product: product, company: company, price: product.price)
 
-        post "/api/v1/charges", params: {charge: {company_token: company.token, product_token: product.token, payment_method: pay_1.name, 
-            client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
-            due_deadline: '24/12/2023'}}
+        post "/api/v1/charges", params: {charge: {company_token: company.token, product_token: product.token, 
+                                                  payment_method: pay_1.name, 
+                                                  client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
+                                                  due_deadline: '24/12/2023'}}
 
         expect(response).to have_http_status(412)
       end

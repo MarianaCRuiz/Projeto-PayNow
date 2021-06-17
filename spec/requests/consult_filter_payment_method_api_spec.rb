@@ -56,7 +56,7 @@ describe 'consult charges api' do
       charge2 = charge_11
       charge3 = charge_12
 
-      get api_v1_company_consult_charges_path(company.token), params: {consult: {payment_method: pay_1.name}}
+      get "/api/v1/consult_charges", params: {consult: {payment_method: pay_1.name}, company_token: company.token}
 
       expect(response).to have_http_status(200)
       expect(response.content_type).to include('application/json')
@@ -93,7 +93,7 @@ describe 'consult charges api' do
         charge2 = charge_11
         charge3 = charge_12
 
-        get api_v1_company_consult_charges_path(company.token), params: {consult: {payment_method: pay_3.name}}
+        get "/api/v1/consult_charges", params: {consult: {payment_method: pay_3.name}, company_token: company.token}
 
         expect(response).to have_http_status(204)
         expect(response.body).to be_empty
@@ -113,7 +113,7 @@ describe 'consult charges api' do
         charge2 = charge_11
         charge3 = charge_12
 
-        get api_v1_company_consult_charges_path(company.token), params: {consult: {payment_method: 'Laranja'}}
+        get "/api/v1/consult_charges", params: {consult: {payment_method: 'Laranja'}, company_token: company.token}
 
         expect(response).to have_http_status(404)
       end

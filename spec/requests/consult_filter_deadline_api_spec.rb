@@ -57,7 +57,7 @@ describe 'consult charges api' do
       charge2 = charge_11
       charge3 = charge_12
 
-      get api_v1_company_consult_charges_path(company.token), params: {consult: {due_deadline: '20/08/2021'}}
+      get "/api/v1/consult_charges", params: {consult: {due_deadline: '20/08/2021'}, company_token: company.token}
 
       expect(response).to have_http_status(200)
       expect(response.content_type).to include('application/json')
@@ -85,7 +85,7 @@ describe 'consult charges api' do
       charge2 = charge_11
       charge3 = charge_12
 
-      get api_v1_company_consult_charges_path(company.token), params: {consult: {due_deadline_max: '20/09/2021'}}
+      get "/api/v1/consult_charges", params: {consult: {due_deadline_max: '20/09/2021'}, company_token: company.token}
 
       expect(response).to have_http_status(200)
       expect(response.content_type).to include('application/json')
@@ -113,7 +113,7 @@ describe 'consult charges api' do
       charge2 = charge_11
       charge3 = charge_12
 
-      get api_v1_company_consult_charges_path(company.token), params: {consult: {due_deadline_min: '20/09/2021'}}
+      get "/api/v1/consult_charges", params: {consult: {due_deadline_min: '20/09/2021'}, company_token: company.token}
 
       expect(response).to have_http_status(200)
       expect(response.content_type).to include('application/json')
@@ -148,7 +148,7 @@ describe 'consult charges api' do
       charge2 = charge_11
       charge3 = charge_12
 
-      get api_v1_company_consult_charges_path(company.token), params: {consult: {due_deadline_min: '20/09/2021', due_deadline_max: '20/09/2023'}}
+      get "/api/v1/consult_charges", params: {consult: {due_deadline_min: '20/09/2021', due_deadline_max: '20/09/2023'}, company_token: company.token}
 
       expect(response).to have_http_status(200)
       expect(response.content_type).to include('application/json')
@@ -179,7 +179,7 @@ describe 'consult charges api' do
       charge2 = charge_11
       charge3 = charge_12
 
-      get api_v1_company_consult_charges_path(company.token), params: {consult: {due_deadline: '20/08/2030'}}
+      get "/api/v1/consult_charges", params: {consult: {due_deadline: '20/08/2030'}, company_token: company.token}
 
       expect(response).to have_http_status(204)
       expect(response.body).to be_empty
@@ -198,7 +198,7 @@ describe 'consult charges api' do
       charge2 = charge_11
       charge3 = charge_12
 
-      get api_v1_company_consult_charges_path(company.token), params: {consult: {due_deadline_max: '20/09/2020'}}
+      get "/api/v1/consult_charges", params: {consult: {due_deadline_max: '20/09/2020'}, company_token: company.token}
 
       expect(response).to have_http_status(204)
       expect(response.body).to be_empty
@@ -217,7 +217,7 @@ describe 'consult charges api' do
       charge2 = charge_11
       charge3 = charge_12
 
-      get api_v1_company_consult_charges_path(company.token), params: {consult: {due_deadline_min: '20/09/2030'}}
+      get "/api/v1/consult_charges", params: {consult: {due_deadline_min: '20/09/2030'}, company_token: company.token}
 
       expect(response).to have_http_status(204)
       expect(response.body).to be_empty
@@ -236,7 +236,7 @@ describe 'consult charges api' do
       charge2 = charge_11
       charge3 = charge_12
 
-      get api_v1_company_consult_charges_path(company.token), params: {consult: {due_deadline_min: '20/09/2022', due_deadline_max: '20/09/2021'}}
+      get "/api/v1/consult_charges", params: {consult: {due_deadline_min: '20/09/2022', due_deadline_max: '20/09/2021'}, company_token: company.token}
 
       expect(response).to have_http_status(416)
     end

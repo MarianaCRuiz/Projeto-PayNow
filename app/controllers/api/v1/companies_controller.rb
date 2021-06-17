@@ -4,7 +4,6 @@ class Api::V1::CompaniesController < Api::V1::ApiController  #< ActionController
   def charges
     @status = StatusCharge.find_by(code: '01')
     @charge = Charge.new(charge_params)
-    
     @company = Company.find_by(token: charge_params[:company_token])
     @product = Product.find_by(token: charge_params[:product_token])
     @final_client = FinalClient.find_by(token: charge_params[:client_token])
@@ -25,12 +24,13 @@ class Api::V1::CompaniesController < Api::V1::ApiController  #< ActionController
       @pix = @company.pix_register_options.find_by(payment_option: @payment_option)
       if @boleto
         @charge.discount = @charge.price*@product.boleto_discount/100
+        @charge.boleto_register_option = @boleto
       elsif @credit_card
         @charge.discount = @charge.price*@product.credit_card_discount/100
-        @charge.due_deadline = @charge.created_at
+        @charge.credit_card_register_option = @credit_card
       elsif @pix
         @charge.discount = @charge.price*@product.pix_discount/100
-        @charge.due_deadline = @charge.created_at
+        @charge.pix_register_option = @pix
       end
       @charge.product_name = @product.name
       if  @charge.discount
@@ -43,6 +43,10 @@ class Api::V1::CompaniesController < Api::V1::ApiController  #< ActionController
       head 412
     else
       @charge.save!
+      if @credit_card || @pix
+        @charge.due_deadline = @charge.created_at.strftime("%d/%m/%Y")
+        @charge.save
+      end
       render json: @charge.as_json(only: [:product_name, :price, :discount, :charge_price, :client_name, :client_cpf, :payment_method, :token]), status: 201
     end
   rescue ActiveRecord::RecordInvalid
@@ -67,20 +71,38 @@ class Api::V1::CompaniesController < Api::V1::ApiController  #< ActionController
       render json: @final_client.errors, status: :precondition_failed
     end
   end
-  
+    
   def consult_charges
     @company = Company.find_by(token: params[:company_token])
     @due_deadline = consult_params[:due_deadline]
     @due_deadline_max = consult_params[:due_deadline_max]
     @due_deadline_min = consult_params[:due_deadline_min]
     @payment_method = consult_params[:payment_method]
-    if consult_params[:status_charge_id]
-      @status_charge = StatusCharge.find(consult_params[:status_charge_id])
+    @payment_option = PaymentOption.find_by(name: @payment_method)
+    if consult_params[:status_charge_code]
+      @status_charge = StatusCharge.find_by(code: consult_params[:status_charge_code])
     end
-    if @status_charge
+    if consult_params[:charge_id]
       @charge = Charge.find_by(token: consult_params[:charge_id])
-      if @charge
+    end
+    if @status_charge || @charge
+      @payment_date = consult_params[:payment_date]
+      @attempt_date = consult_params[:attempt_date]
+      if @charge && @status_charge && @status_charge.code == '05'
         @charge.status_charge = @status_charge
+        @charge.status_returned = @status_charge.code
+        if @payment_date
+          @charge.payment_date = @payment_date
+        end
+        @charge.save!
+        Receipt.create(due_deadline: @charge.due_deadline, payment_date: @payment_date, charge: @charge)
+        render json: @charge
+      elsif @charge && @status_charge && @status_charge.code != '01'
+        @charge.status_returned = @status_charge.code
+        @charge.status_charge = StatusCharge.find_by(code: '01')
+        if @attempt_date
+          @charge.attempt_date = @attempt_date
+        end
         @charge.save!
         render json: @charge
       else
@@ -135,13 +157,14 @@ class Api::V1::CompaniesController < Api::V1::ApiController  #< ActionController
 
   def charge_params
     params.require(:charge).permit(:client_token, :company_token, :product_token, 
-      :payment_method, :boleto_register_option_id, :credit_card_register_option_id, 
-      :pix_register_option_id, :client_address, :card_number, 
-      :card_name, :cvv_code, :due_deadline)
+                                  :payment_method, :boleto_register_option_id, :credit_card_register_option_id, 
+                                  :pix_register_option_id, :client_address, :card_number, 
+                                  :card_name, :cvv_code, :due_deadline)
   end
 
   def consult_params
-    params.require(:consult).permit(:payment_method, :due_deadline, :due_deadline_min, :due_deadline_max, :status_charge_id, :charge_id)
+    params.require(:consult).permit(:payment_method, :due_deadline, :due_deadline_min, :due_deadline_max, 
+                                    :status_charge_code, :charge_id, :payment_date)
   end
   
   def status_charge_generate
