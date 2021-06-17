@@ -95,5 +95,15 @@ describe 'consult charges api' do
       expect(response).to have_http_status(204)
       expect(response.body).to be_empty 
     end
+    it 'no params' do
+      company1 = company
+  
+      get "/api/v1/consult_charges", params: {consult: {}, company_token: company.token}
+
+      expect(response).to have_http_status(412)
+      expect(response.content_type).to include('application/json')
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body['errors']).to eq('parâmetros inválidos')
+    end
   end
 end

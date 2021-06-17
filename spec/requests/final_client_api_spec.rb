@@ -20,13 +20,12 @@ describe 'final client api' do
     it 'missing data' do
       company1 = company
 
-      post "/api/v1/final_clients", params: {final_client: {name: '', cpf: '', company_token: company.token}}
+      post "/api/v1/final_clients", params: {final_client: {}, company_token: company.token}
 
       expect(response).to have_http_status(412)
       parsed_body = JSON.parse(response.body)
       expect(response.content_type).to include('application/json')
-      expect(parsed_body['name']).to eq(['não pode ficar em branco'])
-      expect(parsed_body['cpf']).to include('não pode ficar em branco')
+      expect(parsed_body['errors']).to eq('parâmetros inválidos')
     end
     it 'params must be uniq' do
       company1 = company

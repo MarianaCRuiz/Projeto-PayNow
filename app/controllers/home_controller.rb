@@ -9,6 +9,10 @@ class HomeController < ApplicationController
       end
     end
   end
+
+  def receipts
+    @receipts = Receipt.all
+  end
   
   private
 

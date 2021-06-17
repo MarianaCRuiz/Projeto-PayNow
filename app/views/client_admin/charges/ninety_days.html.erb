@@ -1,5 +1,6 @@
 <div class="container">
-  <h2>Cobranças</h2> <br>
+  <h2>Cobranças últioms 90 dias</h2> <br>
+  <%= link_to "Todas as cobranças", all_charges_client_admin_charges_path  , class:"btn btn-primary btn-sm" %>
   <%= link_to "Últimos 30 dias", thirty_days_client_admin_charges_path , class:"btn btn-primary btn-sm" %>
   <%= link_to 'Voltar', client_admin_company_path(current_user.company.token) , class:"btn btn-primary btn-sm" %>
   <% @charges.each do |charge|%>
@@ -13,8 +14,8 @@
               <li>Vencimento da fatura: <%= I18n.localize(charge.due_deadline) %></li>
               <li>Data de emissão: <%= charge.created_at.strftime("%d/%m/%Y") %></li>
               <li>Status: <%= charge.status_charge.description %></li>
-              <%= link_to "Atualizar Status: #{charge.token}", edit_client_admin_charge_path(charge.token), class:"btn btn-primary btn-sm"%>
-            </ul> <br>
+              <li>Token: <%= charge.token %></li>
+            </ul>
         </div>
       </li>
     </ul>

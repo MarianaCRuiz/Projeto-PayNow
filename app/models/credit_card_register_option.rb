@@ -1,4 +1,5 @@
 class CreditCardRegisterOption < ApplicationRecord
+  enum status: {active: 0, inactive: 1}
   belongs_to :company
   belongs_to :payment_option
 

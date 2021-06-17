@@ -52,6 +52,19 @@ class ClientAdmin::CreditCardRegisterOptionsController < ApplicationController
     end
   end
 
+  def credit_card_status
+    if current_user.client_admin? || current_user.client_admin_sign_up? 
+      @company = current_user.company
+      @creditcard = CreditCardRegisterOption.find(params[:id])
+      @creditcard.inactive!
+      @creditcard.save
+      redirect_to payments_chosen_client_admin_companies_path, notice: 'Meio de pagamento excluído com sucesso'
+    else
+      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
+  end 
+
+
   private
   
   def credit_card_register_option_params

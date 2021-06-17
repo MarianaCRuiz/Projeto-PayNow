@@ -8,4 +8,5 @@
   </ul>
   <%= link_to 'Produtos', client_admin_company_products_path(current_user.company.token) , class:"btn btn-primary" %>
   <%= link_to 'Atualizar dados', edit_client_admin_company_product_path(current_user.company.token, @product.token) , class:"btn btn-primary" %>
+  <%= link_to 'Excluir produto', product_status_client_admin_company_product_path(@company.token, @product.token), method: :patch, class:"btn btn-primary" %>
 </div>

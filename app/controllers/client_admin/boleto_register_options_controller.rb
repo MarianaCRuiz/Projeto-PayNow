@@ -59,7 +59,20 @@ class ClientAdmin::BoletoRegisterOptionsController < ApplicationController
     end
   end
 
+  def boleto_status
+    if current_user.client_admin? || current_user.client_admin_sign_up? 
+      @company = current_user.company
+      @boleto = BoletoRegisterOption.find(params[:id])
+      @boleto.inactive!
+      @boleto.save
+      redirect_to payments_chosen_client_admin_companies_path, notice: 'Meio de pagamento excluído com sucesso'
+    else
+      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
+  end 
+
   private
+
   def boleto_register_option_params
     params.require(:boleto_register_option).permit(:bank_code_id, :agency_number, :account_number)
   end

@@ -1,5 +1,6 @@
 class Receipt < ApplicationRecord
   belongs_to :charge
+  
   validates :due_deadline, :payment_date, :charge_id, presence: true
 
   before_validation(on: :create) do 

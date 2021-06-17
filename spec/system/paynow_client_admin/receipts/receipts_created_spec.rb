@@ -25,6 +25,7 @@ describe 'issuing recipes authomaticaly' do
     DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
     PaymentCompany.create(company: company, payment_option: pay_1)
     HistoricProduct.create(product: product, company: company, price: product.price)
+    CompanyClient.create!(company: company, final_client: final_client)
     status_2 = StatusCharge.create!(code: "05", description: "Cobrança efetivada com sucesso")
     boleto1 = boleto
     charge1 = charge_1
@@ -46,6 +47,7 @@ describe 'issuing recipes authomaticaly' do
     DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
     PaymentCompany.create(company: company, payment_option: pay_1)
     HistoricProduct.create(product: product, company: company, price: product.price)
+    CompanyClient.create!(company: company, final_client: final_client)
     boleto1 = boleto
     status = status_charge
     charge1 = charge_1

@@ -1,6 +1,7 @@
 class ClientAdmin::ChargesController < ApplicationController
   before_action :authenticate_user!
   before_action :status_charge_generate, only: %i[edit]
+  
   def index
     if current_user.client_admin? || current_user.client_admin_sign_up?
       @company = current_user.company
@@ -28,7 +29,29 @@ class ClientAdmin::ChargesController < ApplicationController
       redirect_to root_path, notice: 'Acesso não autorizado'
     end
   end
-  
+
+  def thirty_days
+    if current_user.client_admin? || current_user.client_admin_sign_up?
+      @company = current_user.company
+      @status = StatusCharge.all
+      gap = Date.today - 30.days
+      @charges = @company.charges.where("created_at >= ? and created_at <= ?", gap, Date.today)
+    else
+      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
+  end
+
+  def ninety_days
+    if current_user.client_admin? || current_user.client_admin_sign_up?
+      @company = current_user.company
+      @status = StatusCharge.all
+      gap = Date.today - 90.days
+      @charges = @company.charges.where("created_at >= ? and created_at <= ?", gap, Date.today)
+    else
+      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
+  end
+
   def update
     if current_user.client_admin? || current_user.client_admin_sign_up?
       @status_returned = StatusCharge.find(params[:charge][:status_charge_id])

@@ -26,9 +26,11 @@ CodePlay no nosso contexto.
 * Testes:
     * Rspec
     * Capybara
+    * Shoulda Matchers
 * Gems extras adicionadas
     * 'rspec-rails'
     * 'capybara'
+    * 'shoulda-matchers'
     * 'devise'
     * 'mail'
 

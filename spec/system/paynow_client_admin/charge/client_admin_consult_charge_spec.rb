@@ -30,7 +30,7 @@ describe 'client_admin consult charges' do
                                 status_charge: status_charge, product: product_2,
                                 payment_option: pay_1, price: 60, charge_price: 54)}
 
-  it 'client_admin view charges' do
+  it 'client_admin view charges status 01' do
     DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
     PaymentCompany.create(company: company, payment_option: pay_1)
     HistoricProduct.create(product: product, company: company, price: product.price)
@@ -128,7 +128,7 @@ describe 'client_admin consult charges' do
 
     expect(page).to have_content('não pode ficar em branco', count: 1)
   end
-  it 'see all charge status' do
+  it 'see all charges' do
     DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
     PaymentCompany.create(company: company, payment_option: pay_1)
     HistoricProduct.create(product: product, company: company, price: product.price)
@@ -145,7 +145,7 @@ describe 'client_admin consult charges' do
     
     login_as user_admin, scope: :user
     visit client_admin_company_path(company[:token])
-    click_on 'Consultar cobranças pendentes'
+    click_on "Consultar cobranças últimos 30 dias"
     click_on "Todas as cobranças"
 
     expect(page).to have_content('Produto 1')
@@ -154,6 +154,77 @@ describe 'client_admin consult charges' do
     expect(page).to have_content('Produto 2')
     expect(page).to have_content("54,00")
     expect(page).to have_content('Vencimento da fatura: 30/12/2024')
+    expect(page).to have_content('Boleto')
+  end
+  it 'see last 30 days charges' do
+    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    PaymentCompany.create(company: company, payment_option: pay_1)
+    HistoricProduct.create(product: product, company: company, price: product.price)
+    HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+    CompanyClient.create!(final_client: final_client, company: company)
+    CompanyClient.create!(final_client: final_client_2, company: company)
+    status_2 = StatusCharge.create!(code: '05', description: "Cobrança efetivada com sucesso\n")
+    boleto1 = boleto
+    charge1 = charge_1
+    charge2 = charge_11
+    price1 = product.price
+    price2 = product_2.price
+    
+    a = charge_1
+    b = a.created_at
+    a.created_at = b - 10.days
+    a.save!
+    c = charge_11
+    d = c.created_at
+    c.created_at = d + 10.days
+    c.save!
+
+    login_as user_admin, scope: :user
+    visit client_admin_company_path(company[:token])
+    click_on "Consultar cobranças últimos 30 dias"
+
+    expect(page).to have_content('Produto 1')
+    expect(page).to have_content("45,00")
+    expect(page).to have_content('Vencimento da fatura: 24/12/2023')
+    expect(page).to_not have_content('Produto 2')
+    expect(page).to_not have_content("54,00")
+    expect(page).to_not have_content('Vencimento da fatura: 30/12/2024')
+    expect(page).to have_content('Boleto')
+  end
+  it 'see last 90 days charges' do
+    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    PaymentCompany.create(company: company, payment_option: pay_1)
+    HistoricProduct.create(product: product, company: company, price: product.price)
+    HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+    CompanyClient.create!(final_client: final_client, company: company)
+    CompanyClient.create!(final_client: final_client_2, company: company)
+    status_2 = StatusCharge.create!(code: '05', description: "Cobrança efetivada com sucesso\n")
+    boleto1 = boleto
+    charge1 = charge_1
+    charge2 = charge_11
+    price1 = product.price
+    price2 = product_2.price
+    
+    a = charge_1
+    b = a.created_at
+    a.created_at = b - 10.days
+    a.save!
+    c = charge_11
+    d = c.created_at
+    c.created_at = d - 100.days
+    c.save!
+
+    login_as user_admin, scope: :user
+    visit client_admin_company_path(company[:token])
+    click_on "Consultar cobranças últimos 30 dias"
+    click_on "Últimos 90 dias"
+
+    expect(page).to have_content('Produto 1')
+    expect(page).to have_content("45,00")
+    expect(page).to have_content('Vencimento da fatura: 24/12/2023')
+    expect(page).to_not have_content('Produto 2')
+    expect(page).to_not have_content("54,00")
+    expect(page).to_not have_content('Vencimento da fatura: 30/12/2024')
     expect(page).to have_content('Boleto')
   end
 end

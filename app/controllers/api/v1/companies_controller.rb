@@ -1,4 +1,4 @@
-class Api::V1::CompaniesController < Api::V1::ApiController  #< ActionController::API
+class Api::V1::CompaniesController < ActionController::API
   before_action :status_charge_generate, only: %i[charges consult_charges]
   
   def charges
@@ -47,10 +47,13 @@ class Api::V1::CompaniesController < Api::V1::ApiController  #< ActionController
         @charge.due_deadline = @charge.created_at.strftime("%d/%m/%Y")
         @charge.save
       end
-      render json: @charge.as_json(only: [:product_name, :price, :discount, :charge_price, :client_name, :client_cpf, :payment_method, :token]), status: 201
+      render json: @charge.as_json(only: [:product_name, :price, :discount, :charge_price, 
+                                          :client_name, :client_cpf, :payment_method, :token]), status: 201
     end
   rescue ActiveRecord::RecordInvalid
     render json: @charge.errors, status: :precondition_failed
+  rescue ActionController::ParameterMissing
+    render status: :precondition_failed, json: { errors: 'parâmetros inválidos' }
   end
 
   def final_clients
@@ -70,6 +73,8 @@ class Api::V1::CompaniesController < Api::V1::ApiController  #< ActionController
     else
       render json: @final_client.errors, status: :precondition_failed
     end
+  rescue ActionController::ParameterMissing
+    render status: :precondition_failed, json: { errors: 'parâmetros inválidos' }
   end
     
   def consult_charges
@@ -147,6 +152,8 @@ class Api::V1::CompaniesController < Api::V1::ApiController  #< ActionController
     end
   rescue ActiveRecord::RecordInvalid
     render json: @charge.errors, status: :precondition_failed
+  rescue ActionController::ParameterMissing
+    render status: :precondition_failed, json: { errors: 'parâmetros inválidos' }
   end
 
   private

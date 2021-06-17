@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_15_225043) do
+ActiveRecord::Schema.define(version: 2021_06_17_092854) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 2021_06_15_225043) do
     t.integer "bank_code_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "status", default: 0, null: false
     t.index ["bank_code_id"], name: "index_boleto_register_options_on_bank_code_id"
     t.index ["company_id"], name: "index_boleto_register_options_on_company_id"
     t.index ["payment_option_id"], name: "index_boleto_register_options_on_payment_option_id"
@@ -143,6 +144,7 @@ ActiveRecord::Schema.define(version: 2021_06_15_225043) do
     t.decimal "max_money_fee"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "status", default: 0, null: false
     t.index ["company_id"], name: "index_credit_card_register_options_on_company_id"
     t.index ["payment_option_id"], name: "index_credit_card_register_options_on_payment_option_id"
   end
@@ -237,6 +239,7 @@ ActiveRecord::Schema.define(version: 2021_06_15_225043) do
     t.integer "company_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "status", default: 0, null: false
     t.index ["company_id"], name: "index_products_on_company_id"
   end
 

@@ -1,0 +1,23 @@
+<div class="container">
+  <h2>Cobranças pendentes</h2>
+  <%= link_to 'Voltar', root_path , class:"btn btn-primary btn-sm mb-1" %>
+  <% @receipts.each do |receipt|%>
+  <ul class="list-group">
+    <li class="list-group-item d-flex justify-content-between align-items-start">
+      <div class="ms-2 me-auto">
+        <div class="fw-bold">Recibo <%= receipt.authorization_token %></div>
+          <ul>
+            <li>Cliente: <%= receipt.charge.client_name %></li>
+            <li>Produto: <%= receipt.charge.product.name %></li>
+            <li>Valor sem desconto: <%= number_to_currency receipt.charge.price %></li>
+            <li>Desconto: <%= number_to_currency receipt.charge.discount %></li>
+            <li>Valor cobrado: <%= number_to_currency receipt.charge.charge_price %></li>
+            <li>Vencimento da fatura: <%= receipt.due_deadline.strftime("%d/%m/%Y") %></li>
+            <li>Data de pagamento: <%= receipt.payment_date.strftime("%d/%m/%Y") %></li>
+            <li>Método de pagamento: <%= receipt.charge.payment_method %></li>
+          </ul>
+      </div>
+    </li>
+  </ul>
+  <% end %>
+</div>

@@ -6,16 +6,14 @@
   <%= link_to 'Voltar', client_admin_company_path(current_user.company.token) , class:"btn btn-primary btn-sm" %> <br> <br>
   <div>
     <% @payments_chosen.each do |option|%>
-      <% if option.active? %>
-        <div class="container">
-          <p>
-            <% if option.icon.persisted? %>
-              <%= image_tag option.icon, size:'50' %>
-            <% end %>
-            <%= option.name %>, Taxa: <%= number_to_percentage(option.fee, precision: 2) %>, Taxa máxima: <%= number_to_currency option.max_money_fee %>
-          </p>
-        </div>
-      <% end %>
+      <div class="container">
+        <p>
+          <% if option.icon.persisted? %>
+            <%= image_tag option.icon, size:'50' %>
+          <% end %>
+          <%= option.name %>, Taxa: <%= number_to_percentage(option.fee, precision: 2) %>, Taxa máxima: <%= number_to_currency option.max_money_fee %>
+        </p>
+      </div>
     <% end %>
   </div>
   <ol class="list-group list-group-numbered">
@@ -32,6 +30,7 @@
                   <li>Agência: <%= boleto.agency_number %></li>
                   <li>Conta: <%= boleto.account_number %></li>
                   <%= link_to "Atualizar #{boleto.payment_option.name}", edit_client_admin_payment_option_boleto_register_option_path(boleto.payment_option, boleto) , class:"btn btn-primary btn-sm" %>
+                  <%= link_to "Excluir #{boleto.payment_option.name}", boleto_status_client_admin_payment_option_boleto_register_option_path(boleto.payment_option, boleto), method: :patch, class:"btn btn-primary btn-sm" %>
                 </ul>
               </div>
             <% end %>
@@ -50,6 +49,7 @@
                 <li><%= credit_card.payment_option.name %></li>
                   <li>Código da operadora: <%= credit_card.credit_card_operator_token %></li>
                   <%= link_to "Atualizar #{credit_card.payment_option.name}", edit_client_admin_payment_option_credit_card_register_option_path(credit_card.payment_option, credit_card), class:"btn btn-primary btn-sm" %>
+                  <%= link_to "Excluir #{credit_card.payment_option.name}", credit_card_status_client_admin_payment_option_credit_card_register_option_path(credit_card.payment_option, credit_card), method: :patch, class:"btn btn-primary btn-sm" %>
                 </ul>
               </div>
             <% end %>

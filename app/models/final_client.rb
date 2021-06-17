@@ -1,6 +1,5 @@
 class FinalClient < ApplicationRecord
   before_validation :generate_token, on: :create
-  #before_validation :generate_token_api, on: :final_clients
 
   has_many :company_clients
   has_many :companies, through: :company_clients

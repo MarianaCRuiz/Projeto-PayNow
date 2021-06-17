@@ -2,20 +2,31 @@ Rails.application.routes.draw do
 
   devise_for :users
   root 'home#index'
+  get 'receipts', to: 'home#receipts'
 
   namespace :client_admin do
     resources :companies, only: %i[show new create edit update], param: :token do
       get 'payments_chosen', on: :collection
       patch 'token_new', on: :member
-      resources :products, only: %i[index show new create edit update], param: :token
+      resources :products, only: %i[index show new create edit update], param: :token do
+        patch "product_status", on: :member
+      end
     end
     resources :charges, only: %i[index edit update], param: :token do
       get 'all_charges', on: :collection
+      get 'thirty_days', on: :collection
+      get 'ninety_days', on: :collection
     end
     resources :payment_options, only: %i[index] do
-      resources :boleto_register_options, only: %i[new create edit update]
-      resources :credit_card_register_options, only: %i[new create edit update]
-      resources :pix_register_options, only: %i[new create edit update]
+      resources :boleto_register_options, only: %i[new create edit update] do
+        patch "boleto_status", on: :member
+      end
+      resources :credit_card_register_options, only: %i[new create edit update] do
+        patch "credit_card_status", on: :member
+      end
+      resources :pix_register_options, only: %i[new create edit update] do
+        patch "pix_status", on: :member
+      end
     end
   end
   namespace :clients do

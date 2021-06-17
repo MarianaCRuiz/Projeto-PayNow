@@ -1,4 +1,5 @@
 class Product < ApplicationRecord
+  enum status: {active: 0, inactive: 1}
   belongs_to :company
   has_many :historic_products
   has_many :charges

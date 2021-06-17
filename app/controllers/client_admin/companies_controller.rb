@@ -60,10 +60,10 @@ class ClientAdmin::CompaniesController < ApplicationController
 
   def payments_chosen #get
     @company = current_user.company
-    @boletos = @company.boleto_register_options
-    @credit_cards = @company.credit_card_register_options
-    @pixes = @company.pix_register_options
-    @payments_chosen = @company.payment_options 
+    @boletos = @company.boleto_register_options.where(status: 0)
+    @credit_cards = @company.credit_card_register_options.where(status: 0)
+    @pixes = @company.pix_register_options #.where(status: 0)
+    @payments_chosen = @company.payment_options.where(state: 0)
   end
 
   def token_new

@@ -4,7 +4,7 @@ class ClientAdmin::ProductsController < ApplicationController
   def index
     if current_user.client_admin? || current_user.client_admin_sign_up? 
       @company = Company.find_by(token: params[:token])
-      @products = Product.all  #order(:name)
+      @products = Product.where(status: 0)  #order(:name)
     else
       redirect_to root_path, notice: 'Acesso não autorizado'
     end
@@ -63,6 +63,18 @@ class ClientAdmin::ProductsController < ApplicationController
       redirect_to root_path, notice: 'Acesso não autorizado'
     end
   end
+
+  def product_status
+    if current_user.client_admin? || current_user.client_admin_sign_up? 
+      @company = current_user.company
+      @product = Product.find_by(token: params[:token])
+      @product.inactive!
+      @product.save
+      redirect_to client_admin_company_products_path(current_user.company), notice: 'Produto excluído com sucesso'
+    else
+      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
+  end 
   private
   def product_params
     params.require(:product).permit(:name, :price, :boleto_discount, :credit_card_discount, :pix_discount)

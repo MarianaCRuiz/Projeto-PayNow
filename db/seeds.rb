@@ -1,16 +1,16 @@
 require 'csv'
 csv_text = File.read("#{Rails.root}/public/bank_codes3.csv")
 csv = CSV.parse(csv_text, :headers => true)
-#csv.each do |row|
-#  code, bank = row.to_s.split(' ', 2)
-#  BankCode.create(code: code, bank: bank)
-#end
+csv.each do |row|
+  code, bank = row.to_s.split(' ', 2)
+  BankCode.create(code: code, bank: bank)
+end
 csv_text2 = File.read("#{Rails.root}/public/charge_status_options.csv")
 csv2 = CSV.parse(csv_text2, :headers => true)
-#csv2.each do |row|
-#  code, description = row.to_s.split(' ', 2)
-#  StatusCharge.create(code: code, description: description)
-#end
+csv2.each do |row|
+  code, description = row.to_s.split(' ', 2)
+  StatusCharge.create(code: code, description: description)
+end
 
 email_admin_1 = 'adminteste1@paynow.com.br'
 email_admin_2 = 'adminteste2@paynow.com.br'
@@ -98,12 +98,13 @@ end
 
 product_1 = Product.where(name: 'Produto 1').first
 product_2 = Product.where(name: 'Produto 2').first
+product_3 = Product.where(name: 'Produto 3').first
 FinalClient.create(name: 'Cliente 1', cpf: '11122233344')
 FinalClient.create(name: 'Cliente 2', cpf: '55522233344')
-StatusCharge.create(code: '01', description: 'Pendente de cobrança')
 final_client_1 = FinalClient.find_by(cpf: '11122233344')
 final_client_2 = FinalClient.find_by(cpf: '55522233344')
 status_charge = StatusCharge.find_by(code: '01')
+status_2 = StatusCharge.find_by(code: '05')
 
 Charge.create(client_token: final_client_1.token, 
               client_name: final_client_1.name, client_cpf: final_client_1.cpf, 
@@ -124,16 +125,40 @@ Charge.create(client_token: final_client_2.token,
               company_token:company_1.token, product_token: product_1.token, 
               payment_method: pay_2.name, card_number: '1111 2222 3333 4444',
               card_name: 'CLIENTE XY', cvv_code: '123', 
-              due_deadline: '25/12/2023', company: company_1, final_client: final_client_2,
+              due_deadline: '25/04/2021', company: company_1, final_client: final_client_2,
               status_charge: status_charge, product: product_1,
               payment_option: pay_2, price: 50, charge_price: 45 )
 Charge.create(client_token: final_client_2.token, 
               client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
               company_token:company_1.token, product_token: product_2.token, 
-              payment_method: pay_3.name, due_deadline: '30/12/2024', 
+              payment_method: pay_3.name, due_deadline: '17/12/2020', 
               company: company_1, final_client: final_client_2,
               status_charge: status_charge, product: product_2,
               payment_option: pay_3, price: 60, charge_price: 54)
+c1 = Charge.create!(client_token: final_client_2.token, 
+                    client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
+                    company_token:company_1.token, product_token: product_3.token, 
+                    payment_method: pay_3.name, due_deadline: '14/06/2021', 
+                    company: company_1, final_client: final_client_2,
+                    status_charge: status_2, product: product_3,
+                    payment_option: pay_3, price: product_3.price, discount: (product_3.price*product_3.pix_discount/100),
+                    charge_price: product_3.price-(product_3.price*product_3.pix_discount/100), payment_date: '14/06/2021')
+c2 = Charge.create!(client_token: final_client_2.token, 
+                    client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
+                    company_token:company_1.token, product_token: product_3.token, 
+                    payment_method: pay_2.name, due_deadline: '14/06/2021', 
+                    card_number: '1111 2222 3333 4444',
+                    card_name: 'CLIENTE XY', cvv_code: '123', 
+                    company: company_1, final_client: final_client_2,
+                    status_charge: status_2, product: product_3,
+                    payment_option: pay_2, price: product_3.price, discount: (product_3.price*product_3.credit_card_discount/100),
+                    charge_price: product_3.price-(product_3.price*product_3.credit_card_discount/100), payment_date: '14/06/2021')
+if c1
+  Receipt.create(due_deadline: c1.due_deadline, payment_date: c1.payment_date, charge: c1)
+end
+if c2
+  Receipt.create!(due_deadline: c2.due_deadline, payment_date: c2.payment_date, charge: c2)
+end
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 #

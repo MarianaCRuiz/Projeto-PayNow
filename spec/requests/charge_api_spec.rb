@@ -134,6 +134,22 @@ describe 'charge api' do
 
         expect(response).to have_http_status(412)
       end
+      it 'no params' do
+        company1 = company
+        product1 = product
+        bank1 = bank
+        pay1 = pay_1
+        boleto1 = boleto
+        final_client1 = final_client
+        HistoricProduct.create(product: product, company: company, price: product.price)
+
+         post "/api/v1/charges", params: {charge: {}}
+  
+        expect(response).to have_http_status(412)
+        expect(response.content_type).to include('application/json')
+        parsed_body = JSON.parse(response.body)
+        expect(parsed_body['errors']).to eq('parâmetros inválidos')
+      end
     end
   end
 end
