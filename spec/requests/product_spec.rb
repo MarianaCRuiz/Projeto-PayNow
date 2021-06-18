@@ -23,8 +23,13 @@ describe 'authentication' do
         
       expect(response).to redirect_to(new_user_session_path)
     end
-    xit 'PATCH status' do
+    it 'PATCH status' do
+      company2 = company
+      product2 = product
       
+      patch product_status_client_admin_company_product_path(company.token, product.token)
+        
+      expect(response).to redirect_to(new_user_session_path)
     end
   end
   context 'client' do
@@ -47,6 +52,18 @@ describe 'authentication' do
       login_as user, scope: :user
       
       patch client_admin_company_product_path(company.token, product.token)
+            
+      expect(response).to redirect_to(root_path)
+    end
+    it 'PATCH status' do
+      DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+      company2 = company
+      product2 = product
+
+      login_as user, scope: :user
+      
+      patch product_status_client_admin_company_product_path(company.token, product.token)
             
       expect(response).to redirect_to(root_path)
     end

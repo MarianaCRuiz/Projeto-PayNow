@@ -23,7 +23,7 @@ class CreateCharges < ActiveRecord::Migration[6.1]
       t.references :product, null: false, foreign_key: true
       t.references :final_client, null: false, foreign_key: true
       t.references :boleto_register_option, null: true, foreign_key: true
-      t.references :credit_card_register_option, true: false, foreign_key: true
+      t.references :credit_card_register_option, null: true, foreign_key: true
       t.references :pix_register_option, null: true, foreign_key: true
       t.references :status_charge, null: false, foreign_key: true
       t.references :payment_option, null: false, foreign_key: true

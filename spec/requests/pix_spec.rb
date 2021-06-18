@@ -22,11 +22,18 @@ describe 'authentication' do
         expect(response).to redirect_to(new_user_session_path)
       end
 
-      it 'PATCH' do
+      it 'PATCH update' do
         pix = pix_option
         pay = pay_3
 
         patch client_admin_payment_option_pix_register_option_path(pay, pix)
+        expect(response).to redirect_to(new_user_session_path)
+      end
+      it 'PATCH exclude' do
+        pix = pix_option
+        pay = pay_3
+
+        patch exclude_client_admin_payment_option_pix_register_option_path(pay, pix)
         expect(response).to redirect_to(new_user_session_path)
       end
     end
@@ -45,7 +52,7 @@ describe 'authentication' do
       
         expect(response).to redirect_to(root_path)
       end
-      it 'PATCH' do
+      it 'PATCH update' do
         DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
         DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
         pay = pay_3
@@ -53,6 +60,17 @@ describe 'authentication' do
 
         login_as user, scope: :user
         patch client_admin_payment_option_pix_register_option_path(pay, pix)
+              
+        expect(response).to redirect_to(root_path)
+      end
+      it 'PATCH exclude' do
+        DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+        pay = pay_3
+        pix = pix_option
+
+        login_as user, scope: :user
+        patch exclude_client_admin_payment_option_pix_register_option_path(pay, pix)
               
         expect(response).to redirect_to(root_path)
       end

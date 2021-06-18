@@ -19,13 +19,13 @@ Rails.application.routes.draw do
     end
     resources :payment_options, only: %i[index] do
       resources :boleto_register_options, only: %i[new create edit update] do
-        patch "boleto_status", on: :member
+        patch 'exclude', on: :member
       end
       resources :credit_card_register_options, only: %i[new create edit update] do
-        patch "credit_card_status", on: :member
+        patch 'exclude', on: :member
       end
       resources :pix_register_options, only: %i[new create edit update] do
-        patch "pix_status", on: :member
+        patch 'exclude', on: :member
       end
     end
   end

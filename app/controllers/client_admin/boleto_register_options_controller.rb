@@ -59,12 +59,17 @@ class ClientAdmin::BoletoRegisterOptionsController < ApplicationController
     end
   end
 
-  def boleto_status
+  def exclude
     if current_user.client_admin? || current_user.client_admin_sign_up? 
       @company = current_user.company
       @boleto = BoletoRegisterOption.find(params[:id])
+      @payment_option = @boleto.payment_option
+      @boleto.agency_number = ''
+      @boleto.account_number = ''
       @boleto.inactive!
-      @boleto.save
+      @boleto.save!
+      @company.payment_companies.find_by(payment_option: @payment_option).destroy
+     # byebug
       redirect_to payments_chosen_client_admin_companies_path, notice: 'Meio de pagamento excluído com sucesso'
     else
       redirect_to root_path, notice: 'Acesso não autorizado'

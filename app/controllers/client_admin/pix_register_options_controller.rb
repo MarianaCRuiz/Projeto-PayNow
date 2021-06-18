@@ -58,6 +58,21 @@ class ClientAdmin::PixRegisterOptionsController < ApplicationController
     end
   end
 
+  def exclude
+    if current_user.client_admin? || current_user.client_admin_sign_up? 
+      @company = current_user.company
+      @pix = PixRegisterOption.find(params[:id])
+      @payment_option = @pix.payment_option
+      @pix.pix_key = ''
+      @pix.inactive!
+      @pix.save!
+      @company.payment_companies.find_by(payment_option: @payment_option).destroy
+      redirect_to payments_chosen_client_admin_companies_path, notice: 'Meio de pagamento excluído com sucesso'
+    else
+      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
+  end 
+
   private
 
   def pix_register_option_params

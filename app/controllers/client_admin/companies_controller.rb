@@ -62,7 +62,7 @@ class ClientAdmin::CompaniesController < ApplicationController
     @company = current_user.company
     @boletos = @company.boleto_register_options.where(status: 0)
     @credit_cards = @company.credit_card_register_options.where(status: 0)
-    @pixes = @company.pix_register_options #.where(status: 0)
+    @pixes = @company.pix_register_options.where(status: 0)
     @payments_chosen = @company.payment_options.where(state: 0)
   end
 

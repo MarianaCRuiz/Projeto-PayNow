@@ -22,10 +22,16 @@ describe 'authentication' do
         expect(response).to redirect_to(new_user_session_path)
       end
 
-      it 'PATCH' do
+      it 'PATCH update' do
         boleto = BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
         pay = pay_1
         patch client_admin_payment_option_boleto_register_option_path(pay, boleto)
+        expect(response).to redirect_to(new_user_session_path)
+      end
+      it 'PATCH exclude' do
+        boleto = BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
+        pay = pay_1
+        patch exclude_client_admin_payment_option_boleto_register_option_path(pay, boleto)
         expect(response).to redirect_to(new_user_session_path)
       end
     end
@@ -45,7 +51,7 @@ describe 'authentication' do
       
         expect(response).to redirect_to(root_path)
       end
-      it 'PATCH' do
+      it 'PATCH update' do
         DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
         DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
         boleto = BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
@@ -53,6 +59,17 @@ describe 'authentication' do
 
         login_as user, scope: :user
         patch client_admin_payment_option_boleto_register_option_path(pay, boleto)
+              
+        expect(response).to redirect_to(root_path)
+      end
+      it 'PATCH exclude' do
+        DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+        boleto = BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
+        pay = pay_1
+
+        login_as user, scope: :user
+        patch exclude_client_admin_payment_option_boleto_register_option_path(pay, boleto)
               
         expect(response).to redirect_to(root_path)
       end

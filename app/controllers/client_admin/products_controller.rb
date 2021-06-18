@@ -69,7 +69,8 @@ class ClientAdmin::ProductsController < ApplicationController
       @company = current_user.company
       @product = Product.find_by(token: params[:token])
       @product.inactive!
-      @product.save
+      @product.name = ''
+      @product.save!
       redirect_to client_admin_company_products_path(current_user.company), notice: 'Produto excluído com sucesso'
     else
       redirect_to root_path, notice: 'Acesso não autorizado'

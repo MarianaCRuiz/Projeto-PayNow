@@ -206,14 +206,14 @@ Admin.create(email: 'email@paynow.com.br')
     * HTTP status 404: Não foi possível encontrar o método de pagamento fornecido no escopo da empresa
     * HTTP status 412: Há parâmetros inválidos ou ausentes
     * HTTP status 416: Consulta por vencimento com data mínima maior do que a máxima
-    
+
 ### Mudança de status de cobrança
 
 * Este é um endpoint utilizado para alterar o status de uma cobrança, inclusive gerando um recibo quando o status mude para cobrança efetivada com sucesso. 
 * Para o uso desse endpoint, segue a rota e os parâmetros necessários: 
     * rota: patch "/api/v1/change_status"
     * parâmetros - mudança de status para aprovada
-     ```
+    ```
     {
         consult: 
         {
