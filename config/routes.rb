@@ -41,6 +41,7 @@ Rails.application.routes.draw do
       post 'charges', to: 'companies#charges'
       post 'final_clients', to: 'companies#final_clients'
       get 'consult_charges', to: 'companies#consult_charges'
+      patch 'change_status', to: 'companies#change_status'
     end
   end
 

@@ -135,7 +135,7 @@ Admin.create(email: 'email@paynow.com.br')
 
 ### Consulta de cobranças
 
-* Este é um endpoint utilizado para consulta de cobranças pelas as empresas cadastradas na plataforma, podendo ser filtrada em função de data de vencimento e método de pagamento. Também é possível alterar o status de uma cobrança, inclusive gerando um recibo quando o status mude para cobrança efetivada com sucesso. Os parâmetros necessários variam com o objetivo, consulta ou mudança de status. A data de vencimento é um dado entrada no caso de pagamento via boleto mas no caso de cartão ou pix foi considerado a data que a cobrança foi gerada.
+* Este é um endpoint utilizado para consulta de cobranças pelas as empresas cadastradas na plataforma, podendo ser filtrada em função de data de vencimento e método de pagamento. A data de vencimento é um dado entrada no caso de pagamento via boleto mas no caso de cartão ou pix foi considerado a data que a cobrança foi gerada.
 * Para o uso desse endpoint, segue a rota e os parâmetros necessários: 
     * rota:  get "/api/v1/consult_charges"
     * parâmetros - consulta data de vencimento específica
@@ -201,6 +201,17 @@ Admin.create(email: 'email@paynow.com.br')
         company_token: company.token
     }
     ```
+* Possíveis respostas:
+    * HTTP status 200: Cobranças obtidas com sucesso
+    * HTTP status 404: Não foi possível encontrar o método de pagamento fornecido no escopo da empresa
+    * HTTP status 412: Há parâmetros inválidos ou ausentes
+    * HTTP status 416: Consulta por vencimento com data mínima maior do que a máxima
+    
+### Mudança de status de cobrança
+
+* Este é um endpoint utilizado para alterar o status de uma cobrança, inclusive gerando um recibo quando o status mude para cobrança efetivada com sucesso. 
+* Para o uso desse endpoint, segue a rota e os parâmetros necessários: 
+    * rota: patch "/api/v1/change_status"
     * parâmetros - mudança de status para aprovada
      ```
     {
@@ -226,9 +237,7 @@ Admin.create(email: 'email@paynow.com.br')
     }
     ```    
 * Possíveis respostas:
-    * HTTP status 200: Cobranças obtidas com sucesso
+    * HTTP status 200: Cobrança atualizada com sucesso
     * HTTP status 204: Nenhuma cobrança encontrada
-    * HTTP status 404: Não foi possível encontrar código do status, token da cobrança ou o método de pagamento ou estes não foram fornecidos
+    * HTTP status 404: Não foi possível encontrar código do status ou o token da cobrança ou estes não foram fornecidos
     * HTTP status 412: Há parâmetros inválidos ou ausentes
-    * HTTP status 416: Consulta por vencimento com data mínima maior do que a máxima
-

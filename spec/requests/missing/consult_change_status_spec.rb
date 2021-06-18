@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'consult charges changing status api' do
+describe 'charge_status charges changing status api' do
   let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
                 city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
                 address_complement: '', billing_email: 'faturamento@codeplay.com')}
@@ -29,7 +29,7 @@ describe 'consult charges changing status api' do
       boleto1 = boleto
       charge1 = charge_1
 
-      get "/api/v1/consult_charges", params: {consult: {status_charge_code: '05', 
+      patch "/api/v1/change_status", params: {charge_status: {status_charge_code: '05', 
                                                         charge_id: charge_1.token, payment_date: '16/06/2021'},
                                                         company_token: company.token}
 
@@ -53,20 +53,21 @@ describe 'consult charges changing status api' do
       boleto1 = boleto
       charge1 = charge_1
 
-      get "/api/v1/consult_charges", params: {consult: {status_charge_code: 10, charge_id: charge_1.token}, company_token: company.token}
+      patch "/api/v1/change_status", params: {charge_status: {status_charge_code: 10, charge_id: charge_1.token}, company_token: company.token}
 
       expect(response).to have_http_status(412)
     end
+    
     it 'missing payment date' do
       CompanyClient.create!(final_client: final_client, company: company)
       HistoricProduct.create(product: product, company: company, price: product.price)
       PaymentCompany.create!(company: company, payment_option: pay_1)
-      status_2 = StatusCharge.create!(code: "05", description: "Cobrança efetivada com sucesso")
+      status_2 = StatusCharge.create!(code: "05", description: "Cobrança efetivada com sucesso\n")
       bank1 = bank
       boleto1 = boleto
       charge1 = charge_1
 
-      get "/api/v1/consult_charges", params: {consult: {status_charge_code: status_2.code, charge_id: charge_1.token}, company_token: company.token}
+      patch "/api/v1/change_status", params: {charge_status: {status_charge_code: status_2.code, charge_id: charge_1.token}, company_token: company.token}
 
       expect(response).to have_http_status(412)
 
@@ -75,6 +76,7 @@ describe 'consult charges changing status api' do
       parsed_body = JSON.parse(response.body)
       expect(parsed_body['payment_date']).to eq(['não pode ficar em branco'])
     end
+
     it 'missing attempt date' do
       CompanyClient.create!(final_client: final_client, company: company)
       HistoricProduct.create(product: product, company: company, price: product.price)
@@ -83,12 +85,13 @@ describe 'consult charges changing status api' do
       boleto1 = boleto
       charge1 = charge_1
 
-      get "/api/v1/consult_charges", params: {consult: {status_charge_code: '11', charge_id: charge_1.token}, company_token: company.token}
+      patch "/api/v1/change_status", params: {charge_status: {status_charge_code: '11', charge_id: charge_1.token}, company_token: company.token}
 
       expect(response).to have_http_status(412)
       parsed_body = JSON.parse(response.body)
       expect(parsed_body['attempt_date']).to eq(['não pode ficar em branco'])
     end
+
     it 'missing charge_id' do
       CompanyClient.create!(final_client: final_client, company: company)
       HistoricProduct.create(product: product, company: company, price: product.price)
@@ -97,10 +100,11 @@ describe 'consult charges changing status api' do
       boleto1 = boleto
       charge1 = charge_1
 
-      get "/api/v1/consult_charges", params: {consult: {status_charge_code: '11'}, company_token: company.token}
+      patch "/api/v1/change_status", params: {charge_status: {status_charge_code: '11'}, company_token: company.token}
 
       expect(response).to have_http_status(404)
     end
+
     it 'missing status_charge_code' do
       CompanyClient.create!(final_client: final_client, company: company)
       HistoricProduct.create(product: product, company: company, price: product.price)
@@ -109,7 +113,7 @@ describe 'consult charges changing status api' do
       boleto1 = boleto
       charge1 = charge_1
 
-      get "/api/v1/consult_charges", params: {consult: {charge_id: charge_1.token}, company_token: company.token}
+      patch "/api/v1/change_status", params: {charge_status: {charge_id: charge_1.token}, company_token: company.token}
 
       expect(response).to have_http_status(404)
     end
