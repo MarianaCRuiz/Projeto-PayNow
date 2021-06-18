@@ -5,9 +5,12 @@ describe 'client_admin deactivate product' do
                 city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
                 address_complement: '', billing_email: 'faturamento@codeplay.com')}
   let(:user_admin) {User.create!(email: 'admin@codeplay.com', password: '123456', role: 1, company: company)}
+  let(:user) {User.create!(email: 'user@codeplay.com', password: '123456', role: 0, company: company)}
   let(:product) {Product.create!(name:'Produto 1', price: 53, boleto_discount: 1, company: company)}
+  
   it 'successfully' do
     DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
     HistoricProduct.create(product: product, company: company, price: product.price)
 
     login_as user_admin, scope: :user

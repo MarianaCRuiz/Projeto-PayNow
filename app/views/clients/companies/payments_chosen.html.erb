@@ -1,14 +1,16 @@
 <div class="container">
   <h2>Opções de pagamento escolhidas</h2> <br>
+  <%= link_to 'Voltar', client_company_path(current_user.company.token) , class:"btn btn-primary btn-sm" %> <br> <br>
   <div>
     <% @payments_chosen.each do |option|%>
-    <div class="container">
-      <p><% if option.icon.persisted? %>
-        <%= image_tag option.icon, size:'50' %>
-        <% end %>
-      <%= option.name %>, Taxa: <%= number_to_percentage(option.fee, precision: 2) %>, Taxa máxima: <%= number_to_currency option.max_money_fee %>
-      </p>
-    </div>
+      <div class="container">
+        <p>
+          <% if option.icon.persisted? %>
+            <%= image_tag option.icon, size:'50' %>
+          <% end %>
+          <%= option.name %>, Taxa: <%= number_to_percentage(option.fee, precision: 2) %>, Taxa máxima: <%= number_to_currency option.max_money_fee %>
+        </p>
+      </div>
     <% end %>
   </div>
   <ol class="list-group list-group-numbered">
@@ -17,14 +19,16 @@
       <div class="ms-2 me-auto">
         <div class="fw-bold">Boletos</div>
           <% @boletos.each do |boleto|%>
-            <div class="container">
-              <ul>
-                <li><%= boleto.name %></li>
-                <li>Código do Banco: <%= boleto.bank_code.code %></li>
-                <li>Agência: <%= boleto.agency_number %></li>
-                <li>Conta: <%= boleto.account_number %></li>
-              </ul>
-            </div>
+            <% if boleto.payment_option.active? %>
+              <div class="container">
+                <ul>
+                  <li><%= boleto.payment_option.name %></li>
+                  <li>Código do Banco: <%= boleto.bank_code.code %></li>
+                  <li>Agência: <%= boleto.agency_number %></li>
+                  <li>Conta: <%= boleto.account_number %></li>
+                </ul>
+              </div>
+            <% end %>
           <% end %>
       </div>
     </li>
@@ -34,12 +38,14 @@
       <div class="ms-2 me-auto">
         <div class="fw-bold">Cartões de Crédito</div>
           <% @credit_cards.each do |credit_card|%>
-            <div class="container">
-              <ul>
-               <li><%= credit_card.name %></li>
-                <li>Código da operadora: <%= credit_card.credit_card_operator_token %></li>
-              </ul>
-            </div>
+            <% if credit_card.payment_option.active? %>
+              <div class="container">
+                <ul>
+                <li><%= credit_card.payment_option.name %></li>
+                  <li>Código da operadora: <%= credit_card.credit_card_operator_token %></li>
+                </ul>
+              </div>
+            <% end %>
           <% end %>
       </div>
     </li>
@@ -49,17 +55,18 @@
       <div class="ms-2 me-auto">
         <div class="fw-bold">Pix</div>
           <% @pixes.each do |pix|%>
-            <div class="container">
-              <ul>
-                <li><%= pix.name %></li>
-                <li>Chave PIX: <%= pix.pix_key %></li>
-                <li>Código do Banco: <%= pix.bank_code.code %></li>
-              </ul>
-            </div>
+            <% if pix.payment_option.active? %>
+              <div class="container">
+                <ul>
+                  <li><%= pix.payment_option.name %></li>
+                  <li>Chave PIX: <%= pix.pix_key %></li>
+                  <li>Código do Banco: <%= pix.bank_code.code %></li>
+                </ul>
+              </div>
+            <% end %>
           <% end %>
       </div>
     </li>
     <% end %>
   </ol>
-  <%= link_to 'Voltar', client_admin_company_path(current_user.company.token) , class:"btn btn-primary btn-sm" %>
 </div>

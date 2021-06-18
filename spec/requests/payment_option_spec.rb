@@ -30,7 +30,7 @@ describe 'authentication' do
       expect(response).to redirect_to(root_path)
     end
     it 'PATCH' do
-      DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
       
       login_as user_admin, scope: :user
       option = PaymentOption.create(name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0)
@@ -42,8 +42,8 @@ describe 'authentication' do
   end
   context 'client' do
     it 'POST' do
-      DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
         
       login_as user_admin, scope: :user
       post admin_payment_options_path, params: {payment_option: {name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0}}
@@ -51,8 +51,8 @@ describe 'authentication' do
       expect(response).to redirect_to(root_path)
     end
     it 'PATCH' do
-      DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
         
       login_as user_admin, scope: :user
       option = PaymentOption.create(name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0)

@@ -76,8 +76,8 @@ describe 'client_admin consult charges' do
   end
   context 'client' do
     it 'index' do
-        DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
         token = '5pjB8SDb74LH6bBnawe2'
         company.token = token
         
@@ -88,8 +88,8 @@ describe 'client_admin consult charges' do
         expect(page).to have_content('Acesso não autorizado')
       end
     it 'all charges' do
-      DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
       token = '5pjB8SDb74LH6bBnawe2'
       company.token = token
       
@@ -100,8 +100,8 @@ describe 'client_admin consult charges' do
       expect(page).to have_content('Acesso não autorizado')
     end
     it 'edit charge' do
-      DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
       PaymentCompany.create(company: company, payment_option: pay_1)
       HistoricProduct.create(product: product, company: company, price: product.price)
       token = '1pjB8SDb74LH1bBnawe2'

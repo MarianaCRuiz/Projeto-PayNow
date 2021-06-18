@@ -32,8 +32,8 @@ describe 'authentication' do
     end
     context 'client' do
       it 'index' do
-        DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
         
         login_as user, scope: :user
         visit admin_payment_options_path
@@ -42,8 +42,8 @@ describe 'authentication' do
         expect(page).to have_content('Acesso não autorizado')
       end
       it 'index' do
-        DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
         
         login_as user, scope: :user
         visit new_admin_payment_option_path
@@ -52,8 +52,8 @@ describe 'authentication' do
         expect(page).to have_content('Acesso não autorizado')
       end
       it 'index' do
-        DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
         
         login_as user, scope: :user
         visit edit_admin_payment_option_path(1)
@@ -64,7 +64,7 @@ describe 'authentication' do
     end
     context 'client_admin' do
       it 'index' do
-        DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
         
         login_as user_admin, scope: :user
         visit admin_payment_options_path
@@ -73,7 +73,7 @@ describe 'authentication' do
         expect(page).to have_content('Acesso não autorizado')
       end
       it 'index' do
-        DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
         
         login_as user_admin, scope: :user
         visit new_admin_payment_option_path
@@ -82,7 +82,7 @@ describe 'authentication' do
         expect(page).to have_content('Acesso não autorizado')
       end
       it 'index' do
-        DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
         
         login_as user_admin, scope: :user
         visit edit_admin_payment_option_path(1)

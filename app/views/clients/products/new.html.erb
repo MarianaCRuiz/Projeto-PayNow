@@ -1,0 +1,32 @@
+<% if @product.errors.any? %>
+  <p>Foram encontrados <%= @product.errors.count %> erro(s):</p>
+  <ul>
+    <%  @product.errors.full_messages.each do |error| %>
+      <li><%= error %></li>
+    <% end %>
+  </ul>
+<% end %>
+<%= form_with url: clients_company_products_path(@company.token), model: [:clients, @company, @product] do |f| %>
+  <div class="field form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class:"form-control" %>
+  </div>
+  <div class="field form-group">
+    <%= f.label :price %>
+    <%= f.number_field :price, class:"form-control" %>
+  </div>
+  <div class="field form-group">
+    <%= f.label :boleto_discount %>
+    <%= f.number_field :boleto_discount, class:"form-control" %>
+  </div>
+    <div class="field form-group">
+    <%= f.label :credit_card_discount %>
+    <%= f.number_field :credit_card_discount, class:"form-control" %>
+  </div>
+    <div class="field form-group">
+    <%= f.label :pix_discount %>
+    <%= f.number_field :pix_discount, class:"form-control" %>
+  </div>
+  <%= f.submit t('.submit'), class:"btn btn-success mb-1 mt-1" %>
+<% end %>
+<%= link_to 'Cancelar', clients_company_path(@company.token), class:"btn btn-dark btn-sm mb-1 mt-1" %>

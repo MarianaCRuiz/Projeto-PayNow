@@ -29,10 +29,18 @@ Rails.application.routes.draw do
       end
     end
   end
+
   namespace :clients do
     resources :companies, only: %i[show], param: :token do
       get 'payments_chosen', on: :collection
-      #resources :products, only: %i[index show new create edit update], param: :token
+      resources :products, only: %i[index show new create edit update], param: :token do
+        patch "product_status", on: :member
+      end
+    end
+    resources :charges, only: %i[index], param: :token do
+      get 'all_charges', on: :collection
+      get 'thirty_days', on: :collection
+      get 'ninety_days', on: :collection
     end
   end
 

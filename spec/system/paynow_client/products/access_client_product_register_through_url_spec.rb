@@ -8,11 +8,11 @@ describe 'authentication' do
   let(:user) {User.create!(email: 'user@empresa3.com', password: '123456', role: 0, company: company)}
   let(:product) {Product.create!(name:'Produto 1', price: 53, boleto_discount: 1, company: company)}
   
-  context 'client_admin product register' do
+  context 'client product register' do
     context 'visitor' do
       it 'index' do
         company1 = company
-        visit client_admin_company_products_path(company1.token)
+        visit clients_company_products_path(company1.token)
         
         expect(current_path).to eq(new_user_session_path)
         expect(page).to have_content('Para continuar, efetue login ou registre-se')
@@ -20,7 +20,7 @@ describe 'authentication' do
       it 'show' do
         HistoricProduct.create(product: product, company: company, price: product.price)
 
-        visit client_admin_company_product_path(company.token, product.token)
+        visit clients_company_product_path(company.token, product.token)
         
         expect(current_path).to eq(new_user_session_path)
         expect(page).to have_content('Para continuar, efetue login ou registre-se')
@@ -33,8 +33,8 @@ describe 'authentication' do
         DomainRecord.create!(email: user.email, domain: 'empresa3.com', company: company)
         company1 = company
         
-        login_as user, scope: :user
-        visit client_admin_company_products_path(company1.token)
+        login_as user_admin, scope: :user
+        visit clients_company_products_path(company1.token)
         
         expect(current_path).to eq(root_path)
         expect(page).to have_content('Acesso não autorizado')
@@ -44,8 +44,8 @@ describe 'authentication' do
         DomainRecord.create!(email_client_admin: user_admin.email, domain: 'empresa3.com', company: company)
         DomainRecord.create!(email: user.email, domain: 'empresa3.com', company: company)
        
-        login_as user, scope: :user
-        visit client_admin_company_product_path(company.token, product.token)
+        login_as user_admin, scope: :user
+        visit clients_company_product_path(company.token, product.token)
         
         expect(current_path).to eq(root_path)
         expect(page).to have_content('Acesso não autorizado')
@@ -54,8 +54,8 @@ describe 'authentication' do
         DomainRecord.create!(email_client_admin: user_admin.email, domain: 'empresa3.com', company: company)
         DomainRecord.create!(email: user.email, domain: 'empresa3.com', company: company)
         
-        login_as user, scope: :user
-        visit new_client_admin_company_product_path(company.token)
+        login_as user_admin, scope: :user
+        visit new_clients_company_product_path(company.token)
         
         expect(current_path).to eq(root_path)
         expect(page).to have_content('Acesso não autorizado')
@@ -65,8 +65,8 @@ describe 'authentication' do
         DomainRecord.create!(email_client_admin: user_admin.email, domain: 'empresa3.com', company: company)
         DomainRecord.create!(email: user.email, domain: 'empresa3.com', company: company)
         
-        login_as user, scope: :user
-        visit edit_client_admin_company_product_path(company.token, product.token)
+        login_as user_admin, scope: :user
+        visit edit_clients_company_product_path(company.token, product.token)
         
         expect(current_path).to eq(root_path)
         expect(page).to have_content('Acesso não autorizado')

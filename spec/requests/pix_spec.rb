@@ -39,8 +39,8 @@ describe 'authentication' do
     end
     context 'client' do
       it 'POST' do
-        DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
         pay = pay_3
 
         login_as user, scope: :user
@@ -53,8 +53,8 @@ describe 'authentication' do
         expect(response).to redirect_to(root_path)
       end
       it 'PATCH update' do
-        DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
         pay = pay_3
         pix = pix_option
 
@@ -64,8 +64,8 @@ describe 'authentication' do
         expect(response).to redirect_to(root_path)
       end
       it 'PATCH exclude' do
-        DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
         pay = pay_3
         pix = pix_option
 

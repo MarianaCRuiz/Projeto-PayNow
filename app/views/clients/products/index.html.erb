@@ -1,0 +1,18 @@
+<div class="container">
+  <h2>
+    <% if @products.empty? %>
+      Nenhum produto cadastrado
+    <% else %>
+      Produtos cadastrados
+    <% end %>
+  </h2> <br>
+  <div>
+    <% @products.each do |product|%>
+    <div class="container">
+      <p>Nome: <%= link_to "#{product.name}", clients_company_product_path(product.company.token, product.token), class:"btn btn-success" %>, Preço: <%= number_to_currency product.price %></p>
+    </div>
+    <% end %>
+  </div>
+  <%= link_to 'Registrar produto', new_clients_company_product_path(current_user.company.token) , class:"btn btn-primary" %>
+  <%= link_to 'Voltar', clients_company_path(current_user.company.token) , class:"btn btn-primary btn-sm" %>
+</div>

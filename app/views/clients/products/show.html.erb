@@ -1,0 +1,12 @@
+<div class="container">
+  <h2><%= @product.name %></h2>
+  <ul>
+    <li>Preço: <%= number_to_currency @product.price %></li>
+    <li>Desconto no Boleto: <%= number_to_percentage(@product.boleto_discount, precision: 2) %></li>
+    <li>Desconto no Cartão de Crédito: <%= number_to_percentage(@product.credit_card_discount, precision: 2) %></li>
+    <li>Desconto no PIX: <%= number_to_percentage(@product.pix_discount, precision: 2) %></li>
+  </ul>
+  <%= link_to 'Produtos', clients_company_products_path(current_user.company.token) , class:"btn btn-primary" %>
+  <%= link_to 'Atualizar dados', edit_clients_company_product_path(current_user.company.token, @product.token) , class:"btn btn-primary" %>
+  <%= link_to 'Excluir produto', product_status_clients_company_product_path(@company.token, @product.token), method: :patch, class:"btn btn-primary" %>
+</div>

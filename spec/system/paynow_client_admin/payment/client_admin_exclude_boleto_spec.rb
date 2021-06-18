@@ -14,7 +14,7 @@ describe 'client_admin deactivate boleto' do
   let(:status_charge) {StatusCharge.create!(code: '01', description: 'Pendente de cobrança')}
 
   it 'successfuly' do
-    DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
+    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
     boleto = BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
     BoletoRegisterOption.create!(company: company, payment_option: pay_2, bank_code: bank_2, agency_number: '4030', account_number: '123.444-9')
     PaymentCompany.create!(company: company, payment_option: pay_1)

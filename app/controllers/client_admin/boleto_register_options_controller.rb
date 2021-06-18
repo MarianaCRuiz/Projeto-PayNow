@@ -67,10 +67,12 @@ class ClientAdmin::BoletoRegisterOptionsController < ApplicationController
       @boleto.agency_number = ''
       @boleto.account_number = ''
       @boleto.inactive!
-      @boleto.save!
-      @company.payment_companies.find_by(payment_option: @payment_option).destroy
-     # byebug
-      redirect_to payments_chosen_client_admin_companies_path, notice: 'Meio de pagamento excluído com sucesso'
+      if @boleto.save
+        @company.payment_companies.find_by(payment_option: @payment_option).destroy
+        redirect_to payments_chosen_client_admin_companies_path, notice: 'Meio de pagamento excluído com sucesso'
+      else
+        redirect_to payments_chosen_client_admin_companies_path, notice: 'Não foi possível excluir'
+      end
     else
       redirect_to root_path, notice: 'Acesso não autorizado'
     end

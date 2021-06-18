@@ -65,9 +65,12 @@ class ClientAdmin::PixRegisterOptionsController < ApplicationController
       @payment_option = @pix.payment_option
       @pix.pix_key = ''
       @pix.inactive!
-      @pix.save!
-      @company.payment_companies.find_by(payment_option: @payment_option).destroy
-      redirect_to payments_chosen_client_admin_companies_path, notice: 'Meio de pagamento excluído com sucesso'
+      if @pix.save
+        @company.payment_companies.find_by(payment_option: @payment_option).destroy
+        redirect_to payments_chosen_client_admin_companies_path, notice: 'Meio de pagamento excluído com sucesso'
+      else
+        redirect_to payments_chosen_client_admin_companies_path, notice: 'Não foi possível excluir'
+      end
     else
       redirect_to root_path, notice: 'Acesso não autorizado'
     end

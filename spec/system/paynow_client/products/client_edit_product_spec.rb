@@ -1,17 +1,20 @@
 require 'rails_helper'
 
-describe 'client_admin edit product' do
+describe 'client edit product' do
   let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
                 city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
                 address_complement: '', billing_email: 'faturamento@codeplay.com')}
   let(:user_admin) {User.create!(email: 'admin@codeplay.com', password: '123456', role: 1, company: company)}
+  let(:user) {User.create!(email: 'user@codeplay.com', password: '123456', role: 0, company: company)}
   let(:product) {Product.create!(name:'Produto 1', price: 53, boleto_discount: 1, company: company)}
+
   it 'successfully' do
     DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
     HistoricProduct.create(product: product, company: company, price: product.price)
-
-    login_as user_admin, scope: :user
-    visit client_admin_company_path(company[:token])
+    
+    login_as user, scope: :user
+    visit clients_company_path(company[:token])
     click_on 'Produtos cadastrados'
     click_on 'Produto 1'
     click_on 'Atualizar dados'
@@ -24,6 +27,7 @@ describe 'client_admin edit product' do
     expect(HistoricProduct.count).to be(2)
   end
   it 'same product but diferent companies' do
+    DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
     DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
     company2 = Company.create(corporate_name: 'Empresa1 SA', cnpj: '44.212.343/0001-42' , state: 'São Paulo', 
                               city: 'Campinas', district: 'Csmpos', street: 'rua 2', number: '13', 
@@ -32,8 +36,8 @@ describe 'client_admin edit product' do
     HistoricProduct.create(product: product, company: company, price: product.price)
     HistoricProduct.create(product: product2, company: company2, price: product2.price)
 
-    login_as user_admin, scope: :user
-    visit client_admin_company_path(company[:token])
+    login_as user, scope: :user
+    visit clients_company_path(company[:token])
     click_on 'Produtos cadastrados'
     click_on 'Produto 1'
     click_on 'Atualizar dados'
@@ -50,10 +54,11 @@ describe 'client_admin edit product' do
   context 'failure' do
     it 'missing information' do
       DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
       HistoricProduct.create(product: product, company: company, price: product.price)
 
-      login_as user_admin, scope: :user
-      visit client_admin_company_path(company[:token])
+      login_as user, scope: :user
+      visit clients_company_path(company[:token])
       click_on 'Produtos cadastrados'
       click_on 'Produto 1'
       click_on 'Atualizar dados'
@@ -66,13 +71,14 @@ describe 'client_admin edit product' do
       expect(HistoricProduct.count).to be(1)
     end
     it 'product already registered same company' do
+      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
       DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
       HistoricProduct.create(product: product, company: company, price: product.price)
       product2 = Product.create!(name:'Produto 2', price: 23, boleto_discount: 6, company: company)
       HistoricProduct.create(product: product2, company: company, price: product2.price)
       
-      login_as user_admin, scope: :user
-      visit client_admin_company_path(company[:token])
+      login_as user, scope: :user
+      visit clients_company_path(company[:token])
       click_on 'Produtos cadastrados'
       click_on 'Produto 1'
       click_on 'Atualizar dados'
@@ -85,10 +91,11 @@ describe 'client_admin edit product' do
     end
     it 'discount must be a number' do
       DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
       HistoricProduct.create(product: product, company: company, price: product.price)
       
-      login_as user_admin, scope: :user
-      visit client_admin_company_path(company[:token])
+      login_as user, scope: :user
+      visit clients_company_path(company[:token])
       click_on 'Produtos cadastrados'
       click_on 'Produto 1'
       click_on 'Atualizar dados'
@@ -103,11 +110,12 @@ describe 'client_admin edit product' do
       expect(HistoricProduct.count).to be(1) 
     end
     it 'discount cannot be negative' do
+      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
       DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
       HistoricProduct.create(product: product, company: company, price: product.price)
       
-      login_as user_admin, scope: :user
-      visit client_admin_company_path(company[:token])
+      login_as user, scope: :user
+      visit clients_company_path(company[:token])
       click_on 'Produtos cadastrados'
       click_on 'Produto 1'
       click_on 'Atualizar dados'

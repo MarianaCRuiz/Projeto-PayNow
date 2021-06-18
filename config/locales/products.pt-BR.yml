@@ -15,6 +15,21 @@ pt-BR:
       destroy:
         failure: ''
         success: ''
+  clients:
+    products:
+      new:
+        title: 'Cadastro'
+        submit: 'Registrar produto'
+      edit:
+        title: ''
+        submit: 'Atualizar'
+      create:
+        success: ''
+      update:
+        success: 'Dados atualizados com sucesso'
+      destroy:
+        failure: ''
+        success: ''
   activerecord:
     models:
       product: 'Dados de products vinculados à empresa'

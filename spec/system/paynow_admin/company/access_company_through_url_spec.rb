@@ -36,8 +36,8 @@ describe 'cannot access through url' do
   end
   context 'client' do
     it 'companies' do
-      DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
       company1 = company
       token = company.token
 
@@ -48,8 +48,8 @@ describe 'cannot access through url' do
       expect(page).to have_content('Acesso não autorizado')
     end
     it 'company profile' do
-      DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
       company1 = company
       token = company.token
       
@@ -60,8 +60,8 @@ describe 'cannot access through url' do
       expect(page).to have_content('Acesso não autorizado')
     end
     it 'edit company' do
-      DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
       company1 = company
       token = company.token
       
@@ -74,8 +74,8 @@ describe 'cannot access through url' do
   end
   context 'client_admin' do
     it 'companies' do
-      DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
       company1 = company
       token = company.token
 
@@ -86,8 +86,8 @@ describe 'cannot access through url' do
       expect(page).to have_content('Acesso não autorizado')
     end
     it 'company profile' do
-      DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
       company1 = company
       token = company.token
       
@@ -98,8 +98,8 @@ describe 'cannot access through url' do
       expect(page).to have_content('Acesso não autorizado')
     end
     it 'edit company' do
-      DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
       company1 = company
       token = company.token
       

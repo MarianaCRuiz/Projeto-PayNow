@@ -9,7 +9,7 @@ describe 'register Boleto' do
   let(:bank) {BankCode.create!(code: '001', bank:'Banco do Brasil S.A.')}
 
   it 'client_admin register boleto succesfully' do
-    DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
+    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
     boleto_option = pay_1
     bank_code = bank
 
@@ -29,7 +29,7 @@ describe 'register Boleto' do
     expect(page).to have_content('111.222-3')
   end
   it 'cannot be blank' do
-    DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
+    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
 
     boleto_option = pay_1
     bank_code = bank
@@ -48,7 +48,7 @@ describe 'register Boleto' do
   end
   context 'uniquenes account number' do
     it 'all scopes' do
-      DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
       BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
       
       login_as user_admin, scope: :user
@@ -64,7 +64,7 @@ describe 'register Boleto' do
       expect(page).to have_content('já está em uso')    
     end
     it 'differeent bank' do
-      DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
       BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
       bank_2 = BankCode.create!(code: '029', bank:'Banco Itaú Consignado S.A.')
 
@@ -84,7 +84,7 @@ describe 'register Boleto' do
       expect(page).to have_content('123.555-8')   
     end
     it 'differeent agency_number' do
-      DomainRecord.create!(email_client_admin: user_admin, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
       BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
       
       login_as user_admin, scope: :user
