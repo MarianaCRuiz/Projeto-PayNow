@@ -19,7 +19,7 @@ class ClientAdmin::CreditCardRegisterOptionsController < ApplicationController
       @credit_card_register_option.max_money_fee = @payment_option.max_money_fee
       if @credit_card_register_option.save
         PaymentCompany.create!(company: @company, payment_option: @payment_option)
-        redirect_to payments_chosen_client_admin_companies_path, notice: 'Opção adicionada com sucesso'
+        redirect_to payments_chosen_client_admin_company_path(@company.token), notice: 'Opção adicionada com sucesso'
       else
         render :new
       end
@@ -41,7 +41,7 @@ class ClientAdmin::CreditCardRegisterOptionsController < ApplicationController
     if current_user.client_admin? || current_user.client_admin_sign_up? 
       @credit_card_register_option = CreditCardRegisterOption.find(params[:id])
       if @credit_card_register_option.update(credit_card_register_option_params)
-        redirect_to payments_chosen_client_admin_companies_path, notice: 'Opção atualizada com sucesso'
+        redirect_to payments_chosen_client_admin_company_path(current_user.company.token), notice: 'Opção atualizada com sucesso'
       else
         @payment_option = PaymentOption.find(params[:payment_option_id])
         @bank_codes = BankCode.all
@@ -61,9 +61,9 @@ class ClientAdmin::CreditCardRegisterOptionsController < ApplicationController
       @creditcard.inactive!
       if @creditcard.save
         @company.payment_companies.find_by(payment_option: @payment_option).destroy
-        redirect_to payments_chosen_client_admin_companies_path, notice: 'Meio de pagamento excluído com sucesso'
+        redirect_to payments_chosen_client_admin_company_path(@company.token), notice: 'Meio de pagamento excluído com sucesso'
       else
-        redirect_to payments_chosen_client_admin_companies_path, notice: 'Não foi possível excluir'
+        redirect_to payments_chosen_client_admin_company_path(@company.token), notice: 'Não foi possível excluir'
       end
     else
       redirect_to root_path, notice: 'Acesso não autorizado'

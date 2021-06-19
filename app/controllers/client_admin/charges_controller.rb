@@ -21,15 +21,6 @@ class ClientAdmin::ChargesController < ApplicationController
     end
   end
 
-  def edit
-    if current_user.client_admin? || current_user.client_admin_sign_up? 
-      @charge = Charge.find_by(token: params[:token])
-      @status_charges = StatusCharge.all
-    else
-      redirect_to root_path, notice: 'Acesso não autorizado'
-    end
-  end
-
   def thirty_days
     if current_user.client_admin? || current_user.client_admin_sign_up?
       @company = current_user.company
@@ -47,6 +38,15 @@ class ClientAdmin::ChargesController < ApplicationController
       @status = StatusCharge.all
       gap = Date.today - 90.days
       @charges = @company.charges.where("created_at >= ? and created_at <= ?", gap, Date.today)
+    else
+      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
+  end
+
+  def edit
+    if current_user.client_admin? || current_user.client_admin_sign_up? 
+      @charge = Charge.find_by(token: params[:token])
+      @status_charges = StatusCharge.all
     else
       redirect_to root_path, notice: 'Acesso não autorizado'
     end

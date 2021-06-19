@@ -4,7 +4,7 @@ class User < ApplicationRecord
   validates :email, presence: true, email: true
   validates :email, uniqueness: true
   
-  enum role: {client: 0, client_admin: 1, admin: 2, client_admin_sign_up: 3}
+  enum role: {client: 0, client_admin: 1, admin: 2, client_admin_sign_up: 3, blocked: 4}
                   # Include default devise modules. Others available are:
                   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,

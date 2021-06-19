@@ -32,7 +32,8 @@ describe 'cannot access through url' do
       expect(page).to have_content('Para continuar, efetue login ou registre-se')
     end
     it 'payment chosen' do
-      visit "/client_admin/companies/payment_chosen"
+      company1 = company
+      visit payments_chosen_client_admin_company_path(company.token)
 
       expect(current_path).to eq(new_user_session_path)
       expect(page).to have_content('Para continuar, efetue login ou registre-se')
@@ -69,6 +70,16 @@ describe 'cannot access through url' do
 
       login_as user, scope: :user
       visit "/client_admin/companies/new"
+
+      expect(current_path).to eq(root_path)
+      expect(page).to have_content('Acesso não autorizado')
+    end
+    it 'payment chosen' do
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+
+      login_as user, scope: :user
+      visit payments_chosen_client_admin_company_path(company.token)
 
       expect(current_path).to eq(root_path)
       expect(page).to have_content('Acesso não autorizado')

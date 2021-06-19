@@ -17,7 +17,7 @@ class HomeController < ApplicationController
   private
 
   def check_current_user
-    if current_user
+    if current_user && current_user
       domain = current_user.email.split('@').last
       if domain == "paynow.com.br" && !Admin.where(email: current_user.email).empty?        
         current_user.admin! 
@@ -29,17 +29,20 @@ class HomeController < ApplicationController
       elsif !DomainRecord.where(domain: domain).empty? && DomainRecord.where(domain: domain).first.company.blank?
         current_user.client_admin_sign_up! 
               #  puts 'return new C ADMIN'
-      elsif !DomainRecord.where(email_client_admin: current_user.email).empty?
+      elsif !DomainRecord.find_by(email_client_admin: current_user.email).blank?
         current_user.client_admin! 
               #  puts 'C ADMIN'
-      elsif !DomainRecord.where(email: current_user.email).empty?
+      elsif DomainRecord.find_by(email: current_user.email) && DomainRecord.find_by(email: current_user.email).blocked?
+        current_user.blocked!
+        puts 'blocked'
+      elsif !DomainRecord.find_by(email: current_user.email).blank?
         current_user.client! 
               #  puts 'CLIENT'
-      elsif DomainRecord.where(email: current_user.email).empty?
+      elsif DomainRecord.find_by(email: current_user.email).blank?
         current_user.client!
         company = DomainRecord.where(domain: domain).first.company
-        User.where(email: current_user.email).first.update(company: company)
-        current_user.company = User.where(email: current_user.email).first.company
+        User.find_by(email: current_user.email).update(company: company)
+        current_user.company = User.find_by(email: current_user.email).company
         DomainRecord.create(email: current_user.email, domain: domain, company: current_user.company)  
               # puts 'NEW C'
       end
@@ -49,10 +52,10 @@ class HomeController < ApplicationController
     if current_user
       if current_user.client_admin? || current_user.client_admin_sign_up?
         domain = current_user.email.split('@').last
-        if DomainRecord.where(email_client_admin: current_user.email).empty?
-          if DomainRecord.where(domain: domain).first
+        if DomainRecord.find_by(email_client_admin: current_user.email).blank?
+          if DomainRecord.find_by(domain: domain)
             email = DomainRecord.where(domain: domain).first.email_client_admin
-            DomainRecord.where(email_client_admin: email).first.update(email_client_admin: current_user.email)
+            DomainRecord.find_by(email_client_admin: email).update(email_client_admin: current_user.email)
           end
         end
       end

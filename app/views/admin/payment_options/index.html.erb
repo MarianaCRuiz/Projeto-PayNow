@@ -16,9 +16,9 @@
                 <li>Taxa: <%= number_to_percentage(option.fee, precision: 2) %></li>
                 <li>Taxa máxima: <%= number_to_currency option.max_money_fee %></li>
                 <li><% if option.active? %> 
-                <span class="badge bg-success"><%= PaymentOption.human_attribute_name("state.#{option.state}") %></span>
+                <span class="badge bg-success"><%= @payment_options.human_attribute_name("state.#{option.state}") %></span>
                 <% else %>
-                <span class="badge bg-warning text-dark"><%= PaymentOption.human_attribute_name("state.#{option.state}") %></span>
+                <span class="badge bg-warning text-dark"><%= @payment_options.human_attribute_name("state.#{option.state}") %></span>
                 <% end %>
                 </li>
                 <%= link_to "Atualizar #{option.name}", edit_admin_payment_option_path(option) , class:"btn btn-primary btn-sm" %>

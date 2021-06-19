@@ -1,0 +1,13 @@
+---
+pt-BR:
+  activerecord:
+    models:
+      domain_record: 'Domínios'
+    attributes:
+      domain_record:
+        email_client_admin: 'Email do administrador da empresa cliente'
+        email: 'Email funcionários da empresa'
+        domain: 'Domínio da empresa'
+      domain_record/status:
+        allowed: 'Permitido'
+        blocked: 'Bloqueado'

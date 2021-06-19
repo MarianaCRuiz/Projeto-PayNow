@@ -1,0 +1,33 @@
+<div class="container">
+  <h2>Emails cadastrados</h2> <br>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Email</th>
+      <th scope="col">Status</th>
+      <th scope="col">Ação</th>
+    </tr>
+  </thead>
+  <% i = 1 %>
+  <% @emails.each do |user| %>
+    <% if user.email %>
+      <tbody>
+        <tr>
+          <th scope="row">i</th>
+          <td><%= user.email %></td>
+          <td><%= @domains.human_attribute_name("status.#{user.status}") %></td>
+          <td>
+          <% if user.allowed? %>
+            <%= link_to "Bloquear #{user.email}", block_email_client_admin_company_path(current_user.company, email: user.email), method: :patch, class:"btn btn-warning" %>
+          <% else %>
+            <%= link_to "Desbloquear #{user.email}", unblock_email_client_admin_company_path(current_user.company, email: user.email), method: :patch, class:"btn btn-success" %>
+          <% end %>
+          </td>
+        </tr>
+      </tbody>
+    <% end %>
+    <% i += 1%>
+  <% end %>
+</table>
+</div>

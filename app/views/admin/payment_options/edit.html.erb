@@ -9,7 +9,7 @@
 <%= form_with model: [:admin, @payment_option] do |f| %>
   <div class="field form-group">
     <%= f.label :payment_type, 'Tipo' %>
-    <%= f.select(:payment_type, PaymentOption.payment_types.keys.map {|type| [PaymentOption.human_enum_name(:payment_type, type),type]}, class:"form-control") %>
+    <%= f.select(:payment_type, @payments.payment_types.keys.map {|type| [@payments.human_enum_name(:payment_type, type),type]}, class:"form-control") %>
   </div>
   <div class="field form-group">
     <%= f.label :name %>
@@ -36,4 +36,4 @@
   </div>
   <%= f.submit t('.submit'), class:"btn btn-success mb-1 mt-1" %>
 <% end %>
-<%= link_to 'Cancelar', root_path , class:"btn btn-dark btn-sm mb-1 mt-1" %>
+<%= link_to 'Cancelar', admin_payment_options_path , class:"btn btn-dark btn-sm mb-1 mt-1" %>

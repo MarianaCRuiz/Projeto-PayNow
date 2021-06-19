@@ -6,8 +6,11 @@ Rails.application.routes.draw do
 
   namespace :client_admin do
     resources :companies, only: %i[show new create edit update], param: :token do
-      get 'payments_chosen', on: :collection
+      get 'payments_chosen', on: :member
       patch 'token_new', on: :member
+      get 'emails', on: :member
+      patch 'block_email', on: :member
+      patch 'unblock_email', on: :member
       resources :products, only: %i[index show new create edit update], param: :token do
         patch "product_status", on: :member
       end
@@ -32,7 +35,7 @@ Rails.application.routes.draw do
 
   namespace :clients do
     resources :companies, only: %i[show], param: :token do
-      get 'payments_chosen', on: :collection
+      get 'payments_chosen', on: :member
       resources :products, only: %i[index show new create edit update], param: :token do
         patch "product_status", on: :member
       end
@@ -48,8 +51,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       post 'charges', to: 'companies#charges'
       post 'final_clients', to: 'companies#final_clients'
-      get 'consult_charges', to: 'companies#consult_charges'
-      patch 'change_status', to: 'companies#change_status'
+      get 'consult_charges', to: 'queries#consult_charges'
+      patch 'change_status', to: 'queries#change_status'
     end
   end
 

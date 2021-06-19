@@ -25,6 +25,7 @@ class ClientAdmin::CompaniesController < ApplicationController
         @historic.save
         DomainRecord.where(email_client_admin: current_user.email).first.company_id = @company.id
         current_user.company = @company
+        current_user.save
         redirect_to client_admin_company_path(@company[:token])     
       else
         render :new
@@ -58,13 +59,45 @@ class ClientAdmin::CompaniesController < ApplicationController
     end
   end
 
-  def payments_chosen #get
+  def payments_chosen
     if current_user.client_admin? || current_user.client_admin_sign_up?
       @company = current_user.company
       @boletos = @company.boleto_register_options.where(status: 0)
       @credit_cards = @company.credit_card_register_options.where(status: 0)
       @pixes = @company.pix_register_options.where(status: 0)
       @payments_chosen = @company.payment_options.where(state: 0)
+    else
+      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
+  end
+
+  def emails
+    if current_user.client_admin? || current_user.client_admin_sign_up?
+      @company = current_user.company
+      @domains = DomainRecord.all
+      @emails = @company.domain_records
+    else
+      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
+  end
+
+  def block_email
+    if current_user.client_admin? || current_user.client_admin_sign_up?
+      @company = current_user.company
+      @email = @company.domain_records.find_by(email: params[:email])
+      @email.blocked!
+      redirect_to emails_client_admin_company_path(@company.token), notice: 'Email bloqueado com sucesso'
+    else
+      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
+  end
+
+  def unblock_email
+    if current_user.client_admin? || current_user.client_admin_sign_up?
+      @company = current_user.company
+      @email = @company.domain_records.find_by(email: params[:email])
+      @email.allowed!
+      redirect_to emails_client_admin_company_path(@company.token), notice: 'Email desbloqueado com sucesso'
     else
       redirect_to root_path, notice: 'Acesso não autorizado'
     end

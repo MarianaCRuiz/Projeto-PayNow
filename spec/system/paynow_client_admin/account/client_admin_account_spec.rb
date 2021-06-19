@@ -112,8 +112,4 @@ describe 'client_admin account' do
       expect(page).to have_content('não pode ficar em branco', count: 3)
     end
   end
-  context 'delete' do
-    xit 'client_admin cannot delete' do #or needs to register other in his place...
-    end
-  end
 end

@@ -4,7 +4,7 @@
   <li>Email de faturamento: <%= @company.billing_email %></li>
   <li>Token: <%= @company.token %></li>
 </ul>
-<%= link_to 'Opções de pagamento', payments_chosen_clients_companies_path , class:"btn btn-primary" %>
+<%= link_to 'Opções de pagamento', payments_chosen_clients_company_path(current_user.company) , class:"btn btn-primary" %>
 <%= link_to 'Produtos cadastrados', clients_company_products_path(@company.token) , class:"btn btn-primary" %>
 <%= link_to 'Consultar cobranças pendentes', clients_charges_path , class:"btn btn-primary" %>
 <%= link_to 'Consultar cobranças últimos 30 dias', thirty_days_clients_charges_path, class:"btn btn-primary" %>

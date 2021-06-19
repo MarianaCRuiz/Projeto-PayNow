@@ -22,7 +22,7 @@ class ClientAdmin::PixRegisterOptionsController < ApplicationController
       @pix_register_option.max_money_fee = @payment_option.max_money_fee
       if @pix_register_option.save
         PaymentCompany.create!(company: @company, payment_option: @payment_option)
-        redirect_to payments_chosen_client_admin_companies_path, notice: 'Opção adicionada com sucesso'
+        redirect_to payments_chosen_client_admin_company_path(@company.token), notice: 'Opção adicionada com sucesso'
       else
         @payment_option = PaymentOption.find(params[:payment_option_id])
         @bank_codes = BankCode.all
@@ -47,7 +47,7 @@ class ClientAdmin::PixRegisterOptionsController < ApplicationController
     if current_user.client_admin? || current_user.client_admin_sign_up? 
       @pix_register_option = PixRegisterOption.find(params[:id])
       if @pix_register_option.update(pix_register_option_params)
-        redirect_to payments_chosen_client_admin_companies_path, notice: 'Opção atualizada com sucesso'
+        redirect_to payments_chosen_client_admin_company_path(current_user.company.token), notice: 'Opção atualizada com sucesso'
       else
         @payment_option = PaymentOption.find(params[:payment_option_id])
         @bank_codes = BankCode.all
@@ -67,7 +67,7 @@ class ClientAdmin::PixRegisterOptionsController < ApplicationController
       @pix.inactive!
       if @pix.save
         @company.payment_companies.find_by(payment_option: @payment_option).destroy
-        redirect_to payments_chosen_client_admin_companies_path, notice: 'Meio de pagamento excluído com sucesso'
+        redirect_to payments_chosen_client_admin_company_path(@company.token), notice: 'Meio de pagamento excluído com sucesso'
       else
         redirect_to payments_chosen_client_admin_companies_path, notice: 'Não foi possível excluir'
       end
