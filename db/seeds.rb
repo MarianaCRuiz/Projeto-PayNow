@@ -23,11 +23,14 @@ User.create(email:email_admin_1, password: '123456', role: 2)
 comp_1 = 'Codeplay SA'
 admin_comp_1 = 'admin@codeplay.com'
 user_comp_1 = 'user@codeplay.com'
+user2_comp_1 = 'user2@codeplay.com'
+user3_comp_1 = 'user3@codeplay.com'
 
 comp_2 = 'Empresa1 SA'
 admin_comp_2 = 'admin@empresa1.com'
 user_comp_2 = 'user@empresa1.com'
-
+user2_comp_2 = 'user2@empresa1.com'
+user3_comp_2 = 'user3@empresa1.com'
 
 company_1 = Company.create(corporate_name: comp_1, cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
                             city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
@@ -35,72 +38,86 @@ company_1 = Company.create(corporate_name: comp_1, cnpj: '11.222.333/0001-44' , 
 
 User.create(email:admin_comp_1, password: '123456', role: 1, company: company_1)
 User.create(email:user_comp_1, password: '123456', role: 0, company: company_1)
+User.create(email:user2_comp_1, password: '123456', role: 0, company: company_1)
+User.create(email:user3_comp_1, password: '123456', role: 0, company: company_1)
 DomainRecord.create(email_client_admin: admin_comp_1, domain: 'codeplay.com', company: company_1)
 DomainRecord.create(email: user_comp_1, domain: 'codeplay.com', company: company_1)
+DomainRecord.create(email: user2_comp_1, domain: 'codeplay.com', company: company_1)
+DomainRecord.create(email: user3_comp_1, domain: 'codeplay.com', company: company_1)
 
 company_2 = Company.create(corporate_name: comp_2, cnpj: '44.212.343/0001-42' , state: 'São Paulo', 
                             city: 'Campinas', district: 'Csmpos', street: 'rua 2', number: '13', 
                             address_complement: '', billing_email: 'faturamento@empresa1.com')
 User.create(email: admin_comp_2, password: '123456', role: 1, company: company_2)
 User.create(email: user_comp_2 , password: '123456', role: 0, company: company_2)
+User.create(email: user2_comp_2 , password: '123456', role: 0, company: company_2)
+User.create(email: user3_comp_2 , password: '123456', role: 0, company: company_2)
 DomainRecord.create(email_client_admin: admin_comp_2, domain: 'empresa1.com', company: company_2)
 DomainRecord.create(email: user_comp_2, domain: 'empresa1.com', company: company_2)
+DomainRecord.create(email: user2_comp_2, domain: 'empresa1.com', company: company_2)
+DomainRecord.create(email: user3_comp_2, domain: 'empresa1.com', company: company_2)
 
 PaymentOption.create(name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0)
+PaymentOption.create(name: 'Boleto BB', fee: 1.8, max_money_fee: 21, payment_type: 0)
+PaymentOption.create(name: 'Boleto X', fee: 1.7, max_money_fee: 22, payment_type: 0)
 PaymentOption.create(name: 'Cartão de Crédito MasterChef', fee: 1.2, max_money_fee: 24, payment_type:1)
+PaymentOption.create(name: 'Cartão de Crédito Pisa', fee: 1.2, max_money_fee: 24, payment_type:1)
 PaymentOption.create(name: 'PIX', fee: 1.3, max_money_fee: 21, payment_type: 2)
-
-BankCode.create(code: '001', bank:'Banco do Brasil S.A.')
-BankCode.create(code: '029', bank:'Banco Itaú Consignado S.A.')
+PaymentOption.create(name: 'PIX_2', fee: 1.3, max_money_fee: 21, payment_type: 2)
+PaymentOption.create(name: 'PIX_3', fee: 1.3, max_money_fee: 21, payment_type: 2)
 
 company_1 = Company.find_by(corporate_name: comp_1)
 company_2 = Company.find_by(corporate_name: comp_2)
-pay_1 = PaymentOption.find_by(payment_type: 0)
-pay_2 = PaymentOption.find_by(payment_type: 1)
-pay_3 = PaymentOption.find_by(payment_type: 2)
+pay_1 = PaymentOption.find_by(name: 'Boleto')
+pay_11 = PaymentOption.find_by(name: 'Boleto BB')
+pay_12 = PaymentOption.find_by(name: 'Boleto X')
+pay_2 = PaymentOption.find_by(name: 'Cartão de Crédito MasterChef')
+pay_21 = PaymentOption.find_by(name: 'Cartão de Crédito Pisa')
+pay_3 = PaymentOption.find_by(name: 'PIX')
+pay_31 = PaymentOption.find_by(name: 'PIX_2')
+pay_32 = PaymentOption.find_by(name: 'PIX_3')
+
 bank1 = BankCode.find_by(code: '001')
 bank2 = BankCode.find_by(code: '029')
 
 boleto1 = BoletoRegisterOption.new(company: company_1, payment_option: pay_1, bank_code: bank1, agency_number: '2050', account_number: '123.555-8')
-if boleto1.save
-  PaymentCompany.create(company: company_1, payment_option: pay_1)
-end
+if boleto1.save then PaymentCompany.create(company: company_1, payment_option: pay_1) end
 creditcard1 = CreditCardRegisterOption.new(company: company_1, payment_option: pay_2, credit_card_operator_token: 'jdB8SD923Nmg8fR1GhJm')
-if creditcard1.save
-  PaymentCompany.create(company: company_1, payment_option: pay_2)
-end
+if creditcard1.save then PaymentCompany.create(company: company_1, payment_option: pay_2) end
 pix1 = PixRegisterOption.new(company: company_1, payment_option: pay_3, pix_key: 'AJ86gt4fLBtcF296rTuN', bank_code: bank2)
-if pix1.save
-  PaymentCompany.create(company: company_1, payment_option: pay_3)
-end
+if pix1.save then PaymentCompany.create(company: company_1, payment_option: pay_3) end
 
 boleto2 = BoletoRegisterOption.new(company: company_2, payment_option: pay_1, bank_code: bank2, agency_number: '2050', account_number: '123.222-8')
-if boleto2.save
-  PaymentCompany.create(company: company_2, payment_option: pay_1)
-end
+if boleto2.save then PaymentCompany.create(company: company_2, payment_option: pay_1) end
 pix2 = PixRegisterOption.new(company: company_2, payment_option: pay_3, pix_key: 'APLB86HpLBtcF296rTuN', bank_code: bank2)
-if pix2.save
-  PaymentCompany.create(company: company_2, payment_option: pay_3)
-end
+if pix2.save then PaymentCompany.create(company: company_2, payment_option: pay_3) end
 
 product_1 = Product.new(name:'Produto 1', price: 53, boleto_discount: 1, company: company_1)
-if product_1.save
-  HistoricProduct.create(product: product_1, company: company_1, price: product_1.price)
-end
+if product_1.save then HistoricProduct.create(product: product_1, company: company_1, price: product_1.price, 
+                                                            boleto_discount: product_1.boleto_discount, 
+                                                            credit_card_discount: product_1.credit_card_discount, 
+                                                            pix_discount: product_1.pix_discount) end
 product_2 = Product.new(name:'Produto 2', price: 34, credit_card_discount: 2, company: company_1)
-if product_2.save
-  HistoricProduct.create(product: product_2, company: company_1, price: product_2.price)
-end
+if product_2.save then HistoricProduct.create(product: product_2, company: company_1, price: product_2.price, 
+                                                            boleto_discount: product_2.boleto_discount, 
+                                                            credit_card_discount: product_2.credit_card_discount, 
+                                                            pix_discount: product_2.pix_discount) end
 product_3 = Product.new(name:'Produto 3', price: 45, pix_discount: 3, company: company_1)
-if product_3.save
-  HistoricProduct.create(product: product_3, company: company_1, price: product_3.price)
-end
+if product_3.save then HistoricProduct.create(product: product_3, company: company_1, price: product_3.price, 
+                                                            boleto_discount: product_3.boleto_discount, 
+                                                            credit_card_discount: product_3.credit_card_discount, 
+                                                            pix_discount: product_3.pix_discount) end
 
 product_1 = Product.where(name: 'Produto 1').first
 product_2 = Product.where(name: 'Produto 2').first
 product_3 = Product.where(name: 'Produto 3').first
-FinalClient.create(name: 'Cliente 1', cpf: '11122233344')
-FinalClient.create(name: 'Cliente 2', cpf: '55522233344')
+f1 = FinalClient.new(name: 'Cliente 1', cpf: '11122233344')
+if f1.save then CompanyClient.create(company: company_1, final_client: f1) end
+f2 = FinalClient.new(name: 'Cliente 2', cpf: '55522233344')
+if f2.save then CompanyClient.create(company: company_2, final_client: f2) end
+f3 = FinalClient.new(name: 'Cliente 3', cpf: '55522233355')
+if f3.save then CompanyClient.create(company: company_1, final_client: f3) ; CompanyClient.create(company: company_2, final_client: f3) end
+
 final_client_1 = FinalClient.find_by(cpf: '11122233344')
 final_client_2 = FinalClient.find_by(cpf: '55522233344')
 status_charge = StatusCharge.find_by(code: '01')
@@ -135,7 +152,7 @@ Charge.create(client_token: final_client_2.token,
               company: company_1, final_client: final_client_2,
               status_charge: status_charge, product: product_2,
               payment_option: pay_3, price: 60, charge_price: 54)
-c1 = Charge.create!(client_token: final_client_2.token, 
+c1 = Charge.new(client_token: final_client_2.token, 
                     client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
                     company_token:company_1.token, product_token: product_3.token, 
                     payment_method: pay_3.name, due_deadline: '14/06/2021', 
@@ -143,7 +160,7 @@ c1 = Charge.create!(client_token: final_client_2.token,
                     status_charge: status_2, product: product_3,
                     payment_option: pay_3, price: product_3.price, discount: (product_3.price*product_3.pix_discount/100),
                     charge_price: product_3.price-(product_3.price*product_3.pix_discount/100), payment_date: '14/06/2021')
-c2 = Charge.create!(client_token: final_client_2.token, 
+c2 = Charge.new(client_token: final_client_2.token, 
                     client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
                     company_token:company_1.token, product_token: product_3.token, 
                     payment_method: pay_2.name, due_deadline: '14/06/2021', 
@@ -153,13 +170,13 @@ c2 = Charge.create!(client_token: final_client_2.token,
                     status_charge: status_2, product: product_3,
                     payment_option: pay_2, price: product_3.price, discount: (product_3.price*product_3.credit_card_discount/100),
                     charge_price: product_3.price-(product_3.price*product_3.credit_card_discount/100), payment_date: '14/06/2021')
-if c1
-  Receipt.create(due_deadline: c1.due_deadline, payment_date: c1.payment_date, charge: c1)
-end
-if c2
-  Receipt.create!(due_deadline: c2.due_deadline, payment_date: c2.payment_date, charge: c2)
-end
-# This file should contain all the record creation needed to seed the database with its default values.
+if c1.save then Receipt.create(due_deadline: c1.due_deadline, payment_date: c1.payment_date, charge: c1) end
+if c2.save then Receipt.create!(due_deadline: c2.due_deadline, payment_date: c2.payment_date, charge: c2) end
+
+
+
+
+  # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 #
 # Examples:

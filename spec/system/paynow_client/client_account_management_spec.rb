@@ -127,7 +127,21 @@ describe 'clients accounts from a registered company' do
     end
   end
   context 'client delete' do
-    xit 'successfully' do
+    it 'successfully' do
+      company = Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
+                                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
+                                address_complement: '', billing_email: 'faturamento@codeplay.com')
+      User.create!(email:'admin@codeplay.com', password: '123456', role: 1, company: company)
+      user = User.create!(email:'user@codeplay.com', password: '123456', role: 0, company: company)
+      DomainRecord.create!(email_client_admin: 'admin@codeplay.com', domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email: 'admin@codeplay.com', domain: 'codeplay.com', company: company)
+      
+      login_as user, scope: :user
+      visit root_path
+      click_on 'Editar conta'
+      click_on 'Cancelar conta'
+
+      expect(page).to have_content('Sua conta foi cancelada com sucesso')
     end
   end
 end

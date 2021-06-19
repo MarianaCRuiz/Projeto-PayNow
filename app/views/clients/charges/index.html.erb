@@ -1,6 +1,6 @@
 <div class="container">
   <h2>Cobranças pendentes</h2>
-  <%= link_to 'Voltar', client_admin_company_path(current_user.company.token), class:"btn btn-primary btn-sm mb-1" %>
+  <%= link_to 'Voltar', clients_company_path(current_user.company.token) , class:"btn btn-primary btn-sm mb-1" %>
   <% @charges.each do |charge|%>
   <ul class="list-group">
     <li class="list-group-item d-flex justify-content-between align-items-start">
@@ -11,8 +11,8 @@
             <li>Valor: <%= number_to_currency charge.charge_price %></li>
             <li>Vencimento da fatura: <%= charge.due_deadline.strftime("%d/%m/%Y") %></li>
             <li>Data de emissão: <%= charge.created_at.strftime("%d/%m/%Y") %></li>
+            <li>Empresa: <%= charge.company.corporate_name %></li>
             <li>Status: <%= charge.status_charge.description %></li>
-            <%= link_to "Atualizar Status: #{charge.token}", edit_client_admin_charge_path(charge.token), class:"btn btn-primary btn-sm"%>
           </ul>
       </div>
     </li>

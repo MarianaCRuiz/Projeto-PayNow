@@ -8,9 +8,10 @@
   </h2> <br>
   <div>
     <% @products.each do |product|%>
-    <div class="container">
-      <p>Nome: <%= link_to "#{product.name}", client_admin_company_product_path(product.company.token, product.token), class:"btn btn-success" %>, Preço: <%= number_to_currency product.price %></p>
-    </div>
+    <ul class="list-group">
+      <li class="list-group-item"><%= link_to "#{product.name}", client_admin_company_product_path(product.company.token, product.token), class:"btn btn-success" %></li>
+      <li class="list-group-item">Preço: <%= number_to_currency product.price %></li>
+    </ul> <br>
     <% end %>
   </div>
   <%= link_to 'Registrar produto', new_client_admin_company_product_path(current_user.company.token) , class:"btn btn-primary" %>

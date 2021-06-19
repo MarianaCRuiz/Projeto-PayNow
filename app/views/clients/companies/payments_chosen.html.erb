@@ -1,6 +1,6 @@
 <div class="container">
   <h2>Opções de pagamento escolhidas</h2> <br>
-  <%= link_to 'Voltar', client_company_path(current_user.company.token) , class:"btn btn-primary btn-sm" %> <br> <br>
+  <%= link_to 'Voltar', clients_company_path(current_user.company.token) , class:"btn btn-primary btn-sm" %> <br> <br>
   <div>
     <% @payments_chosen.each do |option|%>
       <div class="container">
