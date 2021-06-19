@@ -2,9 +2,16 @@ class Api::V1::CompaniesController < ActionController::API
   before_action :status_charge_generate, only: %i[charges]
   
   def charges
+    @company = Company.find_by(token: charge_params[:company_token])
+    #test = false
+    #DomainRecord.where(company: @company).each do |user|
+    #  if user.client? || user.client_admin? || user.client_admin_sign_up?
+    #    test = true
+    #  end
+    #end
+    #if test = true
     @status = StatusCharge.find_by(code: '01')
     @charge = Charge.new(charge_params)
-    @company = Company.find_by(token: charge_params[:company_token])
     @product = Product.find_by(token: charge_params[:product_token])
     @final_client = FinalClient.find_by(token: charge_params[:client_token])
     @payment_option = PaymentOption.find_by(name: charge_params[:payment_method])
@@ -50,6 +57,9 @@ class Api::V1::CompaniesController < ActionController::API
       render json: @charge.as_json(only: [:product_name, :price, :discount, :charge_price, 
                                           :client_name, :client_cpf, :payment_method, :token]), status: 201
     end
+    #else
+    #  head 403
+    #end
   rescue ActiveRecord::RecordInvalid
     render json: @charge.errors, status: :precondition_failed
   rescue ActionController::ParameterMissing

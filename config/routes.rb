@@ -60,6 +60,7 @@ Rails.application.routes.draw do
     resources :payment_options, only: %i[index new create edit update]
     resources :companies, only: %i[index show edit update], param: :token do
       patch 'token_new', on: :member
+      patch 'block_company', on: :member
     end
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

@@ -14,6 +14,11 @@ describe FinalClient do
       company_client.valid?
       expect(company_client.errors[:cpf]).to include('já está em uso') 
     end
+    it 'format' do
+      company_client = FinalClient.new(name: 'Client', cpf: '11199922244234')
+      company_client.valid?
+      expect(company_client.errors[:cpf]).to include('apenas os números, 11 caracteres') 
+    end
   end
 end
 

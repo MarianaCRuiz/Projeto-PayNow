@@ -6,7 +6,7 @@ class Product < ApplicationRecord
 
   validates :name, :price, :token, :company_id, presence: true, if: :product_active?
   validates :name, :token, uniqueness: {scope: :company_id, allow_blank: true, message: 'Produto já cadastrado'}
-  validates :boleto_discount, :pix_discount, :credit_card_discount, numericality: { greater_than_or_equal_to: 0.0 }
+  validates :price, :boleto_discount, :pix_discount, :credit_card_discount, numericality: { greater_than_or_equal_to: 0.0 }
   
   def product_active?
     self.active?

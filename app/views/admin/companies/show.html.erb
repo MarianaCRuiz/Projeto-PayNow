@@ -4,7 +4,8 @@
   <li>Email de faturamento: <%= @company.billing_email %></li>
   <li>Token: <%= @company.token %></li>
 </ul>
-<%= link_to 'Novo token', token_new_admin_company_path(@company.token), method: :patch,class:"btn btn-warning" %> <br> <br>
+<%= link_to 'Novo token', token_new_admin_company_path(@company.token), method: :patch, class:"btn btn-warning" %>
+<%= link_to 'Bloquear', block_company_admin_company_path(@company.token), method: :patch, class:"btn btn-danger" %>
 <div>
   <p>Endereço de faturamento:</p>
   <li>Estado: <%= @company.state %></li>

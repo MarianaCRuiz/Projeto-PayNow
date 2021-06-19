@@ -5,7 +5,8 @@ class FinalClient < ApplicationRecord
   has_many :companies, through: :company_clients
 
   validates :name, :cpf, presence: true
-  validates :token, :cpf, uniqueness: 
+  validates :token, :cpf, uniqueness: {allow_blank: true, allow_nil: true}
+  validates :cpf, format: { with: /\A\d{11}\z/, message: "apenas os números, 11 caracteres"}
 
   def generate_token    #before_create do   before_validate ou before_save
     if FinalClient.where(cpf: self.cpf).empty?

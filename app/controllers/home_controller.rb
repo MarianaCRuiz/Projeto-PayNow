@@ -34,7 +34,7 @@ class HomeController < ApplicationController
               #  puts 'C ADMIN'
       elsif DomainRecord.find_by(email: current_user.email) && DomainRecord.find_by(email: current_user.email).blocked?
         current_user.blocked!
-        puts 'blocked'
+              #  puts 'blocked'
       elsif !DomainRecord.find_by(email: current_user.email).blank?
         current_user.client! 
               #  puts 'CLIENT'

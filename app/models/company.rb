@@ -20,6 +20,7 @@ class Company < ApplicationRecord
   
   validates :corporate_name, :cnpj, :state, :city, :district, :street, :number, :billing_email, :token, presence: true
   validates :corporate_name, :cnpj, :billing_email, uniqueness: true
+  validates :cnpj, format: { with: /\A\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}\z/, message: "formato XX.XXX.XXX/XXXX-XX"}
 
   
   before_validation(on: :create) do

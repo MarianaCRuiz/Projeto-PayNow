@@ -71,6 +71,31 @@ class Admin::CompaniesController < ApplicationController
     end
   end
 
+  def block_company
+    @company = Company.find_by(token: params[:token])
+    @block = BlockCompany.find_by(company: @company)
+    if !@block
+      @block = BlockCompany.create(company: @company, email_1: current_user.email)
+    end
+    if @block.vote_1 
+      @block.vote_1 = false
+      @block.save
+    elsif @block.vote_2 && @block.email_1 != current_user.email
+      @block.vote_2 = false
+      @block.email_2 = current_user.email
+      @block.save
+    end
+    if @block.vote_1 == false && @block.vote_2 == false
+  
+      DomainRecord.where(company: @company).each do |user|
+        if user.email then user.blocked!
+        elsif user.email_client_admin then user.blocked!
+        end
+      end
+    end
+    redirect_to admin_company_path(@company.token)
+  end
+
   private
   def company_params
     params.require(:company).permit(:corporate_name, :cnpj, :state, :city, :district, :street, :number, :address_complement, :billing_email)

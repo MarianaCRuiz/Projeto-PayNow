@@ -30,5 +30,15 @@ describe Company do
       expect(company_2.errors[:cnpj]).to include('já está em uso') 
       expect(company_2.errors[:billing_email]).to include('já está em uso')   
     end
+    it ' format' do
+      company_2 = Company.new(corporate_name: 'test SA', cnpj: '43i4943i9034i43' , 
+                                  state: 'São Paulo', city: 'Campinas', district: 'Campos', 
+                                  street: 'rua 2', number: '13', address_complement: '', 
+                                  billing_email: 'persontest@test.com')
+
+      company_2.valid?
+
+      expect(company_2.errors[:cnpj]).to include('formato XX.XXX.XXX/XXXX-XX')
+    end
   end
 end
