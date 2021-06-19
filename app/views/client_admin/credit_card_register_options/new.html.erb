@@ -1,16 +1,3 @@
-<% if @credit_card_register_option.errors.any? %>
-  <p>Foram encontrados <%= @credit_card_register_option.errors.count %> erro(s):</p>
-  <ul>
-    <%  @credit_card_register_option.errors.full_messages.each do |error| %>
-      <li><%= error %></li>
-    <% end %>
-  </ul>
-<% end %>
-<%= form_with model: [:client_admin, @payment_option, @credit_card_register_option] do |f| %>
-  <div class="field form-group">
-    <%= f.label :credit_card_operator_token %>
-    <%= f.text_field :credit_card_operator_token, class:"form-control" %>
-  </div>
-  <%= f.submit t('.submit'), class:"btn btn-success mb-1 mt-1" %>
-<% end %>
+<h2>Cadastrar Cartão</h2>
+<%= render 'form', credit_card_register_option: @credit_card_register_option, payment_option: @payment_option, button_text: t('.submit') %> 
 <%= link_to 'Cancelar', payments_chosen_client_admin_company_path(current_user.company.token), class:"btn btn-dark btn-sm mb-1 mt-1" %>

@@ -5,15 +5,14 @@
     <% else %>
       Produtos cadastrados
     <% end %>
-  </h2> <br>
+  </h2>
+  <%= link_to 'Registrar produto', new_clients_company_product_path(current_user.company.token) , class:"btn btn-primary btn-sm" %>
+  <%= link_to 'Voltar', clients_company_path(current_user.company.token) , class:"btn btn-primary btn-sm" %> <br>
   <div>
     <% @products.each do |product|%>
     <ul class="list-group">
-      <li class="list-group-item"><%= link_to "#{product.name}", clients_company_product_path(product.company.token, product.token), class:"btn btn-success" %></li>
-      <li class="list-group-item">Preço: <%= number_to_currency product.price %></li>
-    </ul> <br>
+      <li class="list-group-item"><%= link_to "#{product.name}", clients_company_product_path(product.company.token, product.token), class:"btn btn-success btn-sm" %> - Preço: <%= number_to_currency product.price %></li>
+    </ul>
     <% end %>
   </div>
-  <%= link_to 'Registrar produto', new_clients_company_product_path(current_user.company.token) , class:"btn btn-primary" %>
-  <%= link_to 'Voltar', clients_company_path(current_user.company.token) , class:"btn btn-primary btn-sm" %>
 </div>

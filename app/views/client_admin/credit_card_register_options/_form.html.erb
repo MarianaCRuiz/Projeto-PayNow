@@ -1,0 +1,15 @@
+<% if credit_card_register_option.errors.any? %>
+  <p>Foram encontrados <%= credit_card_register_option.errors.count %> erro(s):</p>
+  <ul>
+    <%  credit_card_register_option.errors.full_messages.each do |error| %>
+      <li><%= error %></li>
+    <% end %>
+  </ul>
+<% end %>
+<%= form_with model: [:client_admin, payment_option, credit_card_register_option] do |f| %>
+  <div class="field form-group">
+    <%= f.label :credit_card_operator_token %>
+    <%= f.text_field :credit_card_operator_token, class:"form-control" %>
+  </div>
+  <%= f.submit button_text, class:"btn btn-success mb-1 mt-1" %>
+<% end %>

@@ -44,7 +44,4 @@ describe 'client_admin block client' do
 
     expect(user.role).to eq("blocked")
   end
-  xit 'unblocked client can login again' do
-      
-  end
 end

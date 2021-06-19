@@ -1,21 +1,16 @@
 <div class="container">
-  <h2>Opções de pagamento escolhidas</h2> <br>
-  <% if user_signed_in? %>
-    <%= link_to 'Adicionar opção de pagamento', client_admin_payment_options_path, class:"btn btn-primary btn-sm" %>
-  <% end %>
+  <h2>Opções de pagamento escolhidas</h2>
+  <%= link_to 'Adicionar opção de pagamento', client_admin_payment_options_path, class:"btn btn-primary btn-sm" %>
   <%= link_to 'Voltar', client_admin_company_path(current_user.company.token) , class:"btn btn-primary btn-sm" %> <br> <br>
   <div>
     <% @payments_chosen.each do |option|%>
-      <div class="container">
-        <p>
-          <% if option.icon.persisted? %>
-            <%= image_tag option.icon, size:'50' %>
-          <% end %>
-          <%= option.name %>, Taxa: <%= number_to_percentage(option.fee, precision: 2) %>, Taxa máxima: <%= number_to_currency option.max_money_fee %>
-        </p>
-      </div>
+    <ul class="list-group">
+      <li class="list-group-item"><% if option.icon.persisted? %> <%= image_tag option.icon, size:'50' %> <% end %>
+          <%= option.name %></li>
+      <li class="list-group-item">Taxa: <%= number_to_percentage(option.fee, precision: 2) %>, Taxa máxima: <%= number_to_currency option.max_money_fee %></li>
+    </ul>
     <% end %>
-  </div>
+  </div> <br>
   <ol class="list-group list-group-numbered">
     <% if !@boletos.empty?%>
     <li class="list-group-item d-flex justify-content-between align-items-start">

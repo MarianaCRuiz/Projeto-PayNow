@@ -1,25 +1,3 @@
-<% if @boleto_register_option.errors.any? %>
-  <p>Foram encontrados <%= @boleto_register_option.errors.count %> erro(s):</p>
-  <ul>
-    <%  @boleto_register_option.errors.full_messages.each do |error| %>
-      <li><%= error %></li>
-    <% end %>
-  </ul>
-<% end %>
-<%= form_with model: [:client_admin, @payment_option, @boleto_register_option] do |f| %>
-  <div class="field form-group">
-    <%= f.label :bank_code_id %>
-    <%= f.collection_select :bank_code_id, @bank_codes, :id, :display_name, class:"form-control" %>
-  </div>
-  <div class="field form-group">
-    <%= f.label :agency_number %>
-    <%= f.text_field :agency_number, class:"form-control" %>
-  </div>
-  <div class="field form-group">
-    <%= f.label :account_number %>
-    <%= f.text_field :account_number, class:"form-control" %>
-  </div>
-
-  <%= f.submit t('.submit'), class:"btn btn-success mb-1 mt-1" %>
-<% end %>
+<h2>Atualizar Boleto</h2>
+<%= render 'form', boleto_register_option: @boleto_register_option, payment_option: @payment_option, bank_codes: @bank_codes, button_text: t('.submit') %> 
 <%= link_to 'Cancelar', payments_chosen_client_admin_company_path(current_user.company.token), class:"btn btn-dark btn-sm mb-1 mt-1" %>
