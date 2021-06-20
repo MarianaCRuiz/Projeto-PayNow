@@ -46,6 +46,7 @@ if company_1
   DomainRecord.create(email: user3_comp_1, domain: 'codeplay.com', company: company_1)
   company_1.token = "ab83MLX891c6BA891kmT"
   company_1.save
+  byebug
 end
 
 company_2 = Company.create(corporate_name: comp_2, cnpj: '44.212.343/0001-42' , state: 'São Paulo', 
@@ -167,20 +168,24 @@ final_client_2 = FinalClient.find_by(cpf: '55522233344')
 status_charge = StatusCharge.find_by(code: '01')
 status_2 = StatusCharge.find_by(code: '05')
 
-Charge.create(client_token: final_client_1.token, 
-              client_name: final_client_1.name, client_cpf: final_client_1.cpf, 
-              company_token:company_1.token, product_token: product_1.token, 
-              payment_method: pay_1.name, client_address: 'algum endereço', 
-              due_deadline: '24/12/2023', company: company_1, final_client: final_client_1,
-              status_charge: status_charge, product: product_1,
-              payment_option: pay_1, price: 50, charge_price: 45 )
-Charge.create(client_token: final_client_1.token,
-              client_name: final_client_1.name, client_cpf: final_client_1.cpf, 
-              company_token:company_1.token, product_token: product_2.token, 
-              payment_method: pay_1.name, client_address: 'algum endereço', 
-              due_deadline: '30/12/2024', company: company_1, final_client: final_client_1,
-              status_charge: status_charge, product: product_2,
-              payment_option: pay_1, price: 60, charge_price: 54)
+c11 = Charge.create(client_token: final_client_1.token, 
+                    client_name: final_client_1.name, client_cpf: final_client_1.cpf, 
+                    company_token:company_1.token, product_token: product_1.token, 
+                    payment_method: pay_1.name, client_address: 'algum endereço', 
+                    due_deadline: '24/12/2023', company: company_1, final_client: final_client_1,
+                    status_charge: status_charge, product: product_1,
+                    payment_option: pay_1, price: 50, charge_price: 45 )
+c11.created_at = Date.today - 15.days
+c11.save!
+c12 = Charge.create(client_token: final_client_1.token,
+                    client_name: final_client_1.name, client_cpf: final_client_1.cpf, 
+                    company_token:company_1.token, product_token: product_2.token, 
+                    payment_method: pay_1.name, client_address: 'algum endereço', 
+                    due_deadline: '30/12/2024', company: company_1, final_client: final_client_1,
+                    status_charge: status_charge, product: product_2,
+                    payment_option: pay_1, price: 60, charge_price: 54)
+c12.created_at = Date.today - 95.days
+c12.save!
 Charge.create(client_token: final_client_2.token, 
               client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
               company_token:company_1.token, product_token: product_1.token, 

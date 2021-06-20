@@ -1,13 +1,14 @@
+<% if @company %>
 <h2><%= @company.corporate_name %></h2>
 <ul>
   <li>CNPJ: <%= @company.cnpj %></li>
   <li>Email de faturamento: <%= @company.billing_email %></li>
   <li>Token: <%= @company.token %></li>
 </ul>
-<%= link_to 'Opções de pagamento', payments_chosen_clients_company_path(@company.token) , class:"btn btn-primary" %>
-<%= link_to 'Produtos cadastrados', clients_company_products_path(@company.token) , class:"btn btn-primary" %>
-<%= link_to 'Consultar cobranças pendentes', clients_charges_path , class:"btn btn-primary" %>
-<%= link_to 'Consultar cobranças últimos 30 dias', thirty_days_clients_charges_path, class:"btn btn-primary" %>
+<%= link_to 'Opções de pagamento', payments_chosen_clients_company_path(@company.token) , class:"btn btn-primary btn-sm" %>
+<%= link_to 'Produtos cadastrados', clients_company_products_path(@company.token) , class:"btn btn-primary btn-sm" %>
+<%= link_to 'Consultar cobranças pendentes', clients_charges_path , class:"btn btn-primary btn-sm" %>
+<%= link_to 'Consultar cobranças últimos 30 dias', thirty_days_clients_charges_path, class:"btn btn-primary btn-sm" %>
 <div>
   <p>Endereço de faturamento:</p>
   <li>Estado: <%= @company.state %></li>
@@ -17,3 +18,6 @@
   <li>Número: <%= @company.number %></li>
   <li>Complemento: <%= @company.address_complement %></li>
 </div>
+<% else %>
+  <h1>Token da companhia inválido</h1>
+<% end %>
