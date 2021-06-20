@@ -74,28 +74,5 @@ describe 'admin block company' do
       expect(DomainRecord.find_by(email: client.email).status).to eq("blocked")
       expect(page).to have_content("Sua conta está bloqueada, entre em contato com o nosso atendimento")
     end
-    it 'company cannot issue charges' do
-      product = Product.create!(name:'Produto 1', price: 50, boleto_discount: 10, credit_card_discount: 8, company: company)
-      pay_1 = PaymentOption.create!(name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0)
-      bank = BankCode.create!(code: '001', bank:'Banco do Brasil S.A.')
-      boleto = BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
-      final_client = FinalClient.create!(name: 'Cliente final 1', cpf: '11122255599')
-  
-      CompanyClient.create!(final_client: final_client, company: company)
-      HistoricProduct.create(product: product, company: company, price: product.price)
-      PaymentCompany.create!(company: company, payment_option: pay_1)
-
-      company.blocked!
-
-      post "/api/v1/charges", params: {charge: {client_token: final_client.token, 
-            company_token: company.token, product_token: product.token, payment_method: pay_1.name, 
-            client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
-            due_deadline: '24/12/2023'}}
-
-        expect(response).to have_http_status(403)
-        expect(response.content_type).to include('application/json')
-        parsed_body = JSON.parse(response.body)
-        expect(parsed_body['error']).to eq('Não foi possível gerar a combrança, a conta da empresa na plataforma está bloqueada')
-    end
   end
 end

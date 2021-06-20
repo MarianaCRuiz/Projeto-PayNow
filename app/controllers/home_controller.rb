@@ -23,30 +23,25 @@ class HomeController < ApplicationController
       domain = current_user.email.split('@').last
       if domain == "paynow.com.br" && !Admin.where(email: current_user.email).empty?        
         current_user.admin! 
-              # puts 'ADMIN'
       elsif DomainRecord.where(domain: domain).empty?
         current_user.client_admin_sign_up!
         DomainRecord.create!(email_client_admin: current_user.email, domain: domain) 
-              # puts 'NEW C ADMIN'
       elsif !DomainRecord.where(domain: domain).empty? && DomainRecord.where(domain: domain).first.company.blank?
-        current_user.client_admin_sign_up! 
-              #  puts 'return new C ADMIN'
+        current_user.client_admin_sign_up!
+      elsif DomainRecord.find_by(email_client_admin: current_user.email) && DomainRecord.find_by(email_client_admin: current_user.email).blocked?
+        current_user.blocked!
       elsif !DomainRecord.find_by(email_client_admin: current_user.email).blank?
         current_user.client_admin! 
-              #  puts 'C ADMIN'
       elsif DomainRecord.find_by(email: current_user.email) && DomainRecord.find_by(email: current_user.email).blocked?
         current_user.blocked!
-              #  puts 'blocked'
       elsif !DomainRecord.find_by(email: current_user.email).blank?
         current_user.client! 
-              #  puts 'CLIENT'
       elsif DomainRecord.find_by(email: current_user.email).blank?
         current_user.client!
         company = DomainRecord.where(domain: domain).first.company
         User.find_by(email: current_user.email).update(company: company)
         current_user.company = User.find_by(email: current_user.email).company
         DomainRecord.create(email: current_user.email, domain: domain, company: current_user.company)  
-              # puts 'NEW C'
       end
     end
   end

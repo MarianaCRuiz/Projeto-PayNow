@@ -150,6 +150,29 @@ describe 'charge api' do
         parsed_body = JSON.parse(response.body)
         expect(parsed_body['errors']).to eq('parâmetros inválidos')
       end
+      it 'company cannot issue charges' do
+        product1 = product
+        pay1 = pay_1
+        bank1 = bank
+        boleto1 = boleto
+        final_client1 = final_client
+    
+        CompanyClient.create!(final_client: final_client, company: company)
+        HistoricProduct.create(product: product, company: company, price: product.price)
+        PaymentCompany.create!(company: company, payment_option: pay_1)
+  
+        company.blocked!
+  
+        post "/api/v1/charges", params: {charge: {client_token: final_client.token, 
+              company_token: company.token, product_token: product.token, payment_method: pay_1.name, 
+              client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
+              due_deadline: '24/12/2023'}}
+  
+          expect(response).to have_http_status(403)
+          expect(response.content_type).to include('application/json')
+          parsed_body = JSON.parse(response.body)
+          expect(parsed_body['error']).to eq('Não foi possível gerar a combrança, a conta da empresa na plataforma está bloqueada')
+      end
     end
   end
 end
