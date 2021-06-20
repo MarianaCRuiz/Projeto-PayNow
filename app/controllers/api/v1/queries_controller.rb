@@ -56,7 +56,8 @@ class Api::V1::QueriesController < ActionController::API
     @attempt_date = charge_status_params[:attempt_date]
     if @charge && @status_charge && @status_charge.code == '05'
       @charge.status_charge = @status_charge
-      @charge.status_returned = @status_charge.code
+      @charge.status_returned = @status_charge.description
+      @charge.status_returned_code = @status_charge.code
       if @payment_date
         @charge.payment_date = @payment_date
       end
@@ -64,7 +65,8 @@ class Api::V1::QueriesController < ActionController::API
       Receipt.create(due_deadline: @charge.due_deadline, payment_date: @payment_date, charge: @charge)
       render json: @charge
     elsif @charge && @status_charge && @status_charge.code != '01'
-      @charge.status_returned = @status_charge.code
+      @charge.status_returned = @status_charge.description
+      @charge.status_returned_code = @status_charge.code
       @charge.status_charge = StatusCharge.find_by(code: '01')
       if @attempt_date
         @charge.attempt_date = @attempt_date

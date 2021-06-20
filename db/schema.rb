@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_20_000156) do
+ActiveRecord::Schema.define(version: 2021_06_20_075822) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(version: 2021_06_20_000156) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "status_returned"
+    t.string "status_returned_code"
     t.index ["boleto_register_option_id"], name: "index_charges_on_boleto_register_option_id"
     t.index ["company_id"], name: "index_charges_on_company_id"
     t.index ["credit_card_register_option_id"], name: "index_charges_on_credit_card_register_option_id"

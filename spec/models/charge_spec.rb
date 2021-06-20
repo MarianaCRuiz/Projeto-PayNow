@@ -52,7 +52,7 @@ describe Charge do
     end
     it 'presence additional data approved status' do
       PaymentCompany.create(company: company, payment_option: pay_2)
-      charge1 = Charge.new(status_returned: '05')
+      charge1 = Charge.new(status_returned_code: '05')
       charge1.valid?
       expect(charge1.errors[:client_name]).to include('não pode ficar em branco') 
       expect(charge1.errors[:client_cpf]).to include('não pode ficar em branco') 
@@ -62,7 +62,7 @@ describe Charge do
     end
     it 'presence additional data for payment failure' do
       PaymentCompany.create(company: company, payment_option: pay_2)
-      charge1 = Charge.new(status_returned: '11')
+      charge1 = Charge.new(status_returned_code: '11')
       charge1.valid?
       expect(charge1.errors[:client_name]).to include('não pode ficar em branco') 
       expect(charge1.errors[:client_cpf]).to include('não pode ficar em branco') 

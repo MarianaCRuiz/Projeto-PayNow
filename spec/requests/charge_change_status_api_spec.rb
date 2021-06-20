@@ -40,7 +40,7 @@ describe 'charge_status charges changing status api' do
       expect(parsed_body['client_cpf']).to eq('11122255599')
       expect(parsed_body['client_address']).to eq('algum endereço')
       expect(parsed_body['payment_method']).to eq('Boleto')
-      expect(parsed_body['status_returned']).to eq('05')
+      expect(parsed_body['status_returned']).to eq("Cobrança efetivada com sucesso\n")
     end
   end
 

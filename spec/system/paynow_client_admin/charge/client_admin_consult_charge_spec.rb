@@ -56,9 +56,9 @@ describe 'client_admin consult charges' do
   end
   it 'change charge status' do
     DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-    PaymentCompany.create(company: company, payment_option: pay_1)
-    HistoricProduct.create(product: product, company: company, price: product.price)
-    HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+    PaymentCompany.create!(company: company, payment_option: pay_1)
+    HistoricProduct.create!(product: product, company: company, price: product.price)
+    HistoricProduct.create!(product: product_2, company: company, price: product_2.price)
     status_2 = StatusCharge.create!(code: "05", description: "Cobrança efetivada com sucesso")
     status1 = status_charge
     boleto1 = boleto
@@ -86,7 +86,7 @@ describe 'client_admin consult charges' do
   end
   it 'change charge status missing payment date' do
     DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-    PaymentCompany.create(company: company, payment_option: pay_1)
+    PaymentCompany.create!(company: company, payment_option: pay_1)
     CompanyClient.create!(final_client: final_client, company: company)
     CompanyClient.create!(final_client: final_client_2, company: company)
     HistoricProduct.create(product: product, company: company, price: product.price)
@@ -109,9 +109,9 @@ describe 'client_admin consult charges' do
   end
   it 'change charge status pendente' do
     DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-    PaymentCompany.create(company: company, payment_option: pay_1)
-    HistoricProduct.create(product: product, company: company, price: product.price)
-    HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+    PaymentCompany.create!(company: company, payment_option: pay_1)
+    HistoricProduct.create!(product: product, company: company, price: product.price)
+    HistoricProduct.create!(product: product_2, company: company, price: product_2.price)
     status_2 = StatusCharge.create!(code: "11", description: "Cobrança recusada sem motivo especificado")
     boleto1 = boleto
     charge1 = charge_1
@@ -130,6 +130,7 @@ describe 'client_admin consult charges' do
     expect(page).to have_content('Produto 1')
     expect(page).to have_content("45,00")
     expect(page).to have_content('Vencimento da fatura: 24/12/2023')
+    expect(page).to have_content('Cobrança recusada sem motivo especificado')
     expect(page).to have_content('Produto 2')
     expect(page).to have_content("54,00")
     expect(page).to have_content('Vencimento da fatura: 30/12/2024')

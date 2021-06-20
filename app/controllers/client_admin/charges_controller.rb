@@ -56,7 +56,8 @@ class ClientAdmin::ChargesController < ApplicationController
     if current_user.client_admin? || current_user.client_admin_sign_up?
       @status_returned = StatusCharge.find(params[:charge][:status_charge_id])
       @charge = Charge.find_by(token: params[:token])
-      @charge.status_returned = @status_returned.code
+      @charge.status_returned = @status_returned.description
+      @charge.status_returned_code = @status_returned.code
       if @charge.update(charge_params)
         if @status_returned.code != '05'
           @charge.status_charge = StatusCharge.find_by(code: '01')

@@ -12,6 +12,11 @@
             <li>Vencimento da fatura: <%= charge.due_deadline.strftime("%d/%m/%Y") %></li>
             <li>Data de emissão: <%= charge.created_at.strftime("%d/%m/%Y") %></li>
             <li>Status: <%= charge.status_charge.description %></li>
+            <li>
+            <% if charge.status_returned %>
+              Status da tentativa de pagamento: <%= charge.status_returned %>
+            <% end %>
+            </li>
             <%= link_to "Atualizar Status: #{charge.token}", edit_client_admin_charge_path(charge.token), class:"btn btn-primary btn-sm"%>
           </ul>
       </div>
