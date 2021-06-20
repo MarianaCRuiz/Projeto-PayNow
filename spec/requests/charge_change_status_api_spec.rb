@@ -30,7 +30,7 @@ describe 'charge_status charges changing status api' do
       charge1 = charge_1
 
       patch "/api/v1/change_status", params: {charge_status: {status_charge_code: '05', 
-                                                        charge_id: charge_1.token, payment_date: '16/06/2021'},
+                                                        charge_id: charge_1.token, payment_date: '16/06/2021', authorization_token: 'kjdnfv83276BSHDB'},
                                                         company_token: company.token}
 
       expect(response).to have_http_status(200)

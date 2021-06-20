@@ -11,7 +11,7 @@ class Charge < ApplicationRecord
   validates :client_name, :client_cpf, :client_token, :company_token, :product_token, :payment_method, :token, presence: true
   validates :card_number, :card_name, :cvv_code, presence: true, if: :paid_with_card?
   validates :client_address, :due_deadline, presence: true, if: :paid_with_boleto?
-  validates :payment_date, presence: true, if: :paid?
+  validates :payment_date, :authorization_token, presence: true, if: :paid?
   validates :attempt_date, presence: true, if: :attempted?
   
   def paid_with_card?

@@ -64,7 +64,10 @@ class ClientAdmin::ChargesController < ApplicationController
           @charge.save
         end
         if @status_returned.code == '05'
-          Receipt.create(due_deadline: @charge.due_deadline, payment_date: @charge.payment_date, charge: @charge)
+          @authorization_token = charge_params[:authorization_token]
+          @charge.authorization_token = @authorization_token
+          @charge.save
+          Receipt.create(due_deadline: @charge.due_deadline, payment_date: @charge.payment_date, charge: @charge, authorization_token: @authorization_token)
         end 
         redirect_to client_admin_charges_path
       else
@@ -78,7 +81,7 @@ class ClientAdmin::ChargesController < ApplicationController
   
   private
   def charge_params
-    params.require(:charge).permit(:status_charge_id, :payment_date, :attempt_date)
+    params.require(:charge).permit(:status_charge_id, :payment_date, :authorization_token, :attempt_date)
   end
   def status_charge_generate
     require 'csv'

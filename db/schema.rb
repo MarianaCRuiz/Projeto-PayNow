@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(version: 2021_06_20_075822) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "status_returned"
+    t.string "authorization_token"
     t.string "status_returned_code"
     t.index ["boleto_register_option_id"], name: "index_charges_on_boleto_register_option_id"
     t.index ["company_id"], name: "index_charges_on_company_id"

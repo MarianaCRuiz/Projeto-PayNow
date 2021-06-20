@@ -56,9 +56,9 @@ describe 'accessing recipes' do
     CompanyClient.create!(company: company, final_client: final_client)
     CompanyClient.create!(company: company, final_client: final_client_2)
     CompanyClient.create!(company: company, final_client: final_client_3)
-    Receipt.create!(due_deadline: charge_1.due_deadline, payment_date: charge_1.payment_date, charge: charge_1)
-    Receipt.create!(due_deadline: charge_11.due_deadline, payment_date: charge_11.payment_date, charge: charge_11)
-    Receipt.create!(due_deadline: charge_12.due_deadline, payment_date: charge_12.payment_date, charge: charge_12)
+    Receipt.create!(due_deadline: charge_1.due_deadline, payment_date: charge_1.payment_date, charge: charge_1, authorization_token: 'nn9e32jnvaç')
+    Receipt.create!(due_deadline: charge_11.due_deadline, payment_date: charge_11.payment_date, charge: charge_11, authorization_token: 'iyvca8e9ery8w7e')
+    Receipt.create!(due_deadline: charge_12.due_deadline, payment_date: charge_12.payment_date, charge: charge_12, authorization_token: '0ufbwehfnweapi')
     boleto1 = boleto
     cc = credit_card
     pix1 = pix

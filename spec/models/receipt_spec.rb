@@ -1,5 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe Receipt, type: :model do
-  #pending "add some examples to (or delete) #{__FILE__}"
+describe Receipt do
+  context 'validation' do
+    it 'cannot be blank' do
+      receipt = Receipt.new
+      receipt.valid?
+      expect(receipt.errors[:payment_date]).to include('não pode ficar em branco') 
+      expect(receipt.errors[:authorization_token]).to include('não pode ficar em branco') 
+    end
+  end
 end

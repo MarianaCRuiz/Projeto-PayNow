@@ -60,9 +60,11 @@ class Api::V1::QueriesController < ActionController::API
       @charge.status_returned_code = @status_charge.code
       if @payment_date
         @charge.payment_date = @payment_date
+        @authorization_token = charge_status_params[:authorization_token]
+        @charge.authorization_token = @authorization_token
       end
       @charge.save!
-      Receipt.create(due_deadline: @charge.due_deadline, payment_date: @payment_date, charge: @charge)
+      Receipt.create(due_deadline: @charge.due_deadline, payment_date: @payment_date, charge: @charge, authorization_token: @authorization_token)
       render json: @charge
     elsif @charge && @status_charge && @status_charge.code != '01'
       @charge.status_returned = @status_charge.description
@@ -89,7 +91,7 @@ class Api::V1::QueriesController < ActionController::API
   end
   
   def charge_status_params
-    params.require(:charge_status).permit(:status_charge_code, :charge_id, :payment_date, :attempt_date)
+    params.require(:charge_status).permit(:status_charge_code, :charge_id, :payment_date, :attempt_date, :authorization_token)
   end
     
   def status_charge_generate

@@ -23,3 +23,4 @@ pt-BR:
         payment_date: 'Data efetiva do pagamento'
         attempt_date: 'Data da tentativa de pagamento'
         status_charge_id: 'Status'
+        authorization_token: 'Token de autorização'

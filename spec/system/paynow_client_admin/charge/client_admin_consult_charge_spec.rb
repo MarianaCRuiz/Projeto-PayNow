@@ -73,6 +73,7 @@ describe 'client_admin consult charges' do
     click_on "Atualizar Status: #{charge_1.token}"
     select "#{status_2.code} - #{status_2.description}", from: 'Status'
     fill_in 'Data efetiva do pagamento', with: '14/06/2021'
+    fill_in 'Token de autorização', with: 'ncLc38dncjd93Nn'
     click_on 'Atualizar'
 
     expect(page).to_not have_content('Produto 1')
@@ -105,7 +106,7 @@ describe 'client_admin consult charges' do
     select "#{status_2.code} - #{status_2.description}", from: 'Status'
     click_on 'Atualizar'
 
-    expect(page).to have_content('não pode ficar em branco', count: 1)
+    expect(page).to have_content('não pode ficar em branco', count: 2)
   end
   it 'change charge status pendente' do
     DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)

@@ -37,6 +37,7 @@ describe 'issuing recipes authomaticaly' do
     click_on "Atualizar Status: #{charge_1.token}"
     select "#{status_2.code} - #{status_2.description}", from: 'Status'
     fill_in 'Data efetiva do pagamento', with: '14/06/2021'
+    fill_in 'Token de autorização', with: 'ncLc38dncjd93Nn'
     click_on 'Atualizar'
 
     expect(page).to_not have_content('Produto 1')
