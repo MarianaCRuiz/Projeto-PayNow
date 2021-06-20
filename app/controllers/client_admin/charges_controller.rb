@@ -57,10 +57,11 @@ class ClientAdmin::ChargesController < ApplicationController
       @status_returned = StatusCharge.find(params[:charge][:status_charge_id])
       @charge = Charge.find_by(token: params[:token])
       @charge.status_returned = @status_returned.code
-      if @status_returned.code != '05'
-        @charge.status_charge = StatusCharge.find_by(code: '01')
-      end
       if @charge.update(charge_params)
+        if @status_returned.code != '05'
+          @charge.status_charge = StatusCharge.find_by(code: '01')
+          @charge.save
+        end
         if @status_returned.code == '05'
           Receipt.create(due_deadline: @charge.due_deadline, payment_date: @charge.payment_date, charge: @charge)
         end 

@@ -60,6 +60,7 @@ describe 'client_admin consult charges' do
     HistoricProduct.create(product: product, company: company, price: product.price)
     HistoricProduct.create(product: product_2, company: company, price: product_2.price)
     status_2 = StatusCharge.create!(code: "05", description: "Cobrança efetivada com sucesso")
+    status1 = status_charge
     boleto1 = boleto
     charge1 = charge_1
     charge2 = charge_11
@@ -81,6 +82,7 @@ describe 'client_admin consult charges' do
     expect(page).to have_content("54,00")
     expect(page).to have_content('Vencimento da fatura: 30/12/2024')
     expect(page).to have_content('Boleto')
+    expect(Charge.first.status_charge.code).to eq('05')
   end
   it 'change charge status missing payment date' do
     DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
@@ -104,6 +106,35 @@ describe 'client_admin consult charges' do
     click_on 'Atualizar'
 
     expect(page).to have_content('não pode ficar em branco', count: 1)
+  end
+  it 'change charge status pendente' do
+    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    PaymentCompany.create(company: company, payment_option: pay_1)
+    HistoricProduct.create(product: product, company: company, price: product.price)
+    HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+    status_2 = StatusCharge.create!(code: "11", description: "Cobrança recusada sem motivo especificado")
+    boleto1 = boleto
+    charge1 = charge_1
+    charge2 = charge_11
+    price1 = product.price
+    price2 = product_2.price
+
+    login_as user_admin, scope: :user
+    visit client_admin_company_path(company[:token])
+    click_on 'Consultar cobranças pendentes'
+    click_on "Atualizar Status: #{charge_1.token}"
+    select "#{status_2.code} - #{status_2.description}", from: 'Status'
+    fill_in 'Data da tentativa de pagamento', with: '14/06/2021'
+    click_on 'Atualizar'
+
+    expect(page).to have_content('Produto 1')
+    expect(page).to have_content("45,00")
+    expect(page).to have_content('Vencimento da fatura: 24/12/2023')
+    expect(page).to have_content('Produto 2')
+    expect(page).to have_content("54,00")
+    expect(page).to have_content('Vencimento da fatura: 30/12/2024')
+    expect(page).to have_content('Boleto')
+    expect(Charge.first.status_charge.code).to eq('01')
   end
   it 'change charge status missing attempt payment date' do
     DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
