@@ -3,63 +3,57 @@ class Api::V1::CompaniesController < ActionController::API
   
   def charges
     @company = Company.find_by(token: charge_params[:company_token])
-    #test = false
-    #DomainRecord.where(company: @company).each do |user|
-    #  if user.client? || user.client_admin? || user.client_admin_sign_up?
-    #    test = true
-    #  end
-    #end
-    #if test = true
-    @status = StatusCharge.find_by(code: '01')
-    @charge = Charge.new(charge_params)
-    @product = Product.find_by(token: charge_params[:product_token])
-    @final_client = FinalClient.find_by(token: charge_params[:client_token])
-    @payment_option = PaymentOption.find_by(name: charge_params[:payment_method])
-    @charge.status_charge = @status
-    @charge.company = @company
-    @charge.product = @product
-    @charge.final_client = @final_client
-    @charge.payment_option = @payment_option
-    if @final_client
-      @charge.client_name = @final_client.name
-      @charge.client_cpf = @final_client.cpf
-    end
-    if @product && @company && @payment_option
-      @charge.price = @product.price
-      @boleto = @company.boleto_register_options.find_by(payment_option: @payment_option)
-      @credit_card = @company.credit_card_register_options.find_by(payment_option: @payment_option)
-      @pix = @company.pix_register_options.find_by(payment_option: @payment_option)
-      if @boleto
-        @charge.discount = @charge.price*@product.boleto_discount/100
-        @charge.boleto_register_option = @boleto
-      elsif @credit_card
-        @charge.discount = @charge.price*@product.credit_card_discount/100
-        @charge.credit_card_register_option = @credit_card
-      elsif @pix
-        @charge.discount = @charge.price*@product.pix_discount/100
-        @charge.pix_register_option = @pix
-      end
-      @charge.product_name = @product.name
-      if  @charge.discount
-        @charge.charge_price = @charge.price - @charge.discount
-      else
-        @charge.charge_price = @charge.price
-      end
-    end
-    if @boleto == nil && @credit_card == nil && @pix == nil
-      head 412
+    if @company && @company.blocked?
+      render json: {error: "Não foi possível gerar a combrança, a conta da empresa na plataforma está bloqueada"}, status: 403
     else
-      @charge.save!
-      if @credit_card || @pix
-        @charge.due_deadline = @charge.created_at.strftime("%d/%m/%Y")
-        @charge.save
+      @status = StatusCharge.find_by(code: '01')
+      @charge = Charge.new(charge_params)
+      @product = Product.find_by(token: charge_params[:product_token])
+      @final_client = FinalClient.find_by(token: charge_params[:client_token])
+      @payment_option = PaymentOption.find_by(name: charge_params[:payment_method])
+      @charge.status_charge = @status
+      @charge.company = @company
+      @charge.product = @product
+      @charge.final_client = @final_client
+      @charge.payment_option = @payment_option
+      if @final_client
+        @charge.client_name = @final_client.name
+        @charge.client_cpf = @final_client.cpf
       end
-      render json: @charge.as_json(only: [:product_name, :price, :discount, :charge_price, 
-                                          :client_name, :client_cpf, :payment_method, :token]), status: 201
+      if @product && @company && @payment_option
+        @charge.price = @product.price
+        @boleto = @company.boleto_register_options.find_by(payment_option: @payment_option)
+        @credit_card = @company.credit_card_register_options.find_by(payment_option: @payment_option)
+        @pix = @company.pix_register_options.find_by(payment_option: @payment_option)
+        if @boleto
+          @charge.discount = @charge.price*@product.boleto_discount/100
+          @charge.boleto_register_option = @boleto
+        elsif @credit_card
+          @charge.discount = @charge.price*@product.credit_card_discount/100
+          @charge.credit_card_register_option = @credit_card
+        elsif @pix
+          @charge.discount = @charge.price*@product.pix_discount/100
+          @charge.pix_register_option = @pix
+        end
+        @charge.product_name = @product.name
+        if  @charge.discount
+          @charge.charge_price = @charge.price - @charge.discount
+        else
+          @charge.charge_price = @charge.price
+        end
+      end
+      if @boleto == nil && @credit_card == nil && @pix == nil
+        head 412
+      else
+        @charge.save!
+        if @credit_card || @pix
+          @charge.due_deadline = @charge.created_at.strftime("%d/%m/%Y")
+          @charge.save
+        end
+        render json: @charge.as_json(only: [:product_name, :price, :discount, :charge_price, 
+                                            :client_name, :client_cpf, :payment_method, :token]), status: 201
+      end
     end
-    #else
-    #  head 403
-    #end
   rescue ActiveRecord::RecordInvalid
     render json: @charge.errors, status: :precondition_failed
   rescue ActionController::ParameterMissing

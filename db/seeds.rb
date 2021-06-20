@@ -35,27 +35,46 @@ user3_comp_2 = 'user3@empresa1.com'
 company_1 = Company.create(corporate_name: comp_1, cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
                             city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
                             address_complement: '', billing_email: 'faturamento@codeplay.com')
-
-User.create(email:admin_comp_1, password: '123456', role: 1, company: company_1)
-User.create(email:user_comp_1, password: '123456', role: 0, company: company_1)
-User.create(email:user2_comp_1, password: '123456', role: 0, company: company_1)
-User.create(email:user3_comp_1, password: '123456', role: 0, company: company_1)
-DomainRecord.create(email_client_admin: admin_comp_1, domain: 'codeplay.com', company: company_1)
-DomainRecord.create(email: user_comp_1, domain: 'codeplay.com', company: company_1)
-DomainRecord.create(email: user2_comp_1, domain: 'codeplay.com', company: company_1)
-DomainRecord.create(email: user3_comp_1, domain: 'codeplay.com', company: company_1)
+if company_1
+  User.create(email:admin_comp_1, password: '123456', role: 1, company: company_1)
+  User.create(email:user_comp_1, password: '123456', role: 0, company: company_1)
+  User.create(email:user2_comp_1, password: '123456', role: 0, company: company_1)
+  User.create(email:user3_comp_1, password: '123456', role: 0, company: company_1)
+  DomainRecord.create(email_client_admin: admin_comp_1, domain: 'codeplay.com', company: company_1)
+  DomainRecord.create(email: user_comp_1, domain: 'codeplay.com', company: company_1)
+  DomainRecord.create(email: user2_comp_1, domain: 'codeplay.com', company: company_1)
+  DomainRecord.create(email: user3_comp_1, domain: 'codeplay.com', company: company_1)
+  company_1.token = "ab83MLX891c6BA891kmT"
+  company_1.save
+end
 
 company_2 = Company.create(corporate_name: comp_2, cnpj: '44.212.343/0001-42' , state: 'São Paulo', 
                             city: 'Campinas', district: 'Csmpos', street: 'rua 2', number: '13', 
                             address_complement: '', billing_email: 'faturamento@empresa1.com')
-User.create(email: admin_comp_2, password: '123456', role: 1, company: company_2)
-User.create(email: user_comp_2 , password: '123456', role: 0, company: company_2)
-User.create(email: user2_comp_2 , password: '123456', role: 0, company: company_2)
-User.create(email: user3_comp_2 , password: '123456', role: 0, company: company_2)
-DomainRecord.create(email_client_admin: admin_comp_2, domain: 'empresa1.com', company: company_2)
-DomainRecord.create(email: user_comp_2, domain: 'empresa1.com', company: company_2)
-DomainRecord.create(email: user2_comp_2, domain: 'empresa1.com', company: company_2)
-DomainRecord.create(email: user3_comp_2, domain: 'empresa1.com', company: company_2)
+if company_2
+  User.create(email: admin_comp_2, password: '123456', role: 1, company: company_2)
+  User.create(email: user_comp_2 , password: '123456', role: 0, company: company_2)
+  User.create(email: user2_comp_2 , password: '123456', role: 0, company: company_2)
+  User.create(email: user3_comp_2 , password: '123456', role: 0, company: company_2)
+  DomainRecord.create(email_client_admin: admin_comp_2, domain: 'empresa1.com', company: company_2)
+  DomainRecord.create(email: user_comp_2, domain: 'empresa1.com', company: company_2)
+  DomainRecord.create(email: user2_comp_2, domain: 'empresa1.com', company: company_2)
+  DomainRecord.create(email: user3_comp_2, domain: 'empresa1.com', company: company_2)
+  company_2.token = "V83Hbadp651bc1pBaFxp"
+  company_2.save
+end
+
+company_3 = Company.create(corporate_name: 'Empresa 2 SA', cnpj: '44.212.234/0001-55' , state: 'São Paulo', 
+                          city: 'Campinas', district: 'Bairro x', street: 'rua 2', number: '13', 
+                          address_complement: '', billing_email: 'faturamento@empresa2.com', status: 1)
+if company_3
+  User.create(email: 'admin@empresa2.com', password: '123456', role: 1, company: company_3)
+  User.create(email: 'user@empresa2.com' , password: '123456', role: 0, company: company_3)
+  DomainRecord.create(email_client_admin: 'admin@empresa2.com', domain: 'empresa2.com', company: company_3, status: 1)
+  DomainRecord.create(email: 'user@e,presa2.com', domain: 'empresa2.com', company: company_3, status: 1)
+  company_3.token = "GV56mnT629LPZMlNX258"
+  company_3.save
+end
 
 PaymentOption.create(name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0)
 PaymentOption.create(name: 'Boleto BB', fee: 1.8, max_money_fee: 21, payment_type: 0)
@@ -93,30 +112,55 @@ pix2 = PixRegisterOption.new(company: company_2, payment_option: pay_3, pix_key:
 if pix2.save then PaymentCompany.create(company: company_2, payment_option: pay_3) end
 
 product_1 = Product.new(name:'Produto 1', price: 53, boleto_discount: 1, company: company_1)
-if product_1.save then HistoricProduct.create(product: product_1, company: company_1, price: product_1.price, 
+if product_1.save 
+  HistoricProduct.create(product: product_1, company: company_1, price: product_1.price, 
                                                             boleto_discount: product_1.boleto_discount, 
                                                             credit_card_discount: product_1.credit_card_discount, 
-                                                            pix_discount: product_1.pix_discount) end
+                                                            pix_discount: product_1.pix_discount)
+  product_1.token = "PAM17d4gf7mG8vb13zmT"
+  product_1.save
+end
 product_2 = Product.new(name:'Produto 2', price: 34, credit_card_discount: 2, company: company_1)
-if product_2.save then HistoricProduct.create(product: product_2, company: company_1, price: product_2.price, 
+if product_2.save
+  HistoricProduct.create(product: product_2, company: company_1, price: product_2.price, 
                                                             boleto_discount: product_2.boleto_discount, 
                                                             credit_card_discount: product_2.credit_card_discount, 
-                                                            pix_discount: product_2.pix_discount) end
+                                                            pix_discount: product_2.pix_discount)
+  product_2.token = "Lmc78sJyc65mamrTpXTA"                                                        
+  product_2.save
+end
 product_3 = Product.new(name:'Produto 3', price: 45, pix_discount: 3, company: company_1)
-if product_3.save then HistoricProduct.create(product: product_3, company: company_1, price: product_3.price, 
+if product_3.save
+  HistoricProduct.create(product: product_3, company: company_1, price: product_3.price, 
                                                             boleto_discount: product_3.boleto_discount, 
                                                             credit_card_discount: product_3.credit_card_discount, 
-                                                            pix_discount: product_3.pix_discount) end
+                                                            pix_discount: product_3.pix_discount)
+  product_3.token =  "gh62Mnc89J1Lmcpq2DmV"                                                    
+  product_3.save
+end
 
 product_1 = Product.where(name: 'Produto 1').first
 product_2 = Product.where(name: 'Produto 2').first
 product_3 = Product.where(name: 'Produto 3').first
 f1 = FinalClient.new(name: 'Cliente 1', cpf: '11122233344')
-if f1.save then CompanyClient.create(company: company_1, final_client: f1) end
+if f1.save 
+  CompanyClient.create(company: company_1, final_client: f1) 
+  f1.token = "LB12nmULbagt97a8fVb6"
+  f1.save
+end
 f2 = FinalClient.new(name: 'Cliente 2', cpf: '55522233344')
-if f2.save then CompanyClient.create(company: company_2, final_client: f2) end
+if f2.save
+  CompanyClient.create(company: company_2, final_client: f2)
+  f2.token =  "MdKzh8ESEs4kspagejDi"
+  f2.save
+end
 f3 = FinalClient.new(name: 'Cliente 3', cpf: '55522233355')
-if f3.save then CompanyClient.create(company: company_1, final_client: f3) ; CompanyClient.create(company: company_2, final_client: f3) end
+if f3.save
+  CompanyClient.create(company: company_1, final_client: f3) 
+  CompanyClient.create(company: company_2, final_client: f3)
+  f3.token = "6pAeNK2jWuwHpXgChVBX"
+  f3.save
+end
 
 final_client_1 = FinalClient.find_by(cpf: '11122233344')
 final_client_2 = FinalClient.find_by(cpf: '55522233344')

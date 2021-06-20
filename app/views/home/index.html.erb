@@ -1,6 +1,8 @@
 <div class="container">
-  <% if current_user && DomainRecord.find_by(email: current_user.email) && DomainRecord.find_by(email: current_user.email).blocked? %>
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">Você está bloqueado, entre em contato com o nosso atendimento</div>
+  <% if current_user && @domainrecord_1 && @domainrecord_1.blocked? %>
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">Sua conta está bloqueada, entre em contato com o nosso atendimento</div>
+  <% elsif current_user && @domainrecord_2 && @domainrecord_2.blocked? %>
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">Sua conta está bloqueada, entre em contato com o nosso atendimento</div>
   <% end %>
   <h1>Paynow</h1> <br>
   <h4>Bem vindos a PayNow</h4>

@@ -4,6 +4,8 @@ class HomeController < ApplicationController
   
   def index
     if user_signed_in?
+      @domainrecord_1 = DomainRecord.find_by(email: current_user.email)
+      @domainrecord_2 = DomainRecord.find_by(email_client_admin: current_user.email)
       if current_user.client? || current_user.client_admin?
         @company = current_user.company
       end

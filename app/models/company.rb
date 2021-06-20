@@ -1,4 +1,6 @@
 class Company < ApplicationRecord
+  enum status: {allowed: 0, blocked: 1}
+  
   has_many :users
  
   has_many :charges

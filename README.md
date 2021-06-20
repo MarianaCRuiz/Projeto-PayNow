@@ -132,6 +132,7 @@ Admin.create(email: 'email@paynow.com.br')
 * Possíveis respostas:
     * HTTP status 201: Cobrança criada com sucesso
     * HTTP status 412: Há parâmetros inválidos ou ausentes
+    * HTTP status 403: Não foi possível emitir a cobrança, a conta da empresa na plataforma está bloqueada
 
 ### Consulta de cobranças
 

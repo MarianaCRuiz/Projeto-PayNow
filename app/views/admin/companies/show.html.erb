@@ -5,7 +5,9 @@
   <li>Token: <%= @company.token %></li>
 </ul>
 <%= link_to 'Novo token', token_new_admin_company_path(@company.token), method: :patch, class:"btn btn-warning" %>
-<%= link_to 'Bloquear', block_company_admin_company_path(@company.token), method: :patch, class:"btn btn-danger" %>
+<% if !@block_company_1 && !@block_company_2 && @company.allowed? %>
+  <%= link_to 'Bloquear', block_company_admin_company_path(@company.token), method: :patch, class:"btn btn-danger" %>
+<% end %>
 <div>
   <p>Endereço de faturamento:</p>
   <li>Estado: <%= @company.state %></li>

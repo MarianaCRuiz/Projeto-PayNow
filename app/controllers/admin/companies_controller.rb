@@ -3,6 +3,8 @@ class Admin::CompaniesController < ApplicationController
 
   def index
     if current_user.admin?
+      @block_company_1 = BlockCompany.find_by(email_1: current_user.email)
+      @block_company_2 = BlockCompany.find_by(email_2: current_user.email)
       @companies = Company.all
     else
       redirect_to root_path, notice: 'Acesso não autorizado'
@@ -86,7 +88,7 @@ class Admin::CompaniesController < ApplicationController
       @block.save
     end
     if @block.vote_1 == false && @block.vote_2 == false
-  
+      @company.blocked!
       DomainRecord.where(company: @company).each do |user|
         if user.email then user.blocked!
         elsif user.email_client_admin then user.blocked!
