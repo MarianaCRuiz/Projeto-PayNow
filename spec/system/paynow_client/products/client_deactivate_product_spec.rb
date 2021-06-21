@@ -13,8 +13,8 @@ describe 'client_admin deactivate product' do
     DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
     HistoricProduct.create(product: product, company: company, price: product.price)
 
-    login_as user_admin, scope: :user
-    visit client_admin_company_path(company[:token])
+    login_as user, scope: :user
+    visit clients_company_path(company[:token])
     click_on 'Produtos cadastrados'
     click_on 'Produto 1'
     click_on 'Excluir produto'
