@@ -37,7 +37,7 @@ class Clients::ProductsController < ApplicationController
         render :new
       end
     else
-      redirect_to root_path, notice: 'Acesso não autorizado'
+      redirect_to root_path
     end
   end
   def edit
@@ -60,7 +60,7 @@ class Clients::ProductsController < ApplicationController
         render :edit
       end
     else
-      redirect_to root_path, notice: 'Acesso não autorizado'
+      redirect_to root_path
     end
   end
 
@@ -73,7 +73,7 @@ class Clients::ProductsController < ApplicationController
       @product.save!
       redirect_to clients_company_products_path(current_user.company), notice: 'Produto excluído com sucesso'
     else
-      redirect_to root_path, notice: 'Acesso não autorizado'
+      redirect_to root_path
     end
   end 
   private
