@@ -40,7 +40,7 @@ class ClientAdmin::ProductsController < ApplicationController
         render :new
       end
     else
-      redirect_to root_path
+      redirect_to root_path, notice: 'Acesso não autorizado'
     end
   end
   def edit
@@ -82,7 +82,7 @@ class ClientAdmin::ProductsController < ApplicationController
         redirect_to client_admin_company_products_path(current_user.company), notice: 'Não foi possível excluir'
       end
     else
-      redirect_to root_path
+      redirect_to root_path, notice: 'Acesso não autorizado'
     end
   end 
   private

@@ -95,6 +95,7 @@ describe 'consult charges api' do
       expect(response).to have_http_status(204)
       expect(response.body).to be_empty 
     end
+    
     it 'no params' do
       company1 = company
   

@@ -43,8 +43,6 @@ class Api::V1::QueriesController < ActionController::API
         render json: @charges, status: 204
       end
     end
-  rescue ActiveRecord::RecordInvalid
-    render json: @charges.errors, status: :precondition_failed
   rescue ActionController::ParameterMissing
     render status: :precondition_failed, json: { errors: 'parâmetros inválidos' }
   end

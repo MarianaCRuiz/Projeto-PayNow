@@ -113,5 +113,29 @@ describe 'client_admin consult charges' do
       expect(current_path).to eq(root_path)
       expect(page).to have_content('Acesso não autorizado')
     end
+    it '30 days charges' do
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+      token = '5pjB8SDb74LH6bBnawe2'
+      company.token = token
+      
+      login_as user, scope: :user
+      visit thirty_days_client_admin_charges_path
+
+      expect(current_path).to eq(root_path)
+      expect(page).to have_content('Acesso não autorizado')
+    end
+    it '90 days charges' do
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+      token = '5pjB8SDb74LH6bBnawe2'
+      company.token = token
+      
+      login_as user, scope: :user
+      visit ninety_days_client_admin_charges_path
+
+      expect(current_path).to eq(root_path)
+      expect(page).to have_content('Acesso não autorizado')
+    end
   end
 end

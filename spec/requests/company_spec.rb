@@ -25,6 +25,16 @@ describe 'authentication' do
         patch token_new_client_admin_company_path(company_1.token)
         expect(response).to redirect_to(new_user_session_path)
       end
+      it 'block email' do
+        company_1 = company
+        patch block_email_client_admin_company_path(company_1.token)
+        expect(response).to redirect_to(new_user_session_path)
+      end
+      it 'unblock email' do
+        company_1 = company
+        patch unblock_email_client_admin_company_path(company_1.token)
+        expect(response).to redirect_to(new_user_session_path)
+      end
     end
     context 'client' do
       it 'POST' do
@@ -55,6 +65,26 @@ describe 'authentication' do
 
         login_as user, scope: :user
         patch token_new_client_admin_company_path(company_1.token)
+        
+        expect(response).to redirect_to(root_path)
+      end
+      it 'block email' do
+        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        company_1 = company
+
+        login_as user, scope: :user
+        patch block_email_client_admin_company_path(company_1.token)
+        
+        expect(response).to redirect_to(root_path)
+      end
+      it 'unblock email' do
+        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        company_1 = company
+
+        login_as user, scope: :user
+        patch unblock_email_client_admin_company_path(company_1.token)
         
         expect(response).to redirect_to(root_path)
       end

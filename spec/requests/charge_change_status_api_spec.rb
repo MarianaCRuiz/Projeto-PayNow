@@ -20,7 +20,7 @@ describe 'charge_status charges changing status api' do
                                   product_name: product.name, discount: 5)}
 
   context 'change status' do
-    it 'successfully' do
+    it 'successfully 05' do
       CompanyClient.create!(final_client: final_client, company: company)
       HistoricProduct.create(product: product, company: company, price: product.price)
       PaymentCompany.create!(company: company, payment_option: pay_1)
@@ -41,6 +41,28 @@ describe 'charge_status charges changing status api' do
       expect(parsed_body['client_address']).to eq('algum endereço')
       expect(parsed_body['payment_method']).to eq('Boleto')
       expect(parsed_body['status_returned']).to eq("Cobrança efetivada com sucesso\n")
+    end
+    it 'successfully 11' do
+      CompanyClient.create!(final_client: final_client, company: company)
+      HistoricProduct.create(product: product, company: company, price: product.price)
+      PaymentCompany.create!(company: company, payment_option: pay_1)
+      #status_2 = StatusCharge.create!(code: "05", description: "Cobrança efetivada com sucesso")
+      bank1 = bank
+      boleto1 = boleto
+      charge1 = charge_1
+
+      patch "/api/v1/change_status", params: {charge_status: {status_charge_code: '11', 
+                                                        charge_id: charge_1.token, attempt_date: '16/06/2021', authorization_token: 'kjdnfv83276BSHDB'},
+                                                        company_token: company.token}
+
+      expect(response).to have_http_status(200)
+      expect(response.content_type).to include('application/json')
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body['client_name']).to eq('Cliente final 1')
+      expect(parsed_body['client_cpf']).to eq('11122255599')
+      expect(parsed_body['client_address']).to eq('algum endereço')
+      expect(parsed_body['payment_method']).to eq('Boleto')
+      expect(parsed_body['status_returned']).to eq("Cobrança recusada sem motivo especificado\n")
     end
   end
 
@@ -75,6 +97,25 @@ describe 'charge_status charges changing status api' do
       expect(response.content_type).to include('application/json')
       parsed_body = JSON.parse(response.body)
       expect(parsed_body['payment_date']).to eq(['não pode ficar em branco'])
+    end
+
+    it 'missing authorization token' do
+      CompanyClient.create!(final_client: final_client, company: company)
+      HistoricProduct.create(product: product, company: company, price: product.price)
+      PaymentCompany.create!(company: company, payment_option: pay_1)
+      status_2 = StatusCharge.create!(code: "05", description: "Cobrança efetivada com sucesso\n")
+      bank1 = bank
+      boleto1 = boleto
+      charge1 = charge_1
+
+      patch "/api/v1/change_status", params: {charge_status: {status_charge_code: status_2.code, payment_date: '16/06/2021', charge_id: charge_1.token}, company_token: company.token}
+
+      expect(response).to have_http_status(412)
+
+
+      expect(response.content_type).to include('application/json')
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body['authorization_token']).to eq(['não pode ficar em branco'])
     end
 
     it 'missing attempt date' do
@@ -116,6 +157,18 @@ describe 'charge_status charges changing status api' do
       patch "/api/v1/change_status", params: {charge_status: {charge_id: charge_1.token}, company_token: company.token}
 
       expect(response).to have_http_status(404)
+    end
+    it 'missing params' do
+      CompanyClient.create!(final_client: final_client, company: company)
+      HistoricProduct.create(product: product, company: company, price: product.price)
+      PaymentCompany.create!(company: company, payment_option: pay_1)
+      bank1 = bank
+      boleto1 = boleto
+      charge1 = charge_1
+
+      patch "/api/v1/change_status", params: {}
+
+      expect(response).to have_http_status(412)
     end
   end
 end

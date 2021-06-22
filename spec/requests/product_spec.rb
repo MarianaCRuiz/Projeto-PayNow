@@ -68,4 +68,40 @@ describe 'authentication' do
       expect(response).to redirect_to(root_path)
     end
   end
+  context 'client_admin' do
+    it 'POST' do
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+      company2 = company
+
+      login_as user_admin, scope: :user
+      post clients_company_products_path(company.token), params: {product: {name:'Produto 1', price: 53, boleto_discount: 1, company: company}}
+    
+      expect(response).to redirect_to(root_path)
+    end
+    it 'PATCH update' do
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+      company2 = company
+      product2 = product
+
+      login_as user_admin, scope: :user
+      
+      patch clients_company_product_path(company.token, product.token)
+            
+      expect(response).to redirect_to(root_path)
+    end
+    it 'PATCH status' do
+      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+      company2 = company
+      product2 = product
+
+      login_as user_admin, scope: :user
+      
+      patch product_status_clients_company_product_path(company.token, product.token)
+            
+      expect(response).to redirect_to(root_path)
+    end
+  end
 end
