@@ -220,7 +220,8 @@ Admin.create(email: 'email@paynow.com.br')
         {
             charge_id: 'token da cobrança',
             status_charge_code: 'código do status (05)',
-            payment_date: 'data efetiva de pagamento'
+            payment_date: 'data efetiva de pagamento',
+            authorization_token: 'token de autorização do pagamento (usado para o recibo)'
         }, 
         company_token: company.token
     }
