@@ -1,5 +1,5 @@
 class Api::V1::QueriesController < ActionController::API
-  before_action :status_charge_generate     #, only: %i[consult_charges change_status]
+  before_action :status_charge_generate
   
   def consult_charges
     @company = Company.find_by(token: params[:company_token])

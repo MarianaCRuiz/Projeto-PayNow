@@ -1,20 +1,22 @@
 <h2><%= @company.corporate_name %></h2>
+<span class="badge rounded-pill bg-info text-dark">Status: <%= @companies.human_attribute_name("status.#{@company.status}") %></span>
 <ul>
   <li>CNPJ: <%= @company.cnpj %></li>
   <li>Email de faturamento: <%= @company.billing_email %></li>
   <li>Token: <%= @company.token %></li>
 </ul>
-<%= link_to 'Novo token', token_new_admin_company_path(@company.token), method: :patch, class:"btn btn-warning" %>
+<%= link_to 'Voltar', admin_companies_path(@company.token), class:"btn btn-primary btn-sm" %>
+<%= link_to 'Novo token', token_new_admin_company_path(@company.token), method: :patch, class:"btn btn-warning btn-sm" %>
 <% if !@block_company_1 && !@block_company_2 && @company.allowed? %>
-  <%= link_to 'Bloquear', block_company_admin_company_path(@company.token), method: :patch, class:"btn btn-danger" %>
-<% end %>
-<div>
-  <p>Endereço de faturamento:</p>
+  <%= link_to 'Bloquear', block_company_admin_company_path(@company.token), method: :patch, class:"btn btn-danger btn-sm" %>
+<% end %>  <br><br>
+<ul class="list-group">
+  <h5>Endereço de faturamento:</h5>
   <li>Estado: <%= @company.state %></li>
   <li>Cidade: <%= @company.city %></li>
   <li>Bairro: <%= @company.district %></li>
   <li>Rua: <%= @company.street %></li>
   <li>Número: <%= @company.number %></li>
   <li>Complemento: <%= @company.address_complement %></li>
-</div>
-<%= link_to 'Atualizar dados da empresa', edit_admin_company_path(@company.token), class:"btn btn-primary" %>
+</ul>
+<%= link_to 'Atualizar dados da empresa', edit_admin_company_path(@company.token), class:"btn btn-primary btn-sm" %>

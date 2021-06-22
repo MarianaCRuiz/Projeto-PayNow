@@ -13,6 +13,7 @@ class Admin::CompaniesController < ApplicationController
   def show
     if current_user.admin?
       @company = Company.find_by(token: params[:token])
+      @companies = Company.all
     else
       redirect_to root_path, notice: 'Acesso não autorizado'
     end

@@ -46,7 +46,6 @@ if company_1
   DomainRecord.create(email: user3_comp_1, domain: 'codeplay.com', company: company_1)
   company_1.token = "ab83MLX891c6BA891kmT"
   company_1.save
-  byebug
 end
 
 company_2 = Company.create(corporate_name: comp_2, cnpj: '44.212.343/0001-42' , state: 'São Paulo', 
@@ -176,7 +175,7 @@ c11 = Charge.create(client_token: final_client_1.token,
                     status_charge: status_charge, product: product_1,
                     payment_option: pay_1, price: 50, charge_price: 45 )
 c11.created_at = Date.today - 15.days
-c11.save!
+c11.save
 c12 = Charge.create(client_token: final_client_1.token,
                     client_name: final_client_1.name, client_cpf: final_client_1.cpf, 
                     company_token:company_1.token, product_token: product_2.token, 
@@ -185,7 +184,7 @@ c12 = Charge.create(client_token: final_client_1.token,
                     status_charge: status_charge, product: product_2,
                     payment_option: pay_1, price: 60, charge_price: 54)
 c12.created_at = Date.today - 95.days
-c12.save!
+c12.save
 Charge.create(client_token: final_client_2.token, 
               client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
               company_token:company_1.token, product_token: product_1.token, 
@@ -208,7 +207,7 @@ c1 = Charge.new(client_token: final_client_2.token,
                     company: company_1, final_client: final_client_2,
                     status_charge: status_2, product: product_3,
                     payment_option: pay_3, price: product_3.price, discount: (product_3.price*product_3.pix_discount/100),
-                    charge_price: product_3.price-(product_3.price*product_3.pix_discount/100), payment_date: '14/06/2021')
+                    charge_price: product_3.price-(product_3.price*product_3.pix_discount/100), payment_date: '14/06/2021', authorization_token: 'kdmwemd2127')
 c2 = Charge.new(client_token: final_client_2.token, 
                     client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
                     company_token:company_1.token, product_token: product_3.token, 
@@ -218,9 +217,9 @@ c2 = Charge.new(client_token: final_client_2.token,
                     company: company_1, final_client: final_client_2,
                     status_charge: status_2, product: product_3,
                     payment_option: pay_2, price: product_3.price, discount: (product_3.price*product_3.credit_card_discount/100),
-                    charge_price: product_3.price-(product_3.price*product_3.credit_card_discount/100), payment_date: '14/06/2021')
-if c1.save then Receipt.create(due_deadline: c1.due_deadline, payment_date: c1.payment_date, charge: c1) end
-if c2.save then Receipt.create!(due_deadline: c2.due_deadline, payment_date: c2.payment_date, charge: c2) end
+                    charge_price: product_3.price-(product_3.price*product_3.credit_card_discount/100), payment_date: '14/06/2021', authorization_token: 'kdmw9u32eeuh7')
+if c1.save then Receipt.create(due_deadline: c1.due_deadline, payment_date: c1.payment_date, authorization_token: 'kdmwemd2127', charge: c1) end
+if c2.save then Receipt.create!(due_deadline: c2.due_deadline, payment_date: c2.payment_date, authorization_token: 'kdmw9u32eeuh7', charge: c2) end
 
 
 

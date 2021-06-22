@@ -44,3 +44,6 @@ pt-BR:
         number: 'Número'
         address_complement: 'Complemento'
         billing_email: 'Email de faturamento'
+      company/status:
+        allowed: "Normal"
+        blocked: "Bloqueada"
