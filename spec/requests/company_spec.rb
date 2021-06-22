@@ -124,6 +124,26 @@ describe 'authentication' do
         
         expect(response).to redirect_to(root_path)
       end
+      it 'block email' do
+        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        company_1 = company
+
+        login_as user_admin, scope: :user
+        patch block_email_admin_company_path(company_1.token)
+        
+        expect(response).to redirect_to(root_path)
+      end
+      it 'unblock email' do
+        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        company_1 = company
+
+        login_as user_admin, scope: :user
+        patch unblock_email_admin_company_path(company_1.token)
+        
+        expect(response).to redirect_to(root_path)
+      end
     end
     context 'client' do
       it 'PATCH UPDATE' do
@@ -143,6 +163,26 @@ describe 'authentication' do
 
         login_as user, scope: :user
         patch token_new_admin_company_path(company_1.token)
+        
+        expect(response).to redirect_to(root_path)
+      end
+      it 'block email' do
+        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        company_1 = company
+
+        login_as user, scope: :user
+        patch block_email_admin_company_path(company_1.token)
+        
+        expect(response).to redirect_to(root_path)
+      end
+      it 'unblock email' do
+        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        company_1 = company
+
+        login_as user, scope: :user
+        patch unblock_email_admin_company_path(company_1.token)
         
         expect(response).to redirect_to(root_path)
       end

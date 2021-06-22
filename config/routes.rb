@@ -52,6 +52,9 @@ Rails.application.routes.draw do
     resources :companies, only: %i[index show edit update], param: :token do
       patch 'token_new', on: :member
       patch 'block_company', on: :member
+      get 'emails', on: :member
+      patch 'block_email', on: :member
+      patch 'unblock_email', on: :member
     end
     resources :charges, only: %i[index edit update], param: :token do
       get 'all_charges', on: :collection

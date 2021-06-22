@@ -3,7 +3,9 @@
   <ul class="list-group">
     <li class="list-group-item d-flex justify-content-between align-items-start">
       <div class="ms-2 me-auto">
-        <div class="fw-bold"><%= link_to "#{company.corporate_name}", admin_company_path(company.token) , class:"btn btn-primary btn-sm" %></div>
+        <div class="fw-bold"><%= link_to "#{company.corporate_name}", admin_company_path(company.token) , class:"btn btn-primary btn-sm" %>
+        <span class="badge rounded-pill bg-info text-dark">Status: <%= @companies.human_attribute_name("status.#{company.status}") %></span>
+        </div>
           <div class="container">
             <ul>
               <li>CNPJ: <%= company.cnpj %></li>

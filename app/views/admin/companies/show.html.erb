@@ -8,7 +8,8 @@
 <%= link_to 'Voltar', admin_companies_path(@company.token), class:"btn btn-primary btn-sm" %>
 <%= link_to 'Novo token', token_new_admin_company_path(@company.token), method: :patch, class:"btn btn-warning btn-sm" %>
 <%= link_to 'Consultar cobranças pendentes', admin_charges_path(company_token: @company.token) , class:"btn btn-primary btn-sm" %>
-<%= link_to 'Consultar todas as cobranças', all_charges_admin_charges_path(company_token: @company.token) , class:"btn btn-primary btn-sm" %>  <br> <br>  <br> <br>
+<%= link_to 'Consultar todas as cobranças', all_charges_admin_charges_path(company_token: @company.token) , class:"btn btn-primary btn-sm" %>
+<%= link_to 'Emails cadastrados', emails_admin_company_path(@company.token) , class:"btn btn-primary btn-sm" %>
 <% if !@block_company_1 && !@block_company_2 && @company.allowed? %>
   <%= link_to 'Bloquear', block_company_admin_company_path(@company.token), method: :patch, class:"btn btn-danger btn-sm" %>
 <% end %>  <br><br>

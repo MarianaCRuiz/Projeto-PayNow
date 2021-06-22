@@ -74,6 +74,46 @@ class Admin::CompaniesController < ApplicationController
     end
   end
 
+  def emails
+    if current_user.admin?
+      @company = Company.find_by(token: params[:token])
+      @domains = DomainRecord.all
+      @emails = @company.domain_records
+    else
+      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
+  end
+  
+  def block_email
+    if current_user.admin?
+      @company = Company.find_by(token: params[:token])
+      if params[:email]
+        @email = @company.domain_records.find_by(email: params[:email])
+      elsif params[:email_client_admin]
+        @email = @company.domain_records.find_by(email_client_admin: params[:email_client_admin])
+      end
+      @email.blocked!
+      redirect_to emails_admin_company_path(@company.token), notice: 'Email bloqueado com sucesso'
+    else
+      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
+  end
+
+  def unblock_email
+    if current_user.admin?
+      @company = Company.find_by(token: params[:token])
+      if params[:email]
+        @email = @company.domain_records.find_by(email: params[:email])
+      elsif params[:email_client_admin]
+        @email = @company.domain_records.find_by(email_client_admin: params[:email_client_admin])
+      end
+      @email.allowed!
+      redirect_to emails_admin_company_path(@company.token), notice: 'Email desbloqueado com sucesso'
+    else
+      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
+  end
+  
   def block_company
     @company = Company.find_by(token: params[:token])
     @block = BlockCompany.find_by(company: @company)

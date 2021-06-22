@@ -27,4 +27,4 @@
   </div>
   <%= f.submit t('.submit'), class:"btn btn-success mb-1 mt-1" %>
 <% end %>
-<%= link_to 'Cancelar', client_admin_charges_path, class:"btn btn-dark btn-sm mb-1 mt-1" %>
+<%= link_to 'Cancelar', admin_charges_path(company_token: @company.token), class:"btn btn-dark btn-sm mb-1 mt-1" %>

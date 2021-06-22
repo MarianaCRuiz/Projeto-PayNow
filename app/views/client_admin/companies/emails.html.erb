@@ -1,5 +1,5 @@
 <div class="container">
-  <h2>Emails cadastrados</h2> <br>
+  <h2>Emails cadastrados</h2>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -9,6 +9,7 @@
       <th scope="col">Ação</th>
     </tr>
   </thead>
+  <%= link_to 'Voltar', client_admin_company_path(current_user.company.token) , class:"btn btn-primary btn-sm" %>
   <% i = 1 %>
   <% @emails.each do |user| %>
     <% if user.email %>
@@ -19,15 +20,15 @@
           <td><%= @domains.human_attribute_name("status.#{user.status}") %></td>
           <td>
           <% if user.allowed? %>
-            <%= link_to "Bloquear #{user.email}", block_email_client_admin_company_path(current_user.company, email: user.email), method: :patch, class:"btn btn-warning" %>
+            <%= link_to "Bloquear #{user.email}", block_email_client_admin_company_path(current_user.company, email: user.email), method: :patch, class:"btn btn-warning btn-sm" %>
           <% else %>
-            <%= link_to "Desbloquear #{user.email}", unblock_email_client_admin_company_path(current_user.company, email: user.email), method: :patch, class:"btn btn-success" %>
+            <%= link_to "Desbloquear #{user.email}", unblock_email_client_admin_company_path(current_user.company, email: user.email), method: :patch, class:"btn btn-success btn-sm" %>
           <% end %>
           </td>
         </tr>
       </tbody>
-    <% i += 1%>
     <% end %>
+    <% i += 1%>
   <% end %>
 </table>
 </div>

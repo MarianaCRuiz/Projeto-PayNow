@@ -41,7 +41,7 @@ describe 'authentication' do
         expect(current_path).to eq(root_path)
         expect(page).to have_content('Acesso não autorizado')
       end
-      it 'index' do
+      it 'new' do
         DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
         DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
         
@@ -51,7 +51,7 @@ describe 'authentication' do
         expect(current_path).to eq(root_path)
         expect(page).to have_content('Acesso não autorizado')
       end
-      it 'index' do
+      it 'edit' do
         DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
         DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
         
@@ -72,7 +72,7 @@ describe 'authentication' do
         expect(current_path).to eq(root_path)
         expect(page).to have_content('Acesso não autorizado')
       end
-      it 'index' do
+      it 'new' do
         DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
         
         login_as user_admin, scope: :user
@@ -81,7 +81,7 @@ describe 'authentication' do
         expect(current_path).to eq(root_path)
         expect(page).to have_content('Acesso não autorizado')
       end
-      it 'index' do
+      it 'edit' do
         DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
         
         login_as user_admin, scope: :user
