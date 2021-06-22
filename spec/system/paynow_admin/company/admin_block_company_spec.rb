@@ -11,8 +11,8 @@ describe 'admin block company' do
     it 'successfuly' do
       Admin.create!(email: "admin@paynow.com.br")
       Admin.create!(email: "admin2@paynow.com.br")
-      admin = User.create!(email:'admin@paynow.com.br', password: '123456', role: 2, company: company)
-      admin2 = User.create!(email:'admin2@paynow.com.br', password: '123456', role: 2, company: company)
+      admin = User.create!(email:'admin@paynow.com.br', password: '123456', role: 2)
+      admin2 = User.create!(email:'admin2@paynow.com.br', password: '123456', role: 2)
       DomainRecord.create!(email_client_admin: client_admin.email, domain: 'codeplay.com', company: company)
       DomainRecord.create!(email: client.email, domain: 'codeplay.com', company: company)
       
@@ -36,8 +36,8 @@ describe 'admin block company' do
     it 'faillure, do not receive confirmation' do
       Admin.create!(email: "admin@paynow.com.br")
       Admin.create!(email: "admin2@paynow.com.br")
-      admin = User.create!(email:'admin@paynow.com.br', password: '123456', role: 2, company: company)
-      admin2 = User.create!(email:'admin2@paynow.com.br', password: '123456', role: 2, company: company)
+      admin = User.create!(email:'admin@paynow.com.br', password: '123456', role: 2)
+      admin2 = User.create!(email:'admin2@paynow.com.br', password: '123456', role: 2)
       DomainRecord.create!(email_client_admin: client_admin.email, domain: 'codeplay.com', company: company)
       DomainRecord.create!(email: client.email, domain: 'codeplay.com', company: company)
       

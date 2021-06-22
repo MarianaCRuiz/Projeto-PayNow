@@ -50,4 +50,47 @@ describe 'authentication' do
       end
     end
   end
+  context 'admin controller' do
+    context 'visitor' do
+      it 'PATCH' do
+        PaymentCompany.create(company: company, payment_option: pay_1)
+        HistoricProduct.create(product: product, company: company, price: product.price)
+        company_1 = company
+        charge1 = charge
+        final_client1 = final_client
+        patch admin_charge_path(charge.token)
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+    context 'client_admin' do
+      it 'PATCH' do
+        PaymentCompany.create(company: company, payment_option: pay_1)
+        HistoricProduct.create(product: product, company: company, price: product.price)
+        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        company_1 = company
+        final_client1 = final_client
+
+        login_as user_admin, scope: :user
+        patch admin_charge_path(charge.token)
+              
+        expect(response).to redirect_to(root_path)
+      end
+    end
+    context 'client' do
+      it 'PATCH' do
+        PaymentCompany.create(company: company, payment_option: pay_1)
+        HistoricProduct.create(product: product, company: company, price: product.price)
+        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        company_1 = company
+        final_client1 = final_client
+
+        login_as user, scope: :user
+        patch admin_charge_path(charge.token)
+              
+        expect(response).to redirect_to(root_path)
+      end
+    end
+  end
 end       

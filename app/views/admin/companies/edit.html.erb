@@ -6,7 +6,7 @@
     <% end %>
   </ul>
 <% end %>
-<%= form_with url: admin_company_path(@company.token), model: [:client_admin, @company] do |f| %>
+<%= form_with url: admin_company_path(@company.token), model: [:admin, @company] do |f| %>
   <div class="field form-group">
     <%= f.label :corporate_name %>
     <%= f.text_field :corporate_name, class:"form-control" %>
