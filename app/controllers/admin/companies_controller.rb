@@ -1,117 +1,86 @@
 class Admin::CompaniesController < ApplicationController
   before_action :authenticate_user!
+  before_action :authenticate_admin
 
   def index
-    if current_user.admin?
-      @block_company_1 = BlockCompany.find_by(email_1: current_user.email)
-      @block_company_2 = BlockCompany.find_by(email_2: current_user.email)
-      @companies = Company.all
-    else
-      redirect_to root_path, notice: 'Acesso não autorizado'
-    end
+    @block_company_1 = BlockCompany.find_by(email_1: current_user.email)
+    @block_company_2 = BlockCompany.find_by(email_2: current_user.email)
+    @companies = Company.all
   end
   def show
-    if current_user.admin?
-      @company = Company.find_by(token: params[:token])
-      @companies = Company.all
-    else
-      redirect_to root_path, notice: 'Acesso não autorizado'
-    end
+    @company = Company.find_by(token: params[:token])
+    @companies = Company.all
   end
   
-  def edit
-    if current_user.admin? 
-      @company = Company.find_by(token: params[:token])
-    else
-      redirect_to root_path, notice: 'Acesso não autorizado'
-    end
+  def edit 
+    @company = Company.find_by(token: params[:token])
   end
 
   def update
-    if current_user.admin?
-      @company = Company.find_by(token: params[:token])
-      if @company.update(company_params)
-        @historic = HistoricCompany.new(company_params)
-        @historic.company = @company
-        @historic.token = @company.token
-        @historic.save
-        redirect_to admin_company_path(@company[:token])
-      else
-        render :edit
-      end
+    @company = Company.find_by(token: params[:token])
+    if @company.update(company_params)
+      @historic = HistoricCompany.new(company_params)
+      @historic.company = @company
+      @historic.token = @company.token
+      @historic.save
+      redirect_to admin_company_path(@company[:token])
     else
-      redirect_to root_path, notice: 'Acesso não autorizado'
+      render :edit
     end
   end
 
   def token_new
-    if current_user.admin?
-      @company = Company.find_by(token: params[:token])
-      token = SecureRandom.base58(20)
-      same = true
-      while same == true do
-        if Company.where(token: token).empty?
-          @company.token = token
-          same = false
-        else
-          @company.token = SecureRandom.base58(20)
-        end
-      end
-      if @company.save
-        @historic = HistoricCompany.new(corporate_name: @company.corporate_name, cnpj: @company.cnpj, 
-                                        state: @company.state, city: @company.city, 
-                                        district: @company.district, street: @company.street, 
-                                        number: @company.number, address_complement: @company.address_complement, 
-                                        billing_email: @company.billing_email, token: @company.token, 
-                                        company: @company)
-        @historic.save!
-        redirect_to client_admin_company_path(@company[:token])
+    @company = Company.find_by(token: params[:token])
+    token = SecureRandom.base58(20)
+    same = true
+    while same == true do
+      if Company.where(token: token).empty?
+        @company.token = token
+        same = false
       else
-        redirect_to client_admin_company_path(@company[:token]), notice: 'Falha ao gerar o token novo'
+        @company.token = SecureRandom.base58(20)
       end
-      else
-      redirect_to root_path, notice: 'Acesso não autorizado'
+    end
+    if @company.save
+      @historic = HistoricCompany.new(corporate_name: @company.corporate_name, cnpj: @company.cnpj, 
+                                      state: @company.state, city: @company.city, 
+                                      district: @company.district, street: @company.street, 
+                                      number: @company.number, address_complement: @company.address_complement, 
+                                      billing_email: @company.billing_email, token: @company.token, 
+                                      company: @company)
+      @historic.save!
+      redirect_to client_admin_company_path(@company[:token])
+    else
+      redirect_to client_admin_company_path(@company[:token]), notice: 'Falha ao gerar o token novo'
     end
   end
 
   def emails
-    if current_user.admin?
-      @company = Company.find_by(token: params[:token])
-      @domains = DomainRecord.all
-      @emails = @company.domain_records
-    else
-      redirect_to root_path, notice: 'Acesso não autorizado'
-    end
+    @company = Company.find_by(token: params[:token])
+    @domains = DomainRecord.all
+    @emails = @company.domain_records
   end
   
   def block_email
-    if current_user.admin?
-      @company = Company.find_by(token: params[:token])
-      if params[:email]
-        @email = @company.domain_records.find_by(email: params[:email])
-      elsif params[:email_client_admin]
-        @email = @company.domain_records.find_by(email_client_admin: params[:email_client_admin])
-      end
-      @email.blocked!
-      redirect_to emails_admin_company_path(@company.token), notice: 'Email bloqueado com sucesso'
-    else
-      redirect_to root_path, notice: 'Acesso não autorizado'
+    @company = Company.find_by(token: params[:token])
+    if params[:email]
+      @email = @company.domain_records.find_by(email: params[:email])
+    elsif params[:email_client_admin]
+      @email = @company.domain_records.find_by(email_client_admin: params[:email_client_admin])
     end
+    @email.blocked!
+    redirect_to emails_admin_company_path(@company.token), notice: 'Email bloqueado com sucesso'
   end
 
   def unblock_email
-    if current_user.admin?
-      @company = Company.find_by(token: params[:token])
-      if params[:email]
-        @email = @company.domain_records.find_by(email: params[:email])
-      elsif params[:email_client_admin]
-        @email = @company.domain_records.find_by(email_client_admin: params[:email_client_admin])
-      end
-      @email.allowed!
-      redirect_to emails_admin_company_path(@company.token), notice: 'Email desbloqueado com sucesso'
-    else
-      redirect_to root_path, notice: 'Acesso não autorizado'
+    @company = Company.find_by(token: params[:token])
+    if params[:email]
+      @email = @company.domain_records.find_by(email: params[:email])
+    elsif params[:email_client_admin]
+      @email = @company.domain_records.find_by(email_client_admin: params[:email_client_admin])
     end
+    @email.allowed!
+    redirect_to emails_admin_company_path(@company.token), notice: 'Email desbloqueado com sucesso'
   end
   
   def block_company
@@ -140,6 +109,11 @@ class Admin::CompaniesController < ApplicationController
   end
 
   private
+
+  def authenticate_admin
+    redirect_to root_path, notice: 'Acesso não autorizado' unless current_user.admin?
+  end
+
   def company_params
     params.require(:company).permit(:corporate_name, :cnpj, :state, :city, :district, :street, :number, :address_complement, :billing_email)
   end

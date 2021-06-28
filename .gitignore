@@ -39,4 +39,5 @@
 yarn-debug.log*
 .yarn-integrity
 
-echo "coverage" >> .gitignore
+rspec.txt
+storage

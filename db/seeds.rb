@@ -1,11 +1,11 @@
 require 'csv'
-csv_text = File.read("#{Rails.root}/public/bank_codes3.csv")
+csv_text = File.read("#{Rails.root}/db/csv_folder/bank_codes3.csv")
 csv = CSV.parse(csv_text, :headers => true)
 csv.each do |row|
   code, bank = row.to_s.split(' ', 2)
   BankCode.create(code: code, bank: bank)
 end
-csv_text2 = File.read("#{Rails.root}/public/charge_status_options.csv")
+csv_text2 = File.read("#{Rails.root}/db/csv_folder/charge_status_options.csv")
 csv2 = CSV.parse(csv_text2, :headers => true)
 csv2.each do |row|
   code, description = row.to_s.split(' ', 2)

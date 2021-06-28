@@ -52,7 +52,7 @@ class Clients::ChargesController < ApplicationController
   def status_charge_generate
     require 'csv'
     if StatusCharge.count < 5
-      csv_text = File.read("#{Rails.root}/public/charge_status_options.csv")
+      csv_text = File.read("#{Rails.root}/db/csv_folder/charge_status_options.csv")
       csv2 = CSV.parse(csv_text, :headers => true)
       csv2.each do |row|
         code, description = row.to_s.split(' ', 2)

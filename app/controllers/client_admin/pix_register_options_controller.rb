@@ -84,7 +84,7 @@ class ClientAdmin::PixRegisterOptionsController < ApplicationController
   def bank_code_generate
     require 'csv'
     if BankCode.count < 99
-      csv_text = File.read("#{Rails.root}/public/bank_codes3.csv")
+      csv_text = File.read("#{Rails.root}/db/csv_folder/bank_codes3.csv")
       csv = CSV.parse(csv_text, :headers => true)
       csv.each do |row|
         code, bank = row.to_s.split(' ', 2)
