@@ -1,49 +1,38 @@
 class Clients::ChargesController < ApplicationController
   before_action :authenticate_user!
+  before_action :authenticate_client
   before_action :status_charge_generate
   
   def index
-    if current_user.client?
-      @company = current_user.company
-      @status = StatusCharge.find_by(code: '01')
-      @charges = @company.charges.where(status_charge: @status)
-    else
-      redirect_to root_path, notice: 'Acesso não autorizado'
-    end
+    @company = current_user.company
+    @status = StatusCharge.find_by(code: '01')
+    @charges = @company.charges.where(status_charge: @status)
   end
   
   def all_charges
-    if current_user.client?
-      @company = current_user.company
-      @charges = @company.charges
-    else
-      redirect_to root_path, notice: 'Acesso não autorizado'
-    end
+    @company = current_user.company
+    @charges = @company.charges
   end
 
   def thirty_days
-    if current_user.client?
-      @company = current_user.company
-      @status = StatusCharge.all
-      gap = Date.today - 30.days
-      @charges = @company.charges.where("created_at >= ? and created_at <= ?", gap, Date.today)
-    else
-      redirect_to root_path, notice: 'Acesso não autorizado'
-    end
+    @company = current_user.company
+    @status = StatusCharge.all
+    gap = Date.today - 30.days
+    @charges = @company.charges.where("created_at >= ? and created_at <= ?", gap, Date.today)
   end
 
   def ninety_days
-    if current_user.client?
-      @company = current_user.company
-      @status = StatusCharge.all
-      gap = Date.today - 90.days
-      @charges = @company.charges.where("created_at >= ? and created_at <= ?", gap, Date.today)
-    else
-      redirect_to root_path, notice: 'Acesso não autorizado'
-    end
+    @company = current_user.company
+    @status = StatusCharge.all
+    gap = Date.today - 90.days
+    @charges = @company.charges.where("created_at >= ? and created_at <= ?", gap, Date.today)
   end
   
   private
+
+  def authenticate_client
+    redirect_to root_path, notice: 'Acesso não autorizado' unless current_user.client?
+  end
 
   def charge_params
     params.require(:charge).permit(:status_charge_id, :payment_date, :attempt_date)
