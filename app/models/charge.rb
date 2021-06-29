@@ -24,6 +24,18 @@ class Charge < ApplicationRecord
       self.payment_option.payment_type == "boleto"
     end
   end
+  def boleto(product, boleto)
+   self.discount =self.price*product.boleto_discount/100
+   self.boleto_register_option = boleto
+  end
+  def credit_card(product, credit_card)
+    self.discount = self.price*product.credit_card_discount/100
+    self.credit_card_register_option = credit_card
+  end
+  def pix(product, pix)
+    self.discount = self.price*product.pix_discount/100
+    self.pix_register_option = pix
+  end
   def paid?
     self.status_returned_code == "05"
   end

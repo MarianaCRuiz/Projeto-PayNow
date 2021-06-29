@@ -69,8 +69,8 @@ Rails.application.routes.draw do
   
   namespace :api do
     namespace :v1 do
-      post 'charges', to: 'companies#charges'
-      post 'final_clients', to: 'companies#final_clients'
+      post 'charges', to: 'charges#charges_generate'
+      post 'final_clients', to: 'final_clients#final_client_token'
       get 'consult_charges', to: 'queries#consult_charges'
       patch 'change_status', to: 'queries#change_status'
     end
