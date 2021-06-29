@@ -24,11 +24,19 @@ class Company < ApplicationRecord
   validates :corporate_name, :cnpj, :billing_email, uniqueness: true
   validates :cnpj, format: { with: /\A\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}\z/, message: "formato XX.XXX.XXX/XXXX-XX"}
 
-  before_validation :generate_token, on: [:create, :new_token]
+  before_validation :generate_token, on: :create
+  
+  after_save do
+    @historic = HistoricCompany.new(corporate_name: self.corporate_name, cnpj: self.cnpj, 
+                                    state: self.state, city: self.city, 
+                                    district: self.district, street: self.street, 
+                                    number: self.number, address_complement: self.address_complement, 
+                                    billing_email: self.billing_email, token: self.token, 
+                                    company: self)
+    @historic.save!
+  end
 
-  private
-
-  def generate_token  
+  def generate_token
     self.token = SecureRandom.base58(20)
     token = self.token
     same = true

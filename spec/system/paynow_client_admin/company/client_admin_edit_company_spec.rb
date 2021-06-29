@@ -31,7 +31,7 @@ describe 'edit company' do
     expect(page).to have_content('Email de faturamento')
     expect(page).to have_content('faturamento@codeplay.com')
     expect(page).to have_link('Atualizar dados da empresa')
-    expect(HistoricCompany.count).to eq(1) 
+    expect(HistoricCompany.count).to eq(2) 
   end
   it 'client_admin edit profile failure' do
     DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
@@ -46,7 +46,7 @@ describe 'edit company' do
     click_on 'Atualizar'
 
     expect(page).to have_content('não pode ficar em branco')
-    expect(HistoricCompany.count).to eq(0) 
+    expect(HistoricCompany.count).to eq(1) 
   end
   it 'client_admin request new company token' do
     DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
@@ -57,6 +57,6 @@ describe 'edit company' do
     click_on 'Requerer novo token'
     
     expect(page).to_not have_content(company.token)
-    expect(HistoricCompany.count).to eq(1) 
+    expect(HistoricCompany.count).to eq(2) 
   end
 end

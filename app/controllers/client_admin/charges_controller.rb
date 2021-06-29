@@ -21,20 +21,6 @@ class ClientAdmin::ChargesController < ApplicationController
     @charges = @company.charges.where("created_at >= ? and created_at <= ?", gap, Date.today)
   end
 
-  def thirty_days
-    @company = current_user.company
-    @status = StatusCharge.all
-    gap = Date.today - 30.days
-    @charges = @company.charges.where("created_at >= ? and created_at <= ?", gap, Date.today)
-  end
-
-  def ninety_days
-    @company = current_user.company
-    @status = StatusCharge.all
-    gap = Date.today - 90.days
-    @charges = @company.charges.where("created_at >= ? and created_at <= ?", gap, Date.today)
-  end
-
   def edit 
     @charge = Charge.find_by(token: params[:token])
     @status_charges = StatusCharge.all

@@ -31,7 +31,7 @@ describe 'edit company' do
     expect(page).to have_content('Email de faturamento')
     expect(page).to have_content('faturamento@codeplay.com')
     expect(page).to have_link('Atualizar dados da empresa')
-    expect(HistoricCompany.count).to eq(1) 
+    expect(HistoricCompany.count).to eq(2) 
   end
   it 'admin edit profile failure' do
     Admin.create!(email:'user1@paynow.com.br')
@@ -49,7 +49,7 @@ describe 'edit company' do
     click_on 'Atualizar'
 
     expect(page).to have_content('não pode ficar em branco')
-    expect(HistoricCompany.count).to eq(0) 
+    expect(HistoricCompany.count).to eq(1) 
   end
   it 'admin request new company token' do
     Admin.create!(email:'user1@paynow.com.br')
@@ -63,6 +63,6 @@ describe 'edit company' do
     click_on 'Novo token'
     
     expect(page).to_not have_content(company.token)
-    expect(HistoricCompany.count).to eq(1) 
+    expect(HistoricCompany.count).to eq(2) 
   end
 end
