@@ -6,19 +6,23 @@ Rails.application.routes.draw do
 
   namespace :client_admin do
     resources :companies, only: %i[show new create edit update], param: :token do
-      get 'payments_chosen', on: :member
-      patch 'token_new', on: :member
-      get 'emails', on: :member
-      patch 'block_email', on: :member
-      patch 'unblock_email', on: :member
+      member do
+        get 'payments_chosen'
+        patch 'token_new'
+        get 'emails'
+        patch 'block_email'
+        patch 'unblock_email'
+      end
       resources :products, only: %i[index show new create edit update], param: :token do
         patch "product_status", on: :member
       end
     end
     resources :charges, only: %i[index edit update], param: :token do
-      get 'all_charges', on: :collection
-      get 'thirty_days', on: :collection
-      get 'ninety_days', on: :collection
+      collection do
+        get 'all_charges'
+        get 'thirty_days'
+        get 'ninety_days'
+      end
     end
     resources :payment_options, only: %i[index] do
       resources :boleto_register_options, only: %i[new create edit update] do
@@ -41,20 +45,24 @@ Rails.application.routes.draw do
       end
     end
     resources :charges, only: %i[index], param: :token do
-      get 'all_charges', on: :collection
-      get 'thirty_days', on: :collection
-      get 'ninety_days', on: :collection
+      collection do
+        get 'all_charges'
+        get 'thirty_days'
+        get 'ninety_days'
+      end
     end
   end
 
   namespace :admin do
     resources :payment_options, only: %i[index new create edit update]
     resources :companies, only: %i[index show edit update], param: :token do
-      patch 'token_new', on: :member
-      patch 'block_company', on: :member
-      get 'emails', on: :member
-      patch 'block_email', on: :member
-      patch 'unblock_email', on: :member
+      member do
+        patch 'token_new'
+        patch 'block_company'
+        get 'emails'
+        patch 'block_email'
+        patch 'unblock_email'
+      end
     end
     resources :charges, only: %i[index edit update], param: :token do
       get 'all_charges', on: :collection

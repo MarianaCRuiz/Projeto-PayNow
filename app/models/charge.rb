@@ -30,6 +30,7 @@ class Charge < ApplicationRecord
   def attempted?
     self.status_returned_code != "05" && self.status_returned_code != nil
   end
+
   before_validation(on: :create) do
     token = self.token = SecureRandom.base58(20)
     same = true

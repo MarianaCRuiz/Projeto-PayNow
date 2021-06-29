@@ -39,16 +39,12 @@ class ClientAdmin::ChargesController < ApplicationController
     @charge.status_returned = @status_returned.description
     @charge.status_returned_code = @status_returned.code
     if @charge.update(charge_params)
-      if @status_returned.code != '05'
+      if @charge.paid?
+        Receipt.create(due_deadline: @charge.due_deadline, payment_date: @charge.payment_date, charge: @charge, authorization_token: @charge.authorization_token)
+      elsif @charge.attempted? 
         @charge.status_charge = StatusCharge.find_by(code: '01')
         @charge.save
       end
-      if @status_returned.code == '05'
-        @authorization_token = charge_params[:authorization_token]
-        @charge.authorization_token = @authorization_token
-        @charge.save
-        Receipt.create(due_deadline: @charge.due_deadline, payment_date: @charge.payment_date, charge: @charge, authorization_token: @authorization_token)
-      end 
       redirect_to client_admin_charges_path
     else
       @status_charges = StatusCharge.all

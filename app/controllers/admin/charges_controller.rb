@@ -27,16 +27,12 @@ class Admin::ChargesController < ApplicationController
     @charge.status_returned = @status_returned.description
     @charge.status_returned_code = @status_returned.code
     if @charge.update(charge_params)
-      if @status_returned.code != '05'
+      if @charge.paid?
+        Receipt.create(due_deadline: @charge.due_deadline, payment_date: @charge.payment_date, charge: @charge, authorization_token: @charge.authorization_token)
+      elsif @charge.attempted? 
         @charge.status_charge = StatusCharge.find_by(code: '01')
         @charge.save
       end
-      if @status_returned.code == '05'
-        @authorization_token = charge_params[:authorization_token]
-        @charge.authorization_token = @authorization_token
-        @charge.save
-        Receipt.create(due_deadline: @charge.due_deadline, payment_date: @charge.payment_date, charge: @charge, authorization_token: @authorization_token)
-      end 
       redirect_to admin_charges_path(company_token: @company.token)
     else
       @status_charges = StatusCharge.all
@@ -45,13 +41,30 @@ class Admin::ChargesController < ApplicationController
   end
   
   private
-  def charge_params
-    params.require(:charge).permit(:status_charge_id, :payment_date, :authorization_token, :attempt_date)
-  end
 
   def authenticate_admin
     redirect_to root_path, notice: 'Acesso não autorizado' unless current_user.admin?
   end
+
+  def charge_params
+    params.require(:charge).permit(:status_charge_id, :payment_date, :authorization_token, :attempt_date)
+  end
+
+#  def approved?
+#    if @status_returned.code == '05'
+#      @authorization_token = charge_params[:authorization_token]
+  #     @charge.authorization_token = @authorization_token
+  #     @charge.save
+  #     Receipt.create(due_deadline: @charge.due_deadline, payment_date: @charge.payment_date, charge: @charge, authorization_token: @authorization_token)
+  #   end 
+  # end
+
+  # def fail?
+  #   if @status_returned.code != '05'
+  #     @charge.status_charge = StatusCharge.find_by(code: '01')
+  #     @charge.save
+  #   end
+  # end
 
   def status_charge_generate
     require 'csv'
