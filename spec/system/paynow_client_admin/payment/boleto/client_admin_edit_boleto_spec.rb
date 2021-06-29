@@ -10,7 +10,7 @@ describe 'edit boleto' do
   let(:bank) {BankCode.create!(code: '001', bank:'Banco do Brasil S.A.')}
 
   it 'successfuly' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
     PaymentCompany.create!(company: company, payment_option: pay_1)
 
@@ -29,7 +29,7 @@ describe 'edit boleto' do
     expect(page).to have_content('111.222-3')
   end
   it 'cannot be blank' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
     PaymentCompany.create!(company: company, payment_option: pay_1)
 
@@ -46,7 +46,7 @@ describe 'edit boleto' do
   end
   context 'uniquenes' do
     it 'account number same bank and agency' do    
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
       BoletoRegisterOption.create!(company: company, payment_option: pay_2, bank_code: bank, agency_number: '2150', account_number: '123.555-7')
       PaymentCompany.create!(company: company, payment_option: pay_1)
@@ -64,7 +64,7 @@ describe 'edit boleto' do
       expect(page).to have_content('já está em uso')
     end
     it 'account number same bank different agency' do    
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
       BoletoRegisterOption.create!(company: company, payment_option: pay_2, bank_code: bank, agency_number: '2150', account_number: '123.555-7')
       PaymentCompany.create!(company: company, payment_option: pay_1)
@@ -85,7 +85,7 @@ describe 'edit boleto' do
       expect(page).to have_content('123.555-7')
     end
     it 'account number same agency different bank' do    
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       bank2 = BankCode.create!(code: '029', bank:'Itau')
       BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
       BoletoRegisterOption.create!(company: company, payment_option: pay_2, bank_code: bank2, agency_number: '2150', account_number: '123.555-7')

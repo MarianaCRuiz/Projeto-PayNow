@@ -29,8 +29,7 @@ describe 'authentication' do
     end
     context 'client' do
       it 'index' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'empresa3.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'empresa3.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         company1 = company
         
         login_as user_admin, scope: :user
@@ -41,8 +40,7 @@ describe 'authentication' do
       end
       it 'show' do
         HistoricProduct.create(product: product, company: company, price: product.price)
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'empresa3.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'empresa3.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
        
         login_as user_admin, scope: :user
         visit clients_company_product_path(company.token, product.token)
@@ -51,8 +49,7 @@ describe 'authentication' do
         expect(page).to have_content('Acesso não autorizado')
       end 
       it 'new' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'empresa3.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'empresa3.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         
         login_as user_admin, scope: :user
         visit new_clients_company_product_path(company.token)
@@ -62,8 +59,7 @@ describe 'authentication' do
       end
       it 'edit' do
         HistoricProduct.create(product: product, company: company, price: product.price)
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'empresa3.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'empresa3.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         
         login_as user_admin, scope: :user
         visit edit_clients_company_product_path(company.token, product.token)

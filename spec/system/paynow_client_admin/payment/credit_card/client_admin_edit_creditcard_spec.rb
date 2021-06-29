@@ -10,7 +10,7 @@ describe 'edit credit card option' do
   
   it 'client_admin edit credit card succesfully' do
     PaymentCompany.create(company: company, payment_option: pay_2)
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'empresa3.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     card = creditcard
     pay = pay_2.name
     token = SecureRandom.base58(20)
@@ -29,7 +29,7 @@ describe 'edit credit card option' do
   end
   it 'cannot be blank' do
     PaymentCompany.create(company: company, payment_option: pay_2)
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'empresa3.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     card = creditcard
     pay = pay_2.name
     token = SecureRandom.base58(20)
@@ -45,7 +45,7 @@ describe 'edit credit card option' do
   end
   it 'bank token uniq' do
     PaymentCompany.create(company: company, payment_option: pay_2)
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'empresa3.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     pay_new = PaymentOption.create!(name: 'MASTERCHEF', fee: 1.9, max_money_fee: 20)
     card = creditcard
     pay = pay_2.name

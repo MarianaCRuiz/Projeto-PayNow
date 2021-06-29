@@ -8,6 +8,23 @@ class User < ApplicationRecord
                   # Include default devise modules. Others available are:
                   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable  
-
+         :recoverable, :rememberable, :validatable
+ 
+  after_create do
+    domain = self.email.split('@').last
+    if domain == "paynow.com.br" && !Admin.where(email: self.email).empty?        
+      self.admin! 
+    elsif DomainRecord.where(domain: domain).empty?
+      self.client_admin_sign_up!
+      DomainRecord.create!(email_client_admin: self.email, domain: domain) 
+    elsif DomainRecord.where(domain: domain).first.company.blank?
+      self.client_admin_sign_up!
+    elsif DomainRecord.find_by(email: self.email).blank?
+      self.client!
+      company = DomainRecord.where(domain: domain).first.company
+      self.company = company
+      self.save
+      DomainRecord.create(email: self.email, domain: domain, company: company)  
+    end
+  end
 end

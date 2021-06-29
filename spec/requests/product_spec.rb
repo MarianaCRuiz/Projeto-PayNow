@@ -34,8 +34,7 @@ describe 'authentication' do
   end
   context 'client' do
     it 'POST' do
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       company2 = company
 
       login_as user, scope: :user
@@ -44,8 +43,7 @@ describe 'authentication' do
       expect(response).to redirect_to(root_path)
     end
     it 'PATCH update' do
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       company2 = company
       product2 = product
 
@@ -56,8 +54,7 @@ describe 'authentication' do
       expect(response).to redirect_to(root_path)
     end
     it 'PATCH status' do
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       company2 = company
       product2 = product
 
@@ -70,8 +67,7 @@ describe 'authentication' do
   end
   context 'client_admin' do
     it 'POST' do
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       company2 = company
 
       login_as user_admin, scope: :user
@@ -80,8 +76,7 @@ describe 'authentication' do
       expect(response).to redirect_to(root_path)
     end
     it 'PATCH update' do
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       company2 = company
       product2 = product
 
@@ -92,8 +87,7 @@ describe 'authentication' do
       expect(response).to redirect_to(root_path)
     end
     it 'PATCH status' do
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       company2 = company
       product2 = product
 

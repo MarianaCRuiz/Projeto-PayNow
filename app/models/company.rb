@@ -25,7 +25,6 @@ class Company < ApplicationRecord
   validates :cnpj, format: { with: /\A\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}\z/, message: "formato XX.XXX.XXX/XXXX-XX"}
 
   before_validation :generate_token, on: :create
-  
   after_save do
     @historic = HistoricCompany.new(corporate_name: self.corporate_name, cnpj: self.cnpj, 
                                     state: self.state, city: self.city, 

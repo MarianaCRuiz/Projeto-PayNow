@@ -55,20 +55,18 @@ describe 'client consult charges' do
   end
   context 'client_admin' do
     it 'index' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
-        token = '5pjB8SDb74LH6bBnawe2'
-        company.token = token
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
+      token = '5pjB8SDb74LH6bBnawe2'
+      company.token = token
         
-        login_as user_admin, scope: :user
-        visit clients_charges_path
+      login_as user_admin, scope: :user
+      visit clients_charges_path
   
-        expect(current_path).to eq(root_path)
-        expect(page).to have_content('Acesso não autorizado')
-      end
+      expect(current_path).to eq(root_path)
+      expect(page).to have_content('Acesso não autorizado')
+    end
     it 'all charges' do
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
        
       login_as user_admin, scope: :user
       visit all_charges_clients_charges_path
@@ -77,8 +75,7 @@ describe 'client consult charges' do
       expect(page).to have_content('Acesso não autorizado')
     end
     it 'time interval' do
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
        
       login_as user_admin, scope: :user
       visit time_interval_clients_charges_path(days: 90)

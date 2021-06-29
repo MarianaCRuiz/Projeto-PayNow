@@ -11,7 +11,7 @@ describe 'register PIX option' do
   
   it 'client_admin register pix succesfully' do
     PaymentCompany.create!(company: company, payment_option: pay_3)
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'empresa3.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     bank = bank_code
     token = SecureRandom.base58(20)
     pay = pay_3
@@ -31,7 +31,7 @@ describe 'register PIX option' do
   end
   it 'cannot be blank' do
     PaymentCompany.create!(company: company, payment_option: pay_3)
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'empresa3.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     bank = bank_code
     token = SecureRandom.base58(20)
     bank = bank_code
@@ -50,7 +50,7 @@ describe 'register PIX option' do
   end
   it 'PIX key uniq' do
     PaymentCompany.create!(company: company, payment_option: pay_3)
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'empresa3.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     bank = bank_code
     token = 'abc123ABC456DEF98nm2'
     pay = pay_3

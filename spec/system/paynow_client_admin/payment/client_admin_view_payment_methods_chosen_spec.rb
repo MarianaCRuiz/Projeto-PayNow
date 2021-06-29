@@ -17,7 +17,7 @@ describe 'register PIX option' do
     PaymentCompany.create!(company: company, payment_option: pay_1)
     PaymentCompany.create!(company: company, payment_option: pay_2)
     PaymentCompany.create!(company: company, payment_option: pay_3)
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'empresa3.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     bank1 = bank
     token = SecureRandom.base58(20)
     pay1 = pay_1

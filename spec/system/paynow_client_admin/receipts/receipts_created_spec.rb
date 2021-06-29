@@ -22,7 +22,7 @@ describe 'issuing recipes authomaticaly' do
                                  payment_option: pay_1, price: 50, charge_price: 45 )}
   
   it 'create receipts' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     PaymentCompany.create(company: company, payment_option: pay_1)
     HistoricProduct.create(product: product, company: company, price: product.price)
     CompanyClient.create!(company: company, final_client: final_client)
@@ -45,7 +45,7 @@ describe 'issuing recipes authomaticaly' do
     expect(Receipt.count).to be(1)
   end
   it 'change charge status missing attempt payment date' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     PaymentCompany.create(company: company, payment_option: pay_1)
     HistoricProduct.create(product: product, company: company, price: product.price)
     CompanyClient.create!(company: company, final_client: final_client)

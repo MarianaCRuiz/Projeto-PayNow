@@ -46,7 +46,7 @@ describe 'accessing recipes' do
                                  charge_price: 63, payment_date: '14/06/2021')}
   
   it 'visitor' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    # DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
     PaymentCompany.create!(company: company, payment_option: pay_1)
     PaymentCompany.create!(company: company, payment_option: pay_2)
     PaymentCompany.create!(company: company, payment_option: pay_3)

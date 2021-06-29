@@ -8,8 +8,8 @@ describe 'client_admin block client' do
   let(:user) {User.create!(email: 'user@codeplay.com', password: '123456', role: 0, company: company)}    
 
   it 'block client' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-    DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
+    user1 = user
 
     login_as user_admin, scope: :user
     visit root_path
@@ -21,9 +21,9 @@ describe 'client_admin block client' do
     expect(page).to have_content('Bloqueado')
   end
   it 'unblock client' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-    DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company, status: 1)
-
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
+    DomainRecord.find_by(email: user.email).blocked!
+    
     login_as user_admin, scope: :user
     visit root_path
     click_on 'Codeplay SA'
@@ -34,11 +34,8 @@ describe 'client_admin block client' do
     expect(page).to have_content('Permitido')
   end
   it 'blocked client cannot login' do
-    user_admin1 = user_admin
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-    user1 = user
-    DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company, status: 1)
-
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
+    DomainRecord.find_by(email: user.email).blocked!
     login_as user, scope: :user
     visit root_path
 

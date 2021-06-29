@@ -9,8 +9,7 @@ describe 'client edit product' do
   let(:product) {Product.create!(name:'Produto 1', price: 53, boleto_discount: 1, company: company)}
 
   it 'successfully' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-    DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     HistoricProduct.create(product: product, company: company, price: product.price)
     
     login_as user, scope: :user
@@ -27,8 +26,7 @@ describe 'client edit product' do
     expect(HistoricProduct.count).to be(2)
   end
   it 'same product but diferent companies' do
-    DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     company2 = Company.create(corporate_name: 'Empresa1 SA', cnpj: '44.212.343/0001-42' , state: 'São Paulo', 
                               city: 'Campinas', district: 'Csmpos', street: 'rua 2', number: '13', 
                               address_complement: '', billing_email: 'faturamento@empresa1.com')
@@ -53,8 +51,8 @@ describe 'client edit product' do
   end 
   context 'failure' do
     it 'missing information' do
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
+
       HistoricProduct.create(product: product, company: company, price: product.price)
 
       login_as user, scope: :user
@@ -71,8 +69,7 @@ describe 'client edit product' do
       expect(HistoricProduct.count).to be(1)
     end
     it 'product already registered same company' do
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       HistoricProduct.create(product: product, company: company, price: product.price)
       product2 = Product.create!(name:'Produto 2', price: 23, boleto_discount: 6, company: company)
       HistoricProduct.create(product: product2, company: company, price: product2.price)
@@ -90,8 +87,8 @@ describe 'client edit product' do
       expect(HistoricProduct.count).to be(2) 
     end
     it 'discount must be a number' do
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
+
       HistoricProduct.create(product: product, company: company, price: product.price)
       
       login_as user, scope: :user
@@ -110,8 +107,7 @@ describe 'client edit product' do
       expect(HistoricProduct.count).to be(1) 
     end
     it 'discount cannot be negative' do
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       HistoricProduct.create(product: product, company: company, price: product.price)
       
       login_as user, scope: :user

@@ -37,8 +37,7 @@ describe 'authentication' do
     end
     context 'client' do
       it 'POST' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         pay = pay_1
 
         login_as user, scope: :user
@@ -52,8 +51,7 @@ describe 'authentication' do
         expect(response).to redirect_to(root_path)
       end
       it 'PATCH update' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         boleto = BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
         pay = pay_1
 
@@ -63,8 +61,7 @@ describe 'authentication' do
         expect(response).to redirect_to(root_path)
       end
       it 'PATCH exclude' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         boleto = BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
         pay = pay_1
 

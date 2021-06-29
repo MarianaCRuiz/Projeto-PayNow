@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'client_admin register' do
-  let(:user_client_admin) {User.create!(email:'user1@codeplay.com', password: '123456', role: 3)}
+  let(:user_client_admin) {User.create!(email:'user1@codeplay.com', password: '123456')} #, role: 3
   
   context 'company first register successfuly' do
     it 'client_admin register company' do

@@ -38,8 +38,7 @@ describe 'authentication' do
       it 'PATCH' do
         PaymentCompany.create(company: company, payment_option: pay_1)
         HistoricProduct.create(product: product, company: company, price: product.price)
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         company_1 = company
         final_client1 = final_client
 
@@ -66,8 +65,7 @@ describe 'authentication' do
       it 'PATCH' do
         PaymentCompany.create(company: company, payment_option: pay_1)
         HistoricProduct.create(product: product, company: company, price: product.price)
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         company_1 = company
         final_client1 = final_client
 
@@ -81,8 +79,7 @@ describe 'authentication' do
       it 'PATCH' do
         PaymentCompany.create(company: company, payment_option: pay_1)
         HistoricProduct.create(product: product, company: company, price: product.price)
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         company_1 = company
         final_client1 = final_client
 

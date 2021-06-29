@@ -8,7 +8,8 @@ describe 'edit company' do
   let(:user) {User.create!(email: 'user@codeplay.com', password: '123456', role: 0, company: company)}    
   
   it 'client_admin edit company profile' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company )
+    user1 = user_admin
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
    
     login_as user_admin, scope: :user
     visit root_path
@@ -34,7 +35,8 @@ describe 'edit company' do
     expect(HistoricCompany.count).to eq(2) 
   end
   it 'client_admin edit profile failure' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    user1 = user_admin
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
 
     login_as user_admin, scope: :user
     visit root_path
@@ -49,7 +51,8 @@ describe 'edit company' do
     expect(HistoricCompany.count).to eq(1) 
   end
   it 'client_admin request new company token' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    user1 = user_admin
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     token = company.token
     login_as user_admin, scope: :user
     visit root_path

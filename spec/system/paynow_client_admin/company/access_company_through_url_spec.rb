@@ -48,8 +48,9 @@ describe 'cannot access through url' do
   end
   context 'client' do
     it 'company profile' do
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+      user1 = user_admin
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
+      user2 = user
       company1 = company
       token = company.token
       
@@ -60,8 +61,8 @@ describe 'cannot access through url' do
       expect(page).to have_content('Acesso não autorizado')
     end
     it 'edit company' do
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+      user1 = user_admin
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       company1 = company
       token = company.token
       
@@ -72,9 +73,8 @@ describe 'cannot access through url' do
       expect(page).to have_content('Acesso não autorizado')
     end
     it 'new company' do
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
-
+      user1 = user_admin
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       login_as user, scope: :user
       visit "/client_admin/companies/new"
 
@@ -82,9 +82,8 @@ describe 'cannot access through url' do
       expect(page).to have_content('Acesso não autorizado')
     end
     it 'payment chosen' do
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
-
+      user1 = user_admin
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       login_as user, scope: :user
       visit payments_chosen_client_admin_company_path(company.token)
 
@@ -92,9 +91,8 @@ describe 'cannot access through url' do
       expect(page).to have_content('Acesso não autorizado')
     end
     it 'emails' do
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
-
+      user1 = user_admin
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       login_as user, scope: :user
       visit emails_client_admin_company_path(company.token)
 

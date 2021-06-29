@@ -7,8 +7,7 @@ describe 'client_admin register product' do
   let(:user_admin) {User.create!(email: 'admin@empresa2.com', password: '123456', role: 1, company: company)}
   let(:user) {User.create!(email: 'user@empresa2.com', password: '123456', role: 0, company: company)}
   it 'index empty' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'empresa2.com', company: company)
-    DomainRecord.create!(email: user, domain: 'empresa2.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
 
     login_as user_admin, scope: :user
     visit client_admin_company_path(company[:token])
@@ -18,8 +17,7 @@ describe 'client_admin register product' do
     expect(page).to have_link('Registrar produto')
   end
   it 'index' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'empresa2.com', company: company)
-    DomainRecord.create!(email: user, domain: 'empresa2.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     Product.create!(name:'Produto 1', price: 10, boleto_discount: 2, company: company)
     Product.create!(name:'Produto 2', price: 20, boleto_discount: 1, company: company)
     
@@ -34,8 +32,7 @@ describe 'client_admin register product' do
     expect(page).to have_link('Registrar produto')
   end
   it 'show' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'empresa2.com', company: company)
-    DomainRecord.create!(email: user, domain: 'empresa2.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     product = Product.create!(name:'Produto 1', price: 10, boleto_discount: 2, company: company)
 
     login_as user_admin, scope: :user

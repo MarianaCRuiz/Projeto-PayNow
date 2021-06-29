@@ -17,7 +17,7 @@ describe 'client_admin deactivate credit card option' do
     PaymentCompany.create(company: company, payment_option: pay_2)
     PaymentCompany.create(company: company, payment_option: pay_4)
     CreditCardRegisterOption.create!(company: company, payment_option: pay_4, credit_card_operator_token: 'jdB83Nmg8fR1PJA612dr')
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'empresa3.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     c1 = Charge.create!(client_token: final_client.token, client_name: final_client.name, client_cpf: final_client.cpf, 
                          company_token:company.token, product_token: product.token, 
                          payment_method: pay_2.name, card_number: '1111 2222 3333 4444', 

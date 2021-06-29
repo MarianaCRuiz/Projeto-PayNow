@@ -1,20 +1,19 @@
 require 'rails_helper'
 
 describe 'clients accounts from a registered company' do
-  let(:user_client) {User.create!(email:'user2@codeplay.com', password: '123456', role: 0)}
+  let(:user_admin) {User.create!(email:'admin@codeplay.com', password: '123456', role: 1)}
   context 'client register' do
     it 'successfully' do
       company = Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
                                 city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
                                 address_complement: '', billing_email: 'faturamento@codeplay.com')
-      DomainRecord.create!(email_client_admin: 'admin@codeplay.com', domain: 'codeplay.com', company: company)
-
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
+  
       visit root_path
       click_on 'Registrar-se'
       fill_in 'Email', with: 'user@codeplay.com'
       fill_in 'Senha', with: '123456'
       fill_in 'Confirmar senha', with: '123456'
-      #lick_on 'Criar conta'
       expect{ click_on 'Criar conta' }.to change{ User.count }.by(1)
       
       expect(page).to have_content('user@codeplay.com')
@@ -25,7 +24,7 @@ describe 'clients accounts from a registered company' do
       company = Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
                                 city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
                                 address_complement: '', billing_email: 'faturamento@codeplay.com')
-      DomainRecord.create!(email_client_admin: 'user1@codeplay.com', domain: 'codeplay.com', company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
 
       visit root_path
       click_on 'Registrar-se'
@@ -40,7 +39,7 @@ describe 'clients accounts from a registered company' do
       company = Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
                                 city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
                                 address_complement: '', billing_email: 'faturamento@codeplay.com')
-      DomainRecord.create!(email_client_admin: 'user1@codeplay.com', domain: 'codeplay.com', company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       User.create!(email:'user2@codeplay.com', password: '123456', role: 0, company: company)
       
       visit root_path
@@ -68,11 +67,8 @@ describe 'clients accounts from a registered company' do
       company = Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
                                 city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
                                 address_complement: '', billing_email: 'faturamento@codeplay.com')
-
-      User.create!(email:'admin@codeplay.com', password: '123456', role: 1, company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       user = User.create!(email:'user@codeplay.com', password: '123456', role: 0, company: company)
-      DomainRecord.create!(email_client_admin: 'admin@codeplay.com', domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: 'admin@codeplay.com', domain: 'codeplay.com', company: company)
 
       login_as user, scope: :user
       visit root_path
@@ -89,11 +85,8 @@ describe 'clients accounts from a registered company' do
       company = Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
                                 city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
                                 address_complement: '', billing_email: 'faturamento@codeplay.com')
-
-      User.create!(email:'admin@codeplay.com', password: '123456', role: 1, company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       user = User.create!(email:'user@codeplay.com', password: '123456', role: 0, company: company)
-      DomainRecord.create!(email_client_admin: 'admin@codeplay.com', domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: 'admin@codeplay.com', domain: 'codeplay.com', company: company)
 
       login_as user, scope: :user
       visit root_path
@@ -110,11 +103,8 @@ describe 'clients accounts from a registered company' do
       company = Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
                                 city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
                                 address_complement: '', billing_email: 'faturamento@codeplay.com')
-      User.create!(email:'admin@codeplay.com', password: '123456', role: 1, company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       user = User.create!(email:'user@codeplay.com', password: '123456', role: 0, company: company)
-      DomainRecord.create!(email_client_admin: 'admin@codeplay.com', domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: 'admin@codeplay.com', domain: 'codeplay.com', company: company)
-      
       login_as user, scope: :user
       visit root_path
       click_on 'Editar conta'
@@ -131,10 +121,8 @@ describe 'clients accounts from a registered company' do
       company = Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
                                 city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
                                 address_complement: '', billing_email: 'faturamento@codeplay.com')
-      User.create!(email:'admin@codeplay.com', password: '123456', role: 1, company: company)
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       user = User.create!(email:'user@codeplay.com', password: '123456', role: 0, company: company)
-      DomainRecord.create!(email_client_admin: 'admin@codeplay.com', domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: 'admin@codeplay.com', domain: 'codeplay.com', company: company)
       
       login_as user, scope: :user
       visit root_path

@@ -31,7 +31,7 @@ describe 'client_admin consult charges' do
                                 payment_option: pay_1, price: 60, charge_price: 54)}
 
   it 'client_admin view charges status 01' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     PaymentCompany.create(company: company, payment_option: pay_1)
     HistoricProduct.create(product: product, company: company, price: product.price)
     HistoricProduct.create(product: product_2, company: company, price: product_2.price)
@@ -55,7 +55,7 @@ describe 'client_admin consult charges' do
     expect(page).to have_content('Boleto')
   end
   it 'change charge status' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     PaymentCompany.create!(company: company, payment_option: pay_1)
     HistoricProduct.create!(product: product, company: company, price: product.price)
     HistoricProduct.create!(product: product_2, company: company, price: product_2.price)
@@ -86,7 +86,7 @@ describe 'client_admin consult charges' do
     expect(Charge.first.status_charge.code).to eq('05')
   end
   it 'change charge status missing payment date' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     PaymentCompany.create!(company: company, payment_option: pay_1)
     CompanyClient.create!(final_client: final_client, company: company)
     CompanyClient.create!(final_client: final_client_2, company: company)
@@ -109,7 +109,7 @@ describe 'client_admin consult charges' do
     expect(page).to have_content('não pode ficar em branco', count: 2)
   end
   it 'change charge status pendente' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     PaymentCompany.create!(company: company, payment_option: pay_1)
     HistoricProduct.create!(product: product, company: company, price: product.price)
     HistoricProduct.create!(product: product_2, company: company, price: product_2.price)
@@ -139,7 +139,7 @@ describe 'client_admin consult charges' do
     expect(Charge.first.status_charge.code).to eq('01')
   end
   it 'change charge status missing attempt payment date' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     PaymentCompany.create(company: company, payment_option: pay_1)
     HistoricProduct.create(product: product, company: company, price: product.price)
     HistoricProduct.create(product: product_2, company: company, price: product_2.price)
@@ -162,7 +162,7 @@ describe 'client_admin consult charges' do
     expect(page).to have_content('não pode ficar em branco', count: 1)
   end
   it 'see all charges' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     PaymentCompany.create(company: company, payment_option: pay_1)
     HistoricProduct.create(product: product, company: company, price: product.price)
     HistoricProduct.create(product: product_2, company: company, price: product_2.price)
@@ -190,7 +190,7 @@ describe 'client_admin consult charges' do
     expect(page).to have_content('Boleto')
   end
   it 'see last 30 days charges' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     PaymentCompany.create(company: company, payment_option: pay_1)
     HistoricProduct.create(product: product, company: company, price: product.price)
     HistoricProduct.create(product: product_2, company: company, price: product_2.price)
@@ -225,7 +225,7 @@ describe 'client_admin consult charges' do
     expect(page).to have_content('Boleto')
   end
   it 'see last 90 days charges' do
-    DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     PaymentCompany.create(company: company, payment_option: pay_1)
     HistoricProduct.create(product: product, company: company, price: product.price)
     HistoricProduct.create(product: product_2, company: company, price: product_2.price)

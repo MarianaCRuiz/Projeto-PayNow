@@ -38,8 +38,7 @@ describe 'authentication' do
     end
     context 'client' do
       it 'POST' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
           
         login_as user, scope: :user
         post client_admin_companies_path, params: {company: {corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
@@ -49,8 +48,7 @@ describe 'authentication' do
         expect(response).to redirect_to(root_path)
       end
       it 'PATCH UPDATE' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         company_1 = company
 
         login_as user, scope: :user
@@ -59,8 +57,7 @@ describe 'authentication' do
         expect(response).to redirect_to(root_path)
       end
       it 'PATCH new token' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         company_1 = company
 
         login_as user, scope: :user
@@ -69,8 +66,7 @@ describe 'authentication' do
         expect(response).to redirect_to(root_path)
       end
       it 'block email' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         company_1 = company
 
         login_as user, scope: :user
@@ -79,8 +75,7 @@ describe 'authentication' do
         expect(response).to redirect_to(root_path)
       end
       it 'unblock email' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         company_1 = company
 
         login_as user, scope: :user
@@ -105,8 +100,7 @@ describe 'authentication' do
     end
     context 'client_admin' do
       it 'PATCH UPDATE' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         company_1 = company
 
         login_as user_admin, scope: :user
@@ -115,8 +109,7 @@ describe 'authentication' do
         expect(response).to redirect_to(root_path)
       end
       it 'PATCH new token' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         company_1 = company
 
         login_as user_admin, scope: :user
@@ -125,8 +118,7 @@ describe 'authentication' do
         expect(response).to redirect_to(root_path)
       end
       it 'block email' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         company_1 = company
 
         login_as user_admin, scope: :user
@@ -135,8 +127,7 @@ describe 'authentication' do
         expect(response).to redirect_to(root_path)
       end
       it 'unblock email' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         company_1 = company
 
         login_as user_admin, scope: :user
@@ -147,8 +138,7 @@ describe 'authentication' do
     end
     context 'client' do
       it 'PATCH UPDATE' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         company_1 = company
 
         login_as user, scope: :user
@@ -157,8 +147,7 @@ describe 'authentication' do
         expect(response).to redirect_to(root_path)
       end
       it 'PATCH new token' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         company_1 = company
 
         login_as user, scope: :user
@@ -167,8 +156,7 @@ describe 'authentication' do
         expect(response).to redirect_to(root_path)
       end
       it 'block email' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         company_1 = company
 
         login_as user, scope: :user
@@ -177,8 +165,7 @@ describe 'authentication' do
         expect(response).to redirect_to(root_path)
       end
       it 'unblock email' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         company_1 = company
 
         login_as user, scope: :user

@@ -9,8 +9,7 @@ describe 'view company' do
   
   context 'company profile' do
     it 'client view company profile' do
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       company1 = company
       
       login_as user, scope: :user
@@ -30,8 +29,7 @@ describe 'view company' do
       expect(page).to_not have_link('Atualizar dados da empresa')
     end
     it 'client not admin cannot see edit company link' do
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
   
       login_as user, scope: :user
       visit root_path

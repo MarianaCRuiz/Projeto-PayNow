@@ -20,8 +20,8 @@ describe 'authentication' do
       expect(page).to have_content('Para continuar, efetue login ou registre-se')
     end
     it 'client' do
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+      user1 = user_admin
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       
       login_as user, scope: :user
       visit client_admin_payment_options_path
@@ -33,8 +33,8 @@ describe 'authentication' do
   context 'boleto' do
     context 'client' do
       it 'new' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        user1 = user_admin
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         PaymentCompany.create!(company: company, payment_option: pay_1)
         
         login_as user, scope: :user
@@ -44,8 +44,8 @@ describe 'authentication' do
         expect(page).to have_content('Acesso não autorizado')
       end
       it 'edit' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        user1 = user_admin
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         boleto = BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
         PaymentCompany.create!(company: company, payment_option: pay_1)
         
@@ -76,8 +76,8 @@ describe 'authentication' do
   context 'credit card' do
     context 'client' do
       it 'new' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        user1 = user_admin
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         PaymentCompany.create!(company: company, payment_option: pay_2)    
 
         login_as user, scope: :user
@@ -87,8 +87,8 @@ describe 'authentication' do
         expect(page).to have_content('Acesso não autorizado')
       end
       it 'edit' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        user1 = user_admin
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         creditcard = CreditCardRegisterOption.create!(company: company, payment_option: pay_2, credit_card_operator_token: 'jdB8SD923Nmg8fR1GhJm')
         PaymentCompany.create!(company: company, payment_option: pay_2)   
         
@@ -119,8 +119,8 @@ describe 'authentication' do
   context 'pix' do
     context 'client' do
       it 'new' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        user1 = user_admin
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         PaymentCompany.create!(company: company, payment_option: pay_3)
         
         login_as user, scope: :user
@@ -130,8 +130,8 @@ describe 'authentication' do
         expect(page).to have_content('Acesso não autorizado')
       end
       it 'edit' do
-        DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-        DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
+        user1 = user_admin
+        DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         pix = PixRegisterOption.create!(company: company, payment_option: pay_3, pix_key: 'AJ86gt4fLBtcF296rTuN', bank_code: bank)
         PaymentCompany.create!(company: company, payment_option: pay_3)
 

@@ -19,32 +19,21 @@ class HomeController < ApplicationController
   private
 
   def check_current_user
-    if current_user && current_user
+    if current_user
       domain = current_user.email.split('@').last
-      if domain == "paynow.com.br" && !Admin.where(email: current_user.email).empty?        
-        current_user.admin! 
-      elsif DomainRecord.where(domain: domain).empty?
-        current_user.client_admin_sign_up!
-        DomainRecord.create!(email_client_admin: current_user.email, domain: domain) 
-      elsif !DomainRecord.where(domain: domain).empty? && DomainRecord.where(domain: domain).first.company.blank?
-        current_user.client_admin_sign_up!
-      elsif DomainRecord.find_by(email_client_admin: current_user.email) && DomainRecord.find_by(email_client_admin: current_user.email).blocked?
+      client_admin = DomainRecord.find_by(email_client_admin: current_user.email)
+      client = DomainRecord.find_by(email: current_user.email)
+      if client_admin && client_admin.blocked?
         current_user.blocked!
-      elsif !DomainRecord.find_by(email_client_admin: current_user.email).blank?
+      elsif client_admin && client_admin.company
         current_user.client_admin! 
-      elsif DomainRecord.find_by(email: current_user.email) && DomainRecord.find_by(email: current_user.email).blocked?
+        current_user.save
+      elsif client && client.blocked?
         current_user.blocked!
-      elsif !DomainRecord.find_by(email: current_user.email).blank?
-        current_user.client! 
-      elsif DomainRecord.find_by(email: current_user.email).blank?
-        current_user.client!
-        company = DomainRecord.where(domain: domain).first.company
-        User.find_by(email: current_user.email).update(company: company)
-        current_user.company = User.find_by(email: current_user.email).company
-        DomainRecord.create(email: current_user.email, domain: domain, company: current_user.company)  
       end
     end
   end
+
   def check_client_admin
     if current_user
       if current_user.client_admin? || current_user.client_admin_sign_up?

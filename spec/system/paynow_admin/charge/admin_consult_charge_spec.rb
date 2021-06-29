@@ -4,7 +4,6 @@ describe 'admin consult charges' do
   let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
                             city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
                             address_complement: '', billing_email: 'faturamento@codeplay.com')}
-  let(:client_admin) {User.create!(email: 'admin@codeplay.com', password: '123456', role: 1, company: company)}
   let(:pay_1) {PaymentOption.create!(name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0)}
   let(:bank) {BankCode.create!(code: '001', bank:'Banco do Brasil S.A.')}
   let(:boleto) {BoletoRegisterOption.create!(company: company, payment_option: pay_1, 
@@ -30,12 +29,11 @@ describe 'admin consult charges' do
                                 status_charge: status_charge, product: product_2,
                                 payment_option: pay_1, price: 60, charge_price: 54)}
 
-  it 'client_admin view charges status 01' do
+  it 'admin view charges status 01' do
     Admin.create!(email: "admin@paynow.com.br")
     Admin.create!(email: "admin2@paynow.com.br")
     admin = User.create!(email:'admin@paynow.com.br', password: '123456', role: 2)
     admin2 = User.create!(email:'admin2@paynow.com.br', password: '123456', role: 2)
-    DomainRecord.create!(email_client_admin: client_admin.email, domain: 'codeplay.com', company: company)
     PaymentCompany.create(company: company, payment_option: pay_1)
     HistoricProduct.create(product: product, company: company, price: product.price)
     HistoricProduct.create(product: product_2, company: company, price: product_2.price)
@@ -63,7 +61,6 @@ describe 'admin consult charges' do
   it 'change charge status' do
     Admin.create!(email: "admin@paynow.com.br")
     admin = User.create!(email:'admin@paynow.com.br', password: '123456', role: 2)
-    DomainRecord.create!(email_client_admin: client_admin.email, domain: 'codeplay.com', company: company)
     PaymentCompany.create!(company: company, payment_option: pay_1)
     HistoricProduct.create!(product: product, company: company, price: product.price)
     HistoricProduct.create!(product: product_2, company: company, price: product_2.price)
@@ -96,7 +93,6 @@ describe 'admin consult charges' do
   it 'change charge status missing payment date' do
     Admin.create!(email: "admin@paynow.com.br")
     admin = User.create!(email:'admin@paynow.com.br', password: '123456', role: 2)
-    DomainRecord.create!(email_client_admin: client_admin.email, domain: 'codeplay.com', company: company)
     PaymentCompany.create!(company: company, payment_option: pay_1)
     CompanyClient.create!(final_client: final_client, company: company)
     CompanyClient.create!(final_client: final_client_2, company: company)
@@ -121,7 +117,6 @@ describe 'admin consult charges' do
   it 'change charge status pendente' do
     Admin.create!(email: "admin@paynow.com.br")
     admin = User.create!(email:'admin@paynow.com.br', password: '123456', role: 2)
-    DomainRecord.create!(email_client_admin: client_admin.email, domain: 'codeplay.com', company: company)
     PaymentCompany.create!(company: company, payment_option: pay_1)
     HistoricProduct.create!(product: product, company: company, price: product.price)
     HistoricProduct.create!(product: product_2, company: company, price: product_2.price)
@@ -153,7 +148,6 @@ describe 'admin consult charges' do
   it 'change charge status missing attempt payment date' do
     Admin.create!(email: "admin@paynow.com.br")
     admin = User.create!(email:'admin@paynow.com.br', password: '123456', role: 2)
-    DomainRecord.create!(email_client_admin: client_admin.email, domain: 'codeplay.com', company: company)
     PaymentCompany.create(company: company, payment_option: pay_1)
     HistoricProduct.create(product: product, company: company, price: product.price)
     HistoricProduct.create(product: product_2, company: company, price: product_2.price)
@@ -178,7 +172,6 @@ describe 'admin consult charges' do
   it 'see all charges' do
     Admin.create!(email: "admin@paynow.com.br")
     admin = User.create!(email:'admin@paynow.com.br', password: '123456', role: 2)
-    DomainRecord.create!(email_client_admin: client_admin.email, domain: 'codeplay.com', company: company)
     PaymentCompany.create(company: company, payment_option: pay_1)
     HistoricProduct.create(product: product, company: company, price: product.price)
     HistoricProduct.create(product: product_2, company: company, price: product_2.price)
