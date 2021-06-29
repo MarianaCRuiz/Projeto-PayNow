@@ -8,7 +8,7 @@
 <%= link_to 'Opções de pagamento', payments_chosen_client_admin_company_path(@company.token) , class:"btn btn-primary btn-sm" %>
 <%= link_to 'Produtos cadastrados', client_admin_company_products_path(@company.token) , class:"btn btn-primary btn-sm" %>
 <%= link_to 'Consultar cobranças pendentes', client_admin_charges_path , class:"btn btn-primary btn-sm" %>  <br> <br>
-<%= link_to 'Consultar cobranças últimos 30 dias', thirty_days_client_admin_charges_path, class:"btn btn-primary btn-sm" %>
+<%= link_to 'Consultar cobranças últimos 30 dias', time_interval_client_admin_charges_path(days: 30), class:"btn btn-primary btn-sm" %>
 <%= link_to 'Emails cadastrados', emails_client_admin_company_path(@company.token) , class:"btn btn-primary btn-sm" %>
 <%= link_to 'Requerer novo token', token_new_client_admin_company_path(@company.token), method: :patch,class:"btn btn-warning btn-sm" %> <br> <br>
 <div>
@@ -20,7 +20,6 @@
   <li>Número: <%= @company.number %></li>
   <li>Complemento: <%= @company.address_complement %></li>
 </div>
-<%# link_to 'Atualizar dados da empresa', edit_client_admin_company_path(@company.token), class:"btn btn-primary" %>
 <% else %>
   <h3>Token da companhia inválido</h3>
 <% end %>

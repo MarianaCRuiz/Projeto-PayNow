@@ -20,8 +20,7 @@ Rails.application.routes.draw do
     resources :charges, only: %i[index edit update], param: :token do
       collection do
         get 'all_charges'
-        get 'thirty_days'
-        get 'ninety_days'
+        get 'time_interval'
       end
     end
     resources :payment_options, only: %i[index] do
@@ -47,8 +46,7 @@ Rails.application.routes.draw do
     resources :charges, only: %i[index], param: :token do
       collection do
         get 'all_charges'
-        get 'thirty_days'
-        get 'ninety_days'
+        get 'time_interval'
       end
     end
   end

@@ -24,7 +24,11 @@ class Company < ApplicationRecord
   validates :corporate_name, :cnpj, :billing_email, uniqueness: true
   validates :cnpj, format: { with: /\A\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}\z/, message: "formato XX.XXX.XXX/XXXX-XX"}
 
-  before_validation(on: :create) do
+  before_validation :generate_token, on: [:create, :new_token]
+
+  private
+
+  def generate_token  
     self.token = SecureRandom.base58(20)
     token = self.token
     same = true
@@ -38,18 +42,4 @@ class Company < ApplicationRecord
     end
     self.token
   end
-  
-  #before_create do    #before_validate ou before_save
-  #  token = self.token = SecureRandom.base58(20)
-  #  same = true
-  #  while same == true do
-  #    if Company.where(token: token).empty?
-  #      self.token = token
-  #      same = false
-  #    else
-  #      self.token = SecureRandom.base58(20)
-  #    end
-  #  end
-  #  self.token
-  #end
 end

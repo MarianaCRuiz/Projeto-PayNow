@@ -42,23 +42,13 @@ describe 'client consult charges' do
       expect(current_path).to eq(new_user_session_path)
       expect(page).to have_content('Para continuar, efetue login ou registre-se')
     end
-    it '30 days charges' do
+    it 'time interval' do
       company1 = company
       token = '5pjB8SDb74LH6bBnawe2'
       company.token = token
        
-      visit thirty_days_clients_charges_path
-  
-      expect(current_path).to eq(new_user_session_path)
-      expect(page).to have_content('Para continuar, efetue login ou registre-se')
-    end
-    it '90 days charges' do
-      company1 = company
-      token = '5pjB8SDb74LH6bBnawe2'
-      company.token = token
-       
-      visit ninety_days_clients_charges_path
-  
+      visit time_interval_clients_charges_path(days: 90)
+
       expect(current_path).to eq(new_user_session_path)
       expect(page).to have_content('Para continuar, efetue login ou registre-se')
     end
@@ -86,22 +76,12 @@ describe 'client consult charges' do
       expect(current_path).to eq(root_path)
       expect(page).to have_content('Acesso não autorizado')
     end
-    it '30 days charges' do
+    it 'time interval' do
       DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
       DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
        
       login_as user_admin, scope: :user
-      visit thirty_days_clients_charges_path
-  
-      expect(current_path).to eq(root_path)
-      expect(page).to have_content('Acesso não autorizado')
-    end
-    it '90 days charges' do
-      DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
-      DomainRecord.create!(email: user.email, domain: 'codeplay.com', company: company)
-       
-      login_as user_admin, scope: :user
-      visit ninety_days_clients_charges_path
+      visit time_interval_clients_charges_path(days: 90)
   
       expect(current_path).to eq(root_path)
       expect(page).to have_content('Acesso não autorizado')

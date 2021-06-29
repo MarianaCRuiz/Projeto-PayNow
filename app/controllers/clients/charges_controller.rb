@@ -14,6 +14,13 @@ class Clients::ChargesController < ApplicationController
     @charges = @company.charges
   end
 
+  def time_interval
+    @company = current_user.company
+    @status = StatusCharge.all
+    gap = Date.today - params[:days].to_i.days
+    @charges = @company.charges.where("created_at >= ? and created_at <= ?", gap, Date.today)
+  end
+
   def thirty_days
     @company = current_user.company
     @status = StatusCharge.all

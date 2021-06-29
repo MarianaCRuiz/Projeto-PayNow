@@ -14,6 +14,13 @@ class ClientAdmin::ChargesController < ApplicationController
     @charges = @company.charges
   end
 
+  def time_interval
+    @company = current_user.company
+    @status = StatusCharge.all
+    gap = Date.today - params[:days].to_i.days
+    @charges = @company.charges.where("created_at >= ? and created_at <= ?", gap, Date.today)
+  end
+
   def thirty_days
     @company = current_user.company
     @status = StatusCharge.all
@@ -41,7 +48,7 @@ class ClientAdmin::ChargesController < ApplicationController
     if @charge.update(charge_params)
       if @charge.paid?
         Receipt.create(due_deadline: @charge.due_deadline, payment_date: @charge.payment_date, charge: @charge, authorization_token: @charge.authorization_token)
-      elsif @charge.attempted? 
+      elsif @charge.attempted?
         @charge.status_charge = StatusCharge.find_by(code: '01')
         @charge.save
       end

@@ -1,6 +1,6 @@
 <div class="container">
   <h2>Cobranças</h2>
-  <%= link_to "Últimos 30 dias", thirty_days_client_admin_charges_path , class:"btn btn-primary btn-sm" %>
+  <%= link_to "Últimos 30 dias", time_interval_client_admin_charges_path(days: 30) , class:"btn btn-primary btn-sm" %>
   <%= link_to 'Voltar', client_admin_company_path(current_user.company.token) , class:"btn btn-primary btn-sm" %>
   <% @charges.each do |charge|%>
     <ul class="list-group">
