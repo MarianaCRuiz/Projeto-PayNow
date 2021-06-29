@@ -9,4 +9,5 @@ class CreditCardRegisterOption < ApplicationRecord
   def credit_card_active?
     self.active?
   end
+
 end

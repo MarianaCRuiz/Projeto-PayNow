@@ -23,13 +23,9 @@ class HomeController < ApplicationController
       domain = current_user.email.split('@').last
       client_admin = DomainRecord.find_by(email_client_admin: current_user.email)
       client = DomainRecord.find_by(email: current_user.email)
-      if client_admin && client_admin.blocked?
-        current_user.blocked!
-      elsif client_admin && client_admin.company
-        current_user.client_admin! 
-        current_user.save
-      elsif client && client.blocked?
-        current_user.blocked!
+      if client_admin && client_admin.blocked? then current_user.blocked!
+      elsif client_admin && client_admin.company then current_user.client_admin! 
+      elsif client && client.blocked? then current_user.blocked!
       end
     end
   end
