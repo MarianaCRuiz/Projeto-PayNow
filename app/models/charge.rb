@@ -24,6 +24,14 @@ class Charge < ApplicationRecord
       self.payment_option.payment_type == "boleto"
     end
   end
+  
+  def paid?
+    self.status_returned_code == "05"
+  end
+  def attempted?
+    self.status_returned_code != "05" && self.status_returned_code != nil
+  end
+
   def boleto(product, boleto)
    self.discount =self.price*product.boleto_discount/100
    self.boleto_register_option = boleto
@@ -35,12 +43,6 @@ class Charge < ApplicationRecord
   def pix(product, pix)
     self.discount = self.price*product.pix_discount/100
     self.pix_register_option = pix
-  end
-  def paid?
-    self.status_returned_code == "05"
-  end
-  def attempted?
-    self.status_returned_code != "05" && self.status_returned_code != nil
   end
 
   before_validation(on: :create) do

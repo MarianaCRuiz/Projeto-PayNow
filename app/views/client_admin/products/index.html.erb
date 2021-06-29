@@ -6,7 +6,7 @@
       Produtos cadastrados
     <% end %>
   </h2>
-  <%= link_to 'Registrar produto', new_client_admin_company_product_path(current_user.company.token), class:"btn btn-primary btn-sm" %>
+  <%= link_to 'Registrar produto', new_client_admin_company_product_path(current_user.company.token), class:"btn btn-dark btn-sm" %>
   <%= link_to 'Voltar', client_admin_company_path(current_user.company.token) , class:"btn btn-primary btn-sm" %> <br>
   <div>
     <% @products.each do |product|%>
