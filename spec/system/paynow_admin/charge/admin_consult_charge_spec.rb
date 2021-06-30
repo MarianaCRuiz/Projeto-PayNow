@@ -34,9 +34,9 @@ describe 'admin consult charges' do
     Admin.create!(email: "admin2@paynow.com.br")
     admin = User.create!(email:'admin@paynow.com.br', password: '123456', role: 2)
     admin2 = User.create!(email:'admin2@paynow.com.br', password: '123456', role: 2)
-    PaymentCompany.create(company: company, payment_option: pay_boleto_1)
-    HistoricProduct.create(product: product, company: company, price: product.price)
-    HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+    PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
+    product1 = product
+    product2 = product_2
 
     boleto1 = boleto
     charge1 = charge_1
@@ -62,8 +62,8 @@ describe 'admin consult charges' do
     Admin.create!(email: "admin@paynow.com.br")
     admin = User.create!(email:'admin@paynow.com.br', password: '123456', role: 2)
     PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
-    HistoricProduct.create!(product: product, company: company, price: product.price)
-    HistoricProduct.create!(product: product_2, company: company, price: product_2.price)
+    product1 = product
+    product2 = product_2
     status_2 = StatusCharge.create!(code: "05", description: "Cobrança efetivada com sucesso")
     status1 = status_charge
     boleto1 = boleto
@@ -96,8 +96,8 @@ describe 'admin consult charges' do
     PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
     CompanyClient.create!(final_client: final_client, company: company)
     CompanyClient.create!(final_client: final_client_2, company: company)
-    HistoricProduct.create(product: product, company: company, price: product.price)
-    HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+    product1 = product
+    product2 = product_2
     status_2 = StatusCharge.create!(code: "05", description: "Cobrança efetivada com sucesso")
     boleto1 = boleto
     charge1 = charge_1
@@ -118,8 +118,8 @@ describe 'admin consult charges' do
     Admin.create!(email: "admin@paynow.com.br")
     admin = User.create!(email:'admin@paynow.com.br', password: '123456', role: 2)
     PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
-    HistoricProduct.create!(product: product, company: company, price: product.price)
-    HistoricProduct.create!(product: product_2, company: company, price: product_2.price)
+    product1 = product
+    product2 = product_2
     status_2 = StatusCharge.create!(code: "11", description: "Cobrança recusada sem motivo especificado")
     boleto1 = boleto
     charge1 = charge_1
@@ -148,9 +148,9 @@ describe 'admin consult charges' do
   it 'change charge status missing attempt payment date' do
     Admin.create!(email: "admin@paynow.com.br")
     admin = User.create!(email:'admin@paynow.com.br', password: '123456', role: 2)
-    PaymentCompany.create(company: company, payment_option: pay_boleto_1)
-    HistoricProduct.create(product: product, company: company, price: product.price)
-    HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+    PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
+    product1 = product
+    product2 = product_2
     CompanyClient.create!(final_client: final_client, company: company)
     CompanyClient.create!(final_client: final_client_2, company: company)
     boleto1 = boleto
@@ -172,9 +172,9 @@ describe 'admin consult charges' do
   it 'see all charges' do
     Admin.create!(email: "admin@paynow.com.br")
     admin = User.create!(email:'admin@paynow.com.br', password: '123456', role: 2)
-    PaymentCompany.create(company: company, payment_option: pay_boleto_1)
-    HistoricProduct.create(product: product, company: company, price: product.price)
-    HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+    PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
+    product1 = product
+    product2 = product_2
     CompanyClient.create!(final_client: final_client, company: company)
     CompanyClient.create!(final_client: final_client_2, company: company)
     status_2 = StatusCharge.create!(code: '05', description: "Cobrança efetivada com sucesso\n")

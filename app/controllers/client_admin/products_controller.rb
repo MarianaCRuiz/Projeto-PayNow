@@ -21,10 +21,6 @@ class ClientAdmin::ProductsController < ApplicationController
     @company = current_user.company
     @product = @company.products.new(product_params)
     if @product.save
-      HistoricProduct.create!(product: @product, company: @company, price: @product.price,
-                              boleto_discount: @product.boleto_discount, 
-                              credit_card_discount: @product.credit_card_discount, 
-                              pix_discount: @product.pix_discount)
       redirect_to client_admin_company_product_path(@company.token, @product.token), notice: 'Opção adicionada com sucesso'
     else
       render :new
@@ -40,10 +36,6 @@ class ClientAdmin::ProductsController < ApplicationController
     @company = current_user.company
     @product = Product.find_by(token: params[:token])
     if @product.update(product_params)
-      HistoricProduct.create!(product: @product, company: @company, price: @product.price, 
-                              boleto_discount: @product.boleto_discount, 
-                              credit_card_discount: @product.credit_card_discount, 
-                              pix_discount: @product.pix_discount)
       redirect_to client_admin_company_product_path(current_user.company, @product.token), notice: 'Opção atualizada com sucesso'
     else
       render :edit

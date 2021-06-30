@@ -106,28 +106,16 @@ if pix2.save then PaymentCompany.create(company: company_2, payment_option: pay_
 
 product_1 = Product.new(name:'Produto 1', price: 53, boleto_discount: 1, company: company_1)
 if product_1.save 
-  HistoricProduct.create(product: product_1, company: company_1, price: product_1.price, 
-                                                            boleto_discount: product_1.boleto_discount, 
-                                                            credit_card_discount: product_1.credit_card_discount, 
-                                                            pix_discount: product_1.pix_discount)
   product_1.token = "PAM17d4gf7mG8vb13zmT"
   product_1.save
 end
 product_2 = Product.new(name:'Produto 2', price: 34, credit_card_discount: 2, company: company_1)
 if product_2.save
-  HistoricProduct.create(product: product_2, company: company_1, price: product_2.price, 
-                                                            boleto_discount: product_2.boleto_discount, 
-                                                            credit_card_discount: product_2.credit_card_discount, 
-                                                            pix_discount: product_2.pix_discount)
   product_2.token = "Lmc78sJyc65mamrTpXTA"                                                        
   product_2.save
 end
 product_3 = Product.new(name:'Produto 3', price: 45, pix_discount: 3, company: company_1)
 if product_3.save
-  HistoricProduct.create(product: product_3, company: company_1, price: product_3.price, 
-                                                            boleto_discount: product_3.boleto_discount, 
-                                                            credit_card_discount: product_3.credit_card_discount, 
-                                                            pix_discount: product_3.pix_discount)
   product_3.token =  "gh62Mnc89J1Lmcpq2DmV"                                                    
   product_3.save
 end

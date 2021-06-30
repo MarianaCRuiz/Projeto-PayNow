@@ -26,7 +26,7 @@ describe 'authentication' do
     context 'visitor' do
       it 'PATCH' do
         PaymentCompany.create(company: company, payment_option: pay_boleto_1)
-        HistoricProduct.create(product: product, company: company, price: product.price)
+        product1 = product
         company_1 = company
         charge1 = charge
         final_client1 = final_client
@@ -37,7 +37,7 @@ describe 'authentication' do
     context 'client' do
       it 'PATCH' do
         PaymentCompany.create(company: company, payment_option: pay_boleto_1)
-        HistoricProduct.create(product: product, company: company, price: product.price)
+        product1 = product
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         company_1 = company
         final_client1 = final_client
@@ -53,7 +53,7 @@ describe 'authentication' do
     context 'visitor' do
       it 'PATCH' do
         PaymentCompany.create(company: company, payment_option: pay_boleto_1)
-        HistoricProduct.create(product: product, company: company, price: product.price)
+        product1 = product
         company_1 = company
         charge1 = charge
         final_client1 = final_client
@@ -64,7 +64,7 @@ describe 'authentication' do
     context 'client_admin' do
       it 'PATCH' do
         PaymentCompany.create(company: company, payment_option: pay_boleto_1)
-        HistoricProduct.create(product: product, company: company, price: product.price)
+        product1 = product
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         company_1 = company
         final_client1 = final_client
@@ -78,7 +78,7 @@ describe 'authentication' do
     context 'client' do
       it 'PATCH' do
         PaymentCompany.create(company: company, payment_option: pay_boleto_1)
-        HistoricProduct.create(product: product, company: company, price: product.price)
+        product1 = product
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
         company_1 = company
         final_client1 = final_client

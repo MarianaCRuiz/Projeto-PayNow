@@ -44,7 +44,7 @@ describe 'client_admin consult charges' do
     end
     it 'edit charge' do
       PaymentCompany.create(company: company, payment_option: pay_boleto_1)
-      HistoricProduct.create(product: product, company: company, price: product.price)
+      product1 = product
       company1 = company
       token = '5pjB8SDb74LH6bBnawe2'
       company.token = token
@@ -81,7 +81,7 @@ describe 'client_admin consult charges' do
     it 'edit charge' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       PaymentCompany.create(company: company, payment_option: pay_boleto_1)
-      HistoricProduct.create(product: product, company: company, price: product.price)
+      product1 = product
       token = '1pjB8SDb74LH1bBnawe2'
       charge.token = token
       
@@ -119,7 +119,7 @@ describe 'client_admin consult charges' do
     it 'edit charge' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       PaymentCompany.create(company: company, payment_option: pay_boleto_1)
-      HistoricProduct.create(product: product, company: company, price: product.price)
+      product1 = product
       token = '1pjB8SDb74LH1bBnawe2'
       charge.token = token
       

@@ -45,8 +45,8 @@ describe 'consult charges api' do
     it 'successfully' do
       CompanyClient.create!(final_client: final_client, company: company)
       CompanyClient.create!(final_client: final_client_2, company: company)
-      HistoricProduct.create(product: product, company: company, price: product.price)
-      HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+      product1 = product
+      product2 = product_2
       PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
       PaymentCompany.create!(company: company, payment_option: pay_creditcard_1)
       bank1 = bank
@@ -81,8 +81,8 @@ describe 'consult charges api' do
       it 'no payment_method' do
         CompanyClient.create!(final_client: final_client, company: company)
         CompanyClient.create!(final_client: final_client_2, company: company)
-        HistoricProduct.create(product: product, company: company, price: product.price)
-        HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+        product1 = product
+        product2 = product_2
         PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
         PaymentCompany.create!(company: company, payment_option: pay_creditcard_1)
         PaymentCompany.create!(company: company, payment_option: pay_pix_1)
@@ -101,8 +101,8 @@ describe 'consult charges api' do
       it 'impossible payment_method' do
         CompanyClient.create!(final_client: final_client, company: company)
         CompanyClient.create!(final_client: final_client_2, company: company)
-        HistoricProduct.create(product: product, company: company, price: product.price)
-        HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+        product1 = product
+        product2 = product_2
         PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
         PaymentCompany.create!(company: company, payment_option: pay_creditcard_1)
         PaymentCompany.create!(company: company, payment_option: pay_pix_1)

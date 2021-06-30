@@ -22,7 +22,7 @@ describe 'charge_status charges changing status api' do
   context 'change status' do
     it 'successfully 05' do
       CompanyClient.create!(final_client: final_client, company: company)
-      HistoricProduct.create(product: product, company: company, price: product.price)
+      product1 = product
       PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
       #status_2 = StatusCharge.create!(code: "05", description: "Cobrança efetivada com sucesso")
       bank1 = bank
@@ -44,7 +44,7 @@ describe 'charge_status charges changing status api' do
     end
     it 'successfully 11' do
       CompanyClient.create!(final_client: final_client, company: company)
-      HistoricProduct.create(product: product, company: company, price: product.price)
+      product1 = product
       PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
       #status_2 = StatusCharge.create!(code: "05", description: "Cobrança efetivada com sucesso")
       bank1 = bank
@@ -69,7 +69,7 @@ describe 'charge_status charges changing status api' do
   context 'failure' do
     it 'status invalid' do
       CompanyClient.create!(final_client: final_client, company: company)
-      HistoricProduct.create(product: product, company: company, price: product.price)
+      product1 = product
       PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
       bank1 = bank
       boleto1 = boleto
@@ -82,7 +82,7 @@ describe 'charge_status charges changing status api' do
     
     it 'missing payment date' do
       CompanyClient.create!(final_client: final_client, company: company)
-      HistoricProduct.create(product: product, company: company, price: product.price)
+      product1 = product
       PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
       status_2 = StatusCharge.create!(code: "05", description: "Cobrança efetivada com sucesso\n")
       bank1 = bank
@@ -101,7 +101,7 @@ describe 'charge_status charges changing status api' do
 
     it 'missing authorization token' do
       CompanyClient.create!(final_client: final_client, company: company)
-      HistoricProduct.create(product: product, company: company, price: product.price)
+      product1 = product
       PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
       status_2 = StatusCharge.create!(code: "05", description: "Cobrança efetivada com sucesso\n")
       bank1 = bank
@@ -120,7 +120,7 @@ describe 'charge_status charges changing status api' do
 
     it 'missing attempt date' do
       CompanyClient.create!(final_client: final_client, company: company)
-      HistoricProduct.create(product: product, company: company, price: product.price)
+      product1 = product
       PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
       bank1 = bank
       boleto1 = boleto
@@ -135,7 +135,7 @@ describe 'charge_status charges changing status api' do
 
     it 'missing charge_id' do
       CompanyClient.create!(final_client: final_client, company: company)
-      HistoricProduct.create(product: product, company: company, price: product.price)
+      product1 = product
       PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
       bank1 = bank
       boleto1 = boleto
@@ -148,7 +148,7 @@ describe 'charge_status charges changing status api' do
 
     it 'missing status_charge_code' do
       CompanyClient.create!(final_client: final_client, company: company)
-      HistoricProduct.create(product: product, company: company, price: product.price)
+      product1 = product
       PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
       bank1 = bank
       boleto1 = boleto
@@ -160,7 +160,7 @@ describe 'charge_status charges changing status api' do
     end
     it 'missing params' do
       CompanyClient.create!(final_client: final_client, company: company)
-      HistoricProduct.create(product: product, company: company, price: product.price)
+      product1 = product
       PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
       bank1 = bank
       boleto1 = boleto

@@ -33,8 +33,8 @@ describe 'client_admin consult charges' do
   it 'client_admin view charges status 01' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     PaymentCompany.create(company: company, payment_option: pay_boleto_1)
-    HistoricProduct.create(product: product, company: company, price: product.price)
-    HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+    product1 = product
+    product2 = product_2
 
     boleto1 = boleto
     charge1 = charge_1
@@ -57,8 +57,8 @@ describe 'client_admin consult charges' do
   it 'change charge status' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
-    HistoricProduct.create!(product: product, company: company, price: product.price)
-    HistoricProduct.create!(product: product_2, company: company, price: product_2.price)
+    product1 = product
+    product2 = product_2
     status_2 = StatusCharge.create!(code: "05", description: "Cobrança efetivada com sucesso")
     status1 = status_charge
     boleto1 = boleto
@@ -90,8 +90,8 @@ describe 'client_admin consult charges' do
     PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
     CompanyClient.create!(final_client: final_client, company: company)
     CompanyClient.create!(final_client: final_client_2, company: company)
-    HistoricProduct.create(product: product, company: company, price: product.price)
-    HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+    product1 = product
+    product2 = product_2
     status_2 = StatusCharge.create!(code: "05", description: "Cobrança efetivada com sucesso")
     boleto1 = boleto
     charge1 = charge_1
@@ -111,8 +111,8 @@ describe 'client_admin consult charges' do
   it 'change charge status pendente' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
-    HistoricProduct.create!(product: product, company: company, price: product.price)
-    HistoricProduct.create!(product: product_2, company: company, price: product_2.price)
+    product1 = product
+    product2 = product_2
     status_2 = StatusCharge.create!(code: "11", description: "Cobrança recusada sem motivo especificado")
     boleto1 = boleto
     charge1 = charge_1
@@ -141,8 +141,8 @@ describe 'client_admin consult charges' do
   it 'change charge status missing attempt payment date' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     PaymentCompany.create(company: company, payment_option: pay_boleto_1)
-    HistoricProduct.create(product: product, company: company, price: product.price)
-    HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+    product1 = product
+    product2 = product_2
     CompanyClient.create!(final_client: final_client, company: company)
     CompanyClient.create!(final_client: final_client_2, company: company)
     boleto1 = boleto
@@ -164,8 +164,8 @@ describe 'client_admin consult charges' do
   it 'see all charges' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     PaymentCompany.create(company: company, payment_option: pay_boleto_1)
-    HistoricProduct.create(product: product, company: company, price: product.price)
-    HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+    product1 = product
+    product2 = product_2
     CompanyClient.create!(final_client: final_client, company: company)
     CompanyClient.create!(final_client: final_client_2, company: company)
     status_2 = StatusCharge.create!(code: '05', description: "Cobrança efetivada com sucesso\n")
@@ -192,8 +192,8 @@ describe 'client_admin consult charges' do
   it 'see last 30 days charges' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     PaymentCompany.create(company: company, payment_option: pay_boleto_1)
-    HistoricProduct.create(product: product, company: company, price: product.price)
-    HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+    product1 = product
+    product2 = product_2
     CompanyClient.create!(final_client: final_client, company: company)
     CompanyClient.create!(final_client: final_client_2, company: company)
     status_2 = StatusCharge.create!(code: '05', description: "Cobrança efetivada com sucesso\n")
@@ -227,8 +227,8 @@ describe 'client_admin consult charges' do
   it 'see last 90 days charges' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     PaymentCompany.create(company: company, payment_option: pay_boleto_1)
-    HistoricProduct.create(product: product, company: company, price: product.price)
-    HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+    product1 = product
+    product2 = product_2
     CompanyClient.create!(final_client: final_client, company: company)
     CompanyClient.create!(final_client: final_client_2, company: company)
     status_2 = StatusCharge.create!(code: '05', description: "Cobrança efetivada com sucesso\n")

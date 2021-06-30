@@ -8,7 +8,7 @@ describe 'client_admin deactivate product' do
   let(:product) {Product.create!(name:'Produto 1', price: 53, boleto_discount: 1, company: company)}
   it 'successfully' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-    HistoricProduct.create(product: product, company: company, price: product.price)
+    product1 = product
 
     login_as user_admin, scope: :user
     visit client_admin_company_path(company[:token])

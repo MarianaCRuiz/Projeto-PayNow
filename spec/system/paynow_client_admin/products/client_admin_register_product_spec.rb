@@ -29,7 +29,6 @@ describe 'client_admin register product' do
                               city: 'Campinas', district: 'Csmpos', street: 'rua 2', number: '13', 
                               address_complement: '', billing_email: 'faturamento@empresa1.com')
     product = Product.create!(name:'Produto 2', price: 53, boleto_discount: 1, company: company2)
-    HistoricProduct.create(product: product, company: company2, price: product.price)
 
     login_as user_admin, scope: :user
     visit client_admin_company_path(company[:token])
@@ -67,7 +66,6 @@ describe 'client_admin register product' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     
       product = Product.create!(name:'Produto 2', price: 53, boleto_discount: 1, company: company)
-      HistoricProduct.create(product: product, company: company, price: product.price)
       
       login_as user_admin, scope: :user
       visit client_admin_company_path(company[:token])

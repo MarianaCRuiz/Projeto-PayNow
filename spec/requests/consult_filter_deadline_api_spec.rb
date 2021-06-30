@@ -46,8 +46,8 @@ describe 'consult charges api' do
     it 'filter due deadline specific' do
       CompanyClient.create!(final_client: final_client, company: company)
       CompanyClient.create!(final_client: final_client_2, company: company)
-      HistoricProduct.create(product: product, company: company, price: product.price)
-      HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+      product1 = product
+      product2 = product_2
       PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
       PaymentCompany.create!(company: company, payment_option: pay_creditcard_1)
       bank1 = bank
@@ -74,8 +74,8 @@ describe 'consult charges api' do
     it 'filter due deadline max' do
       CompanyClient.create!(final_client: final_client, company: company)
       CompanyClient.create!(final_client: final_client_2, company: company)
-      HistoricProduct.create(product: product, company: company, price: product.price)
-      HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+      product1 = product
+      product2 = product_2
       PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
       PaymentCompany.create!(company: company, payment_option: pay_creditcard_1)
       bank1 = bank
@@ -102,8 +102,8 @@ describe 'consult charges api' do
     it 'filter due deadline min' do
       CompanyClient.create!(final_client: final_client, company: company)
       CompanyClient.create!(final_client: final_client_2, company: company)
-      HistoricProduct.create(product: product, company: company, price: product.price)
-      HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+      product1 = product
+      product2 = product_2
       PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
       PaymentCompany.create!(company: company, payment_option: pay_creditcard_1)
       bank1 = bank
@@ -137,8 +137,8 @@ describe 'consult charges api' do
     it 'filter due deadline min and max' do
       CompanyClient.create!(final_client: final_client, company: company)
       CompanyClient.create!(final_client: final_client_2, company: company)
-      HistoricProduct.create(product: product, company: company, price: product.price)
-      HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+      product1 = product
+      product2 = product_2
       PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
       PaymentCompany.create!(company: company, payment_option: pay_creditcard_1)
       bank1 = bank
@@ -168,8 +168,8 @@ describe 'consult charges api' do
     it 'filter due deadline specific no match' do
       CompanyClient.create!(final_client: final_client, company: company)
       CompanyClient.create!(final_client: final_client_2, company: company)
-      HistoricProduct.create(product: product, company: company, price: product.price)
-      HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+      product1 = product
+      product2 = product_2
       PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
       PaymentCompany.create!(company: company, payment_option: pay_creditcard_1)
       bank1 = bank
@@ -187,8 +187,8 @@ describe 'consult charges api' do
     it 'filter due deadline max' do
       CompanyClient.create!(final_client: final_client, company: company)
       CompanyClient.create!(final_client: final_client_2, company: company)
-      HistoricProduct.create(product: product, company: company, price: product.price)
-      HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+      product1 = product
+      product2 = product_2
       PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
       PaymentCompany.create!(company: company, payment_option: pay_creditcard_1)
       bank1 = bank
@@ -206,8 +206,8 @@ describe 'consult charges api' do
     it 'filter due deadline min' do
       CompanyClient.create!(final_client: final_client, company: company)
       CompanyClient.create!(final_client: final_client_2, company: company)
-      HistoricProduct.create(product: product, company: company, price: product.price)
-      HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+      product1 = product
+      product2 = product_2
       PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
       PaymentCompany.create!(company: company, payment_option: pay_creditcard_1)
       bank1 = bank
@@ -225,8 +225,8 @@ describe 'consult charges api' do
     it 'filter due deadline min and max' do
       CompanyClient.create!(final_client: final_client, company: company)
       CompanyClient.create!(final_client: final_client_2, company: company)
-      HistoricProduct.create(product: product, company: company, price: product.price)
-      HistoricProduct.create(product: product_2, company: company, price: product_2.price)
+      product1 = product
+      product2 = product_2
       PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
       PaymentCompany.create!(company: company, payment_option: pay_creditcard_1)
       bank1 = bank

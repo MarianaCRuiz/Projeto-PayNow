@@ -11,6 +11,14 @@ class Product < ApplicationRecord
   def product_active?
     self.active?
   end
+
+  after_save do
+    HistoricProduct.create!(product: self, company: self.company, price: self.price, 
+                            boleto_discount: self.boleto_discount, 
+                            credit_card_discount: self.credit_card_discount, 
+                            pix_discount: self.pix_discount)
+    
+  end
   
   before_validation(on: :create) do
     token = self.token = SecureRandom.base58(20)

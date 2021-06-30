@@ -10,7 +10,7 @@ describe 'client_admin deactivate product' do
   
   it 'successfully' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-    HistoricProduct.create(product: product, company: company, price: product.price)
+    product1 = product
 
     login_as user, scope: :user
     visit clients_company_path(company[:token])

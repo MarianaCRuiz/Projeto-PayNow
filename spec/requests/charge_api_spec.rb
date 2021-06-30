@@ -21,7 +21,6 @@ describe 'charge api' do
         bank1 = bank
         pay1 = pay_boleto_1
         boleto1 = boleto
-        HistoricProduct.create(product: product, company: company, price: product.price)
         PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
 
         post "/api/v1/charges", params: {charge: {client_token: final_client.token, 
@@ -46,7 +45,6 @@ describe 'charge api' do
         bank1 = bank
         pay1 = pay_creditcard_1
         credit_card1 = credit_card
-        HistoricProduct.create(product: product, company: company, price: product.price)
 
         post "/api/v1/charges", params: {charge: {client_token: final_client.token, 
             company_token: company.token, product_token: product.token, payment_method: pay_creditcard_1.name, 
@@ -69,7 +67,6 @@ describe 'charge api' do
         bank1 = bank
         pay1 = pay_pix_1
         pix1 = pix
-        HistoricProduct.create(product: product, company: company, price: product.price)
 
         post "/api/v1/charges", params: {charge: {client_token: final_client.token, 
             company_token: company.token, product_token: product.token, payment_method: pay_pix_1.name}}
@@ -94,7 +91,6 @@ describe 'charge api' do
         pay1 = pay_boleto_1
         boleto1 = boleto
         final_client1 = final_client
-        HistoricProduct.create!(product: product, company: company, price: product.price)
       
         post "/api/v1/charges", params: {charge: {client_token: final_client.token, 
             company_token: company.token, product_token: product.token, 
@@ -110,7 +106,6 @@ describe 'charge api' do
         pay1 = pay_boleto_1
         boleto1 = boleto
         final_client1 = final_client
-        HistoricProduct.create(product: product, company: company, price: product.price)
 
         post "/api/v1/charges", params: {charge: {company_token: company.token, product_token: product.token, 
                                                   payment_method: pay_boleto_1.name, 
@@ -126,7 +121,6 @@ describe 'charge api' do
         pay1 = pay_boleto_1
         boleto1 = boleto
         final_client1 = final_client
-        HistoricProduct.create(product: product, company: company, price: product.price)
 
         post "/api/v1/charges", params: {charge: {client_token: final_client.token, payment_method: pay_boleto_1.name, 
             client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
@@ -141,7 +135,6 @@ describe 'charge api' do
         pay1 = pay_boleto_1
         boleto1 = boleto
         final_client1 = final_client
-        HistoricProduct.create(product: product, company: company, price: product.price)
 
          post "/api/v1/charges", params: {charge: {}}
   
@@ -158,7 +151,6 @@ describe 'charge api' do
         final_client1 = final_client
     
         CompanyClient.create!(final_client: final_client, company: company)
-        HistoricProduct.create(product: product, company: company, price: product.price)
         PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
   
         company.blocked!
