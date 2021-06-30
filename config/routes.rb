@@ -73,7 +73,7 @@ Rails.application.routes.draw do
       post 'charges', to: 'charges#charges_generate'
       post 'final_clients', to: 'final_clients#final_client_token'
       get 'consult_charges', to: 'queries#consult_charges'
-      patch 'change_status', to: 'queries#change_status'
+      patch 'change_status', to: 'status_charges#change_status'
     end
   end
 
