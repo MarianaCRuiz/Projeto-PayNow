@@ -5,11 +5,11 @@ describe 'register credit card option' do
                 city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
                 address_complement: '', billing_email: 'faturamento@codeplay.com')}
   let(:user_admin) {User.create!(email: 'admin@codeplay.com', password: '123456', role: 1, company: company)}
-  let(:pay_2) {PaymentOption.create!(name: 'Cartão de Crédito MASTERCHEF', fee: 1.9, max_money_fee: 20, payment_type: 1)}
+  let(:pay_creditcard_1) {PaymentOption.create!(name: 'Cartão de Crédito MASTERCHEF', fee: 1.9, max_money_fee: 20, payment_type: 1)}
   
   it 'client_admin register credit card succesfully' do   
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-    pay = pay_2
+    pay = pay_creditcard_1
     token = SecureRandom.base58(20)
 
     login_as user_admin, scope: :user
@@ -26,7 +26,7 @@ describe 'register credit card option' do
   end
   it 'cannot be blank' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-    pay = pay_2
+    pay = pay_creditcard_1
     token = SecureRandom.base58(20)
 
     login_as user_admin, scope: :user
@@ -41,8 +41,8 @@ describe 'register credit card option' do
   end
   it 'bank token uniq' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-    pay = pay_2
-    CreditCardRegisterOption.create!(payment_option: pay_2, company: company, credit_card_operator_token: 'haBN7S9kM726bhz5d1pB')
+    pay = pay_creditcard_1
+    CreditCardRegisterOption.create!(payment_option: pay_creditcard_1, company: company, credit_card_operator_token: 'haBN7S9kM726bhz5d1pB')
     
     login_as user_admin, scope: :user
     visit client_admin_company_path(company[:token])

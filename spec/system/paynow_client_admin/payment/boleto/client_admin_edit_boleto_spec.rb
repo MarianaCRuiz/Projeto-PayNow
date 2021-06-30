@@ -5,14 +5,14 @@ describe 'edit boleto' do
                 city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
                 address_complement: '', billing_email: 'faturamento@codeplay.com')}
   let(:user_admin) {User.create!(email: 'admin@codeplay.com', password: '123456', role: 1, company: company)}
-  let(:pay_1) {PaymentOption.create!(name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0)}
-  let(:pay_2) {PaymentOption.create!(name: 'Boleto 2', fee: 1.9, max_money_fee: 20, payment_type: 0)}
+  let(:pay_boleto_1) {PaymentOption.create!(name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0)}
+  let(:pay_creditcard_1) {PaymentOption.create!(name: 'Boleto 2', fee: 1.9, max_money_fee: 20, payment_type: 0)}
   let(:bank) {BankCode.create!(code: '001', bank:'Banco do Brasil S.A.')}
 
   it 'successfuly' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-    BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
-    PaymentCompany.create!(company: company, payment_option: pay_1)
+    BoletoRegisterOption.create!(company: company, payment_option: pay_boleto_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
+    PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
 
     login_as user_admin, scope: :user
     visit client_admin_company_path(company[:token])
@@ -30,8 +30,8 @@ describe 'edit boleto' do
   end
   it 'cannot be blank' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-    BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
-    PaymentCompany.create!(company: company, payment_option: pay_1)
+    BoletoRegisterOption.create!(company: company, payment_option: pay_boleto_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
+    PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
 
     login_as user_admin, scope: :user
     visit client_admin_company_path(company[:token])
@@ -47,10 +47,10 @@ describe 'edit boleto' do
   context 'uniquenes' do
     it 'account number same bank and agency' do    
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-      BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
-      BoletoRegisterOption.create!(company: company, payment_option: pay_2, bank_code: bank, agency_number: '2150', account_number: '123.555-7')
-      PaymentCompany.create!(company: company, payment_option: pay_1)
-      PaymentCompany.create!(company: company, payment_option: pay_2)
+      BoletoRegisterOption.create!(company: company, payment_option: pay_boleto_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
+      BoletoRegisterOption.create!(company: company, payment_option: pay_creditcard_1, bank_code: bank, agency_number: '2150', account_number: '123.555-7')
+      PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
+      PaymentCompany.create!(company: company, payment_option: pay_creditcard_1)
 
       login_as user_admin, scope: :user
       visit client_admin_company_path(company[:token])
@@ -65,10 +65,10 @@ describe 'edit boleto' do
     end
     it 'account number same bank different agency' do    
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-      BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
-      BoletoRegisterOption.create!(company: company, payment_option: pay_2, bank_code: bank, agency_number: '2150', account_number: '123.555-7')
-      PaymentCompany.create!(company: company, payment_option: pay_1)
-      PaymentCompany.create!(company: company, payment_option: pay_2)
+      BoletoRegisterOption.create!(company: company, payment_option: pay_boleto_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
+      BoletoRegisterOption.create!(company: company, payment_option: pay_creditcard_1, bank_code: bank, agency_number: '2150', account_number: '123.555-7')
+      PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
+      PaymentCompany.create!(company: company, payment_option: pay_creditcard_1)
 
       login_as user_admin, scope: :user
       visit client_admin_company_path(company[:token])
@@ -87,10 +87,10 @@ describe 'edit boleto' do
     it 'account number same agency different bank' do    
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       bank2 = BankCode.create!(code: '029', bank:'Itau')
-      BoletoRegisterOption.create!(company: company, payment_option: pay_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
-      BoletoRegisterOption.create!(company: company, payment_option: pay_2, bank_code: bank2, agency_number: '2150', account_number: '123.555-7')
-      PaymentCompany.create!(company: company, payment_option: pay_1)
-      PaymentCompany.create!(company: company, payment_option: pay_2)
+      BoletoRegisterOption.create!(company: company, payment_option: pay_boleto_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')
+      BoletoRegisterOption.create!(company: company, payment_option: pay_creditcard_1, bank_code: bank2, agency_number: '2150', account_number: '123.555-7')
+      PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
+      PaymentCompany.create!(company: company, payment_option: pay_creditcard_1)
       
 
       login_as user_admin, scope: :user
