@@ -37,12 +37,9 @@ class ClientAdmin::CreditCardRegisterOptionsController < ApplicationController
     @payment_option = @credit_card.payment_option
     @credit_card.credit_card_operator_token = ''
     @credit_card.inactive!
-    if @credit_card.save
-      @company.payment_companies.find_by(payment_option: @payment_option).destroy
-      redirect_to payments_chosen_client_admin_company_path(@company.token), notice: 'Meio de pagamento excluído com sucesso'
-    else
-      redirect_to payments_chosen_client_admin_company_path(@company.token), notice: 'Não foi possível excluir'
-    end
+    @credit_card.save!
+    @company.payment_companies.find_by(payment_option: @payment_option).destroy
+    redirect_to payments_chosen_client_admin_company_path(@company.token), notice: 'Meio de pagamento excluído com sucesso'
   end 
   
   private

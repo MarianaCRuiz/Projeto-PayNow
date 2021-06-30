@@ -27,10 +27,6 @@ class Clients::ChargesController < ApplicationController
     redirect_to root_path, notice: 'Acesso não autorizado' unless current_user.client?
   end
 
-  def charge_params
-    params.require(:charge).permit(:status_charge_id, :payment_date, :attempt_date)
-  end
-
   def status_charge_generate
     require 'csv'
     if StatusCharge.count < 5

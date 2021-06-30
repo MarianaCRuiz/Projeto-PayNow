@@ -35,12 +35,9 @@ class ClientAdmin::BoletoRegisterOptionsController < ApplicationController
   def exclude 
     @payment_option = @boleto.payment_option
     inactivate
-    if @boleto.save
-      @company.payment_companies.find_by(payment_option: @payment_option).destroy
-      redirect_to payments_chosen_client_admin_company_path(@company.token), notice: 'Meio de pagamento excluído com sucesso'
-    else
-      redirect_to payments_chosen_client_admin_company_path(@company.token), notice: 'Não foi possível excluir'
-    end
+    @boleto.save!
+    @company.payment_companies.find_by(payment_option: @payment_option).destroy
+    redirect_to payments_chosen_client_admin_company_path(@company.token), notice: 'Meio de pagamento excluído com sucesso'
   end 
 
   private

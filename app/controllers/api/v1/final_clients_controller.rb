@@ -14,8 +14,6 @@ class Api::V1::FinalClientsController < ActionController::API
       render json: FinalClient.find_by(cpf: @client.cpf), status: 202
     elsif @client && !CompanyClient.where(company: @company, final_client: @client).empty?
       render json: @final_client.errors, status: 409
-    else
-      render json: @final_client.errors, status: :precondition_failed
     end
   rescue ActionController::ParameterMissing
     render status: :precondition_failed, json: { errors: 'parâmetros inválidos' }

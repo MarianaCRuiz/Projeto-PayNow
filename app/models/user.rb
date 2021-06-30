@@ -17,8 +17,6 @@ class User < ApplicationRecord
     elsif DomainRecord.where(domain: domain).empty?
       self.client_admin_sign_up!
       DomainRecord.create!(email_client_admin: self.email, domain: domain) 
-    elsif DomainRecord.where(domain: domain).first.company.blank?
-      self.client_admin_sign_up!
     elsif DomainRecord.find_by(email: self.email).blank?
       self.client!
       company = DomainRecord.where(domain: domain).first.company

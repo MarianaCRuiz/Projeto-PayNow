@@ -66,11 +66,8 @@ class ClientAdmin::CompaniesController < ApplicationController
   def token_new
     @company = Company.find_by(token: params[:token])
     @company.generate_token
-    if @company.save
-      redirect_to client_admin_company_path(@company[:token])
-    else
-      redirect_to client_admin_company_path(@company[:token]), notice: 'Falha ao gerar o token novo'
-    end
+    @company.save
+    redirect_to client_admin_company_path(@company[:token])
   end
 
   private

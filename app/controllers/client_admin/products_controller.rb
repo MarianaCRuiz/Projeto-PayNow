@@ -47,11 +47,8 @@ class ClientAdmin::ProductsController < ApplicationController
     @product = Product.find_by(token: params[:token])
     @product.inactive!
     @product.name = ''
-    if @product.save
-      redirect_to client_admin_company_products_path(current_user.company), notice: 'Produto excluído com sucesso'
-    else
-      redirect_to client_admin_company_products_path(current_user.company), notice: 'Não foi possível excluir'
-    end
+    @product.save!
+    redirect_to client_admin_company_products_path(current_user.company), notice: 'Produto excluído com sucesso'
   end 
   
   private

@@ -69,6 +69,9 @@ describe 'client_admin account' do
 
         login_as user, scope: :user
         visit root_path
+        click_on 'Sair'
+        login_as user, scope: :user
+        visit root_path
         
         expect(user.role).to eq('client_admin_sign_up')
         expect(page).to have_content('Registre sua empresa')

@@ -2,7 +2,7 @@ class Api::V1::StatusChargesController < ActionController::API
   before_action :status_charge_generate
   
   def change_status
-    paid = false
+    @paid = false
     @status_charge = StatusCharge.find_by(code: charge_status_params[:status_charge_code])
     @charge = Charge.find_by(token: charge_status_params[:charge_id])
     if @charge && @status_charge
@@ -10,7 +10,7 @@ class Api::V1::StatusChargesController < ActionController::API
       charge_attempt?
       @charge.save!
       render json: @charge
-      if paid == true
+      if @paid == true
         Receipt.create(due_deadline: @charge.due_deadline, payment_date: @payment_date, charge: @charge, authorization_token: @authorization_token)
       end
     else
@@ -39,7 +39,7 @@ class Api::V1::StatusChargesController < ActionController::API
         @authorization_token = charge_status_params[:authorization_token]
         @charge.authorization_token = @authorization_token
       end
-      paid = true
+      @paid = true
     end
   end
 

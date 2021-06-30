@@ -99,6 +99,21 @@ describe 'clients accounts from a registered company' do
 
       expect(page).to have_content('email inválido')
     end
+    it 'email wrong format' do
+      company = Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
+                                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
+                                address_complement: '', billing_email: 'faturamento@codeplay.com')
+      DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
+
+      visit root_path
+      click_on 'Registrar-se'
+      fill_in 'Email', with: 'user@codeplay'
+      fill_in 'Senha', with: '123456'
+      fill_in 'Confirmar senha', with: '123456'
+      expect{ click_on 'Criar conta' }.to change{ User.count }.by(0)
+
+      expect(page).to have_content('email inválido')
+    end
     it 'cannot be blank' do
       company = Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
                                 city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
