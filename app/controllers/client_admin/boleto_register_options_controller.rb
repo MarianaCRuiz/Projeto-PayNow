@@ -3,8 +3,7 @@ class ClientAdmin::BoletoRegisterOptionsController < ApplicationController
   before_action :authenticate_client_admin
   before_action :bank_code_generate, only: %i[new edit]
   before_action :find_boleto, only: %i[edit update exclude]
-  before_action :find_payment_option, except: %i[exclude]
-  before_action :find_bank_code, except: %i[exclude]
+  before_action :payment_option_and_bank, except: %i[exclude]
   before_action :find_company
   
   def new
@@ -58,11 +57,8 @@ class ClientAdmin::BoletoRegisterOptionsController < ApplicationController
     @boleto = BoletoRegisterOption.find(params[:id])
   end
 
-  def find_payment_option
+  def payment_option_and_bank
     @payment_option = PaymentOption.find(params[:payment_option_id])
-  end
-
-  def find_bank_code
     @bank_codes = BankCode.all
   end
 

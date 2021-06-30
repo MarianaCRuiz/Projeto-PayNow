@@ -13,9 +13,7 @@ class ClientAdmin::CompaniesController < ApplicationController
   def create
     @company = Company.new(company_params)
     if @company.save
-      record = DomainRecord.where(email_client_admin: current_user.email).first
-      record.company = @company
-      record.save!
+      save_domain_company
       current_user.company = @company
       current_user.save
       redirect_to client_admin_company_path(@company[:token])     
@@ -85,4 +83,9 @@ class ClientAdmin::CompaniesController < ApplicationController
     params.require(:company).permit(:corporate_name, :cnpj, :state, :city, :district, :street, :number, :address_complement, :billing_email)
   end
 
+  def save_domain_company
+    record = DomainRecord.find_by(email_client_admin: current_user.email)
+    record.company = @company
+    record.save!
+  end
 end

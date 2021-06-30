@@ -2,31 +2,17 @@ class Api::V1::StatusChargesController < ActionController::API
   before_action :status_charge_generate
   
   def change_status
+    paid = false
     @status_charge = StatusCharge.find_by(code: charge_status_params[:status_charge_code])
     @charge = Charge.find_by(token: charge_status_params[:charge_id])
-    @payment_date = charge_status_params[:payment_date]
-    @attempt_date = charge_status_params[:attempt_date]
-    if @charge && @status_charge && @status_charge.code == '05'
-      @charge.status_charge = @status_charge
-      @charge.status_returned = @status_charge.description
-      @charge.status_returned_code = @status_charge.code
-      if @payment_date
-        @charge.payment_date = @payment_date
-        @authorization_token = charge_status_params[:authorization_token]
-        @charge.authorization_token = @authorization_token
-      end
-      @charge.save!
-      Receipt.create(due_deadline: @charge.due_deadline, payment_date: @payment_date, charge: @charge, authorization_token: @authorization_token)
-      render json: @charge
-    elsif @charge && @status_charge && @status_charge.code != '01'
-      @charge.status_returned = @status_charge.description
-      @charge.status_returned_code = @status_charge.code
-      @charge.status_charge = StatusCharge.find_by(code: '01')
-      if @attempt_date
-        @charge.attempt_date = @attempt_date
-      end
+    if @charge && @status_charge
+      charge_paid?
+      charge_attempt?
       @charge.save!
       render json: @charge
+      if paid == true
+        Receipt.create(due_deadline: @charge.due_deadline, payment_date: @payment_date, charge: @charge, authorization_token: @authorization_token)
+      end
     else
       head 404
     end
@@ -40,6 +26,33 @@ class Api::V1::StatusChargesController < ActionController::API
   
   def charge_status_params
     params.require(:charge_status).permit(:status_charge_code, :charge_id, :payment_date, :attempt_date, :authorization_token)
+  end
+
+  def charge_paid?
+    if @status_charge.code == '05'
+      @payment_date = charge_status_params[:payment_date]
+      @charge.status_charge = @status_charge
+      @charge.status_returned = @status_charge.description
+      @charge.status_returned_code = @status_charge.code
+      if @payment_date
+        @charge.payment_date = @payment_date
+        @authorization_token = charge_status_params[:authorization_token]
+        @charge.authorization_token = @authorization_token
+      end
+      paid = true
+    end
+  end
+
+  def charge_attempt?
+    @attempt_date = charge_status_params[:attempt_date]
+    if @status_charge.code != '01'
+      @charge.status_returned = @status_charge.description
+      @charge.status_returned_code = @status_charge.code
+      @charge.status_charge = StatusCharge.find_by(code: '01')
+      if @attempt_date
+        @charge.attempt_date = @attempt_date
+      end
+    end
   end
     
   def status_charge_generate
