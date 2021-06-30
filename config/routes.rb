@@ -2,8 +2,9 @@ Rails.application.routes.draw do
 
   devise_for :users
   root 'home#index'
-  get 'receipts', to: 'home#receipts'
-
+  resources :receipts, only: %i[index] do
+    post 'filter', on: :collection
+  end
   namespace :client_admin do
     resources :companies, only: %i[show new create edit update], param: :token do
       member do

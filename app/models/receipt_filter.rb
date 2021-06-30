@@ -1,0 +1,2 @@
+class ReceiptFilter < ApplicationRecord
+end

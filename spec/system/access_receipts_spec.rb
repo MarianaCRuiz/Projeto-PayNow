@@ -45,7 +45,7 @@ describe 'accessing recipes' do
                                  payment_option: pay_3, price: product_3.price, discount: 7,
                                  charge_price: 63, payment_date: '14/06/2021')}
   
-  it 'visitor' do
+  it 'successfully' do
     # DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
     PaymentCompany.create!(company: company, payment_option: pay_1)
     PaymentCompany.create!(company: company, payment_option: pay_2)
@@ -65,6 +65,8 @@ describe 'accessing recipes' do
 
     visit root_path
     click_on 'Recibos'
+    fill_in 'Token de autorização',	with: 'nn9e32jnvaç'
+    click_on 'Procurar'
 
     expect(page).to have_content('Cliente final 1')
     expect(page).to have_content('Produto 1')
@@ -74,21 +76,38 @@ describe 'accessing recipes' do
     expect(page).to have_content('24/07/2021')
     expect(page).to have_content('17/06/2021')
     expect(page).to have_content('Boleto')
-    expect(page).to have_content('Cliente final 2')
-    expect(page).to have_content('Produto 2')
-    expect(page).to have_content('R$ 60,00')
-    expect(page).to have_content('R$ 9,00')
-    expect(page).to have_content('R$ 51,00')
-    expect(page).to have_content('15/06/2021')
-    expect(page).to have_content('15/06/2021')
-    expect(page).to have_content('Cartão de Crédito MasterChef')
-    expect(page).to have_content('Cliente final 3')
-    expect(page).to have_content('Produto 2')
-    expect(page).to have_content('R$ 70,00')
-    expect(page).to have_content('R$ 7,00')
-    expect(page).to have_content('R$ 63,00')
-    expect(page).to have_content('14/06/2021')
-    expect(page).to have_content('14/06/2021')
-    expect(page).to have_content('PIX')
+    expect(page).to_not have_content('Cliente final 2')
+    expect(page).to_not have_content('Produto 2')
+    expect(page).to_not have_content('R$ 60,00')
+    expect(page).to_not have_content('R$ 9,00')
+    expect(page).to_not have_content('R$ 51,00')
+    expect(page).to_not have_content('15/06/2021')
+    expect(page).to_not have_content('15/06/2021')
+    expect(page).to_not have_content('Cartão de Crédito MasterChef')
+    expect(page).to_not have_content('Cliente final 3')
+    expect(page).to_not have_content('Produto 2')
+    expect(page).to_not have_content('R$ 70,00')
+    expect(page).to_not have_content('R$ 7,00')
+    expect(page).to_not have_content('R$ 63,00')
+    expect(page).to_not have_content('14/06/2021')
+    expect(page).to_not have_content('14/06/2021')
+    expect(page).to_not have_content('PIX')
+  end
+  it 'failure' do
+    # DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
+    PaymentCompany.create!(company: company, payment_option: pay_1)
+    HistoricProduct.create(product: product, company: company, price: product.price)
+    CompanyClient.create!(company: company, final_client: final_client)
+    Receipt.create!(due_deadline: charge_1.due_deadline, payment_date: charge_1.payment_date, charge: charge_1, authorization_token: 'nn9e32jnvaç')
+    boleto1 = boleto
+    cc = credit_card
+    pix1 = pix
+
+    visit root_path
+    click_on 'Recibos'
+    fill_in 'Token de autorização',	with: '11111'
+    click_on 'Procurar'
+
+    expect(page).to have_content('Nenhum recibo encontrado')
   end
 end
