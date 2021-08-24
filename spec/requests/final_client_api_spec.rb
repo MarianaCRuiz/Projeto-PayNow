@@ -8,7 +8,7 @@ describe 'final client api' do
   end
   context 'POST final client api' do
     it 'generating final client token successfully' do
-      company1 = company
+      company
 
       post '/api/v1/final_clients',
            params: { final_client: { name: 'Client final 1', cpf: '11122233344' }, company_token: company.token }
@@ -21,7 +21,7 @@ describe 'final client api' do
       expect(parsed_body['cpf']).to eq('11122233344')
     end
     it 'missing data' do
-      company1 = company
+      company
 
       post '/api/v1/final_clients', params: { final_client: {}, company_token: company.token }
 
@@ -31,7 +31,7 @@ describe 'final client api' do
       expect(parsed_body['errors']).to eq('parâmetros inválidos')
     end
     it 'params must be uniq' do
-      company1 = company
+      company
       final_client = FinalClient.create!(name: 'Teste 1', cpf: '11122233344')
       CompanyClient.create!(final_client: final_client, company: company)
 
@@ -44,7 +44,7 @@ describe 'final client api' do
       expect(parsed_body['cpf']).to eq(['já está em uso'])
     end
     it 'final client register from another company' do
-      company1 = company
+      company
       final_client = FinalClient.create!(name: 'Teste 1', cpf: '11122233344')
       CompanyClient.create!(final_client: final_client, company: company)
       company2 = Company.create!(corporate_name: 'Empresa 1 SA', cnpj: '11.444.555/0001-44', state: 'São Paulo',

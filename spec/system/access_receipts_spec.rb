@@ -29,12 +29,12 @@ describe 'accessing recipes' do
   let(:product2) do
     Product.create!(name: 'Produto 2', price: 60, boleto_discount: 10, credit_card_discount: 15, company: company)
   end
-  let(:product_3) do
+  let(:product3) do
     Product.create!(name: 'Produto 3', price: 70, boleto_discount: 10, pix_discount: 10, company: company)
   end
   let(:final_client) { FinalClient.create!(name: 'Cliente final 1', cpf: '11122255599') }
   let(:final_client2) { FinalClient.create!(name: 'Cliente final 2', cpf: '11144455599') }
-  let(:final_client_3) { FinalClient.create!(name: 'Cliente final 3', cpf: '11188855599') }
+  let(:final_client3) { FinalClient.create!(name: 'Cliente final 3', cpf: '11188855599') }
   let(:status_charge) { StatusCharge.create!(code: '05', description: "Cobrança efetivada com sucesso\n") }
   let(:charge1) do
     Charge.create!(client_name: final_client.name, client_cpf: final_client.cpf,
@@ -58,13 +58,13 @@ describe 'accessing recipes' do
                    charge_price: 51, payment_date: '15/06/2021')
   end
   let(:charge12) do
-    Charge.create!(client_token: final_client_3.token,
-                   client_name: final_client_3.name, client_cpf: final_client_3.cpf,
-                   company_token: company.token, product_token: product_3.token,
+    Charge.create!(client_token: final_client3.token,
+                   client_name: final_client3.name, client_cpf: final_client3.cpf,
+                   company_token: company.token, product_token: product3.token,
                    payment_method: pay_pix1.name, due_deadline: '14/06/2021',
-                   company: company, final_client: final_client_3,
-                   status_charge: status_charge, product: product_3,
-                   payment_option: pay_pix1, price: product_3.price, discount: 7,
+                   company: company, final_client: final_client3,
+                   status_charge: status_charge, product: product3,
+                   payment_option: pay_pix1, price: product3.price, discount: 7,
                    charge_price: 63, payment_date: '14/06/2021')
   end
 
@@ -74,19 +74,19 @@ describe 'accessing recipes' do
     PaymentCompany.create!(company: company, payment_option: pay_pix1)
     HistoricProduct.create(product: product, company: company, price: product.price)
     HistoricProduct.create(product: product2, company: company, price: product2.price)
-    HistoricProduct.create(product: product_3, company: company, price: product_3.price)
+    HistoricProduct.create(product: product3, company: company, price: product3.price)
     CompanyClient.create!(company: company, final_client: final_client)
     CompanyClient.create!(company: company, final_client: final_client2)
-    CompanyClient.create!(company: company, final_client: final_client_3)
+    CompanyClient.create!(company: company, final_client: final_client3)
     Receipt.create!(due_deadline: charge1.due_deadline, payment_date: charge1.payment_date, charge: charge1,
                     authorization_token: 'nn9e32jnvaç')
     Receipt.create!(due_deadline: charge11.due_deadline, payment_date: charge11.payment_date, charge: charge11,
                     authorization_token: 'iyvca8e9ery8w7e')
     Receipt.create!(due_deadline: charge12.due_deadline, payment_date: charge12.payment_date, charge: charge12,
                     authorization_token: '0ufbwehfnweapi')
-    boleto1 = boleto
-    cc = credit_card
-    pix1 = pix
+    boleto
+    credit_card
+    pix
 
     visit root_path
     click_on 'Recibos'
@@ -124,9 +124,9 @@ describe 'accessing recipes' do
     CompanyClient.create!(company: company, final_client: final_client)
     Receipt.create!(due_deadline: charge1.due_deadline, payment_date: charge1.payment_date, charge: charge1,
                     authorization_token: 'nn9e32jnvaç')
-    boleto1 = boleto
-    cc = credit_card
-    pix1 = pix
+    boleto
+    credit_card
+    pix
 
     visit root_path
     click_on 'Recibos'

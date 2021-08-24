@@ -120,7 +120,8 @@ describe 'charge_status charges changing status api' do
       charge1
 
       patch '/api/v1/change_status',
-            params: { charge_status: { status_charge_code: status2.code, payment_date: '16/06/2021', charge_id: charge1.token },
+            params: { charge_status: { status_charge_code: status2.code, payment_date: '16/06/2021',
+                                       charge_id: charge1.token },
                       company_token: company.token }
 
       expect(response).to have_http_status(412)

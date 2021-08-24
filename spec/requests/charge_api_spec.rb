@@ -32,10 +32,10 @@ describe 'charge api' do
     context 'generating charge successfully' do
       it 'boleto' do
         CompanyClient.create!(final_client: final_client, company: company)
-        product1 = product
-        bank1 = bank
-        pay1 = pay_boleto1
-        boleto1 = boleto
+        product
+        bank
+        pay_boleto1
+        boleto
         PaymentCompany.create!(company: company, payment_option: pay_boleto1)
 
         post '/api/v1/charges', params: { charge: { client_token: final_client.token,
@@ -57,10 +57,10 @@ describe 'charge api' do
       end
       it 'credit card' do
         CompanyClient.create!(final_client: final_client, company: company)
-        product1 = product
-        bank1 = bank
-        pay1 = pay_creditcard1
-        credit_card1 = credit_card
+        product
+        bank
+        pay_creditcard1
+        credit_card
 
         post '/api/v1/charges', params: { charge: { client_token: final_client.token,
                                                     company_token: company.token, product_token: product.token,
@@ -81,10 +81,10 @@ describe 'charge api' do
       end
       it 'pix' do
         CompanyClient.create!(final_client: final_client, company: company)
-        product1 = product
-        bank1 = bank
-        pay1 = pay_pix1
-        pix1 = pix
+        product
+        bank
+        pay_pix1
+        pix
 
         post '/api/v1/charges', params: { charge: { client_token: final_client.token,
                                                     company_token: company.token,
@@ -105,12 +105,12 @@ describe 'charge api' do
     end
     context 'failure' do
       it 'missing payment method' do
-        company1 = company
-        product1 = product
-        bank1 = bank
-        pay1 = pay_boleto1
-        boleto1 = boleto
-        final_client1 = final_client
+        company
+        product
+        bank
+        pay_boleto1
+        boleto
+        final_client
 
         post '/api/v1/charges', params: { charge: { client_token: final_client.token,
                                                     company_token: company.token, product_token: product.token,
@@ -120,12 +120,12 @@ describe 'charge api' do
         expect(response).to have_http_status(412)
       end
       it 'final client params must be present' do
-        company1 = company
-        product1 = product
-        bank1 = bank
-        pay1 = pay_boleto1
-        boleto1 = boleto
-        final_client1 = final_client
+        company
+        product
+        bank
+        pay_boleto1
+        boleto
+        final_client
 
         post '/api/v1/charges', params: { charge: { company_token: company.token, product_token: product.token,
                                                     payment_method: pay_boleto1.name,
@@ -135,12 +135,12 @@ describe 'charge api' do
         expect(response).to have_http_status(412)
       end
       it 'company and product params must be present' do
-        company1 = company
-        product1 = product
-        bank1 = bank
-        pay1 = pay_boleto1
-        boleto1 = boleto
-        final_client1 = final_client
+        company
+        product
+        bank
+        pay_boleto1
+        boleto
+        final_client
 
         post '/api/v1/charges', params: { charge: { client_token: final_client.token, payment_method: pay_boleto1.name,
                                                     client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
@@ -149,12 +149,12 @@ describe 'charge api' do
         expect(response).to have_http_status(412)
       end
       it 'no params' do
-        company1 = company
-        product1 = product
-        bank1 = bank
-        pay1 = pay_boleto1
-        boleto1 = boleto
-        final_client1 = final_client
+        company
+        product
+        bank
+        pay_boleto1
+        boleto
+        final_client
 
         post '/api/v1/charges', params: { charge: {} }
 
@@ -164,12 +164,12 @@ describe 'charge api' do
         expect(parsed_body['errors']).to eq('parâmetros inválidos')
       end
       it 'company cannot issue charges' do
-        product1 = product
-        pay1 = pay_boleto1
-        bank1 = bank
-        boleto1 = boleto
-        final_client1 = final_client
-
+        product
+        pay_boleto1
+        bank
+        boleto
+        final_client
+        message = 'Não foi possível gerar a combrança, a conta da empresa na plataforma está bloqueada'
         CompanyClient.create!(final_client: final_client, company: company)
         PaymentCompany.create!(company: company, payment_option: pay_boleto1)
 
@@ -184,7 +184,7 @@ describe 'charge api' do
         expect(response).to have_http_status(403)
         expect(response.content_type).to include('application/json')
         parsed_body = JSON.parse(response.body)
-        expect(parsed_body['error']).to eq('Não foi possível gerar a combrança, a conta da empresa na plataforma está bloqueada')
+        expect(parsed_body['error']).to eq(message)
       end
     end
   end

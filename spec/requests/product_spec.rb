@@ -11,7 +11,7 @@ describe 'authentication' do
   let(:product) { Product.create!(name: 'Produto 1', price: 53, boleto_discount: 1, company: company) }
   context 'visitor' do
     it 'POST' do
-      company2 = company
+      company
 
       post client_admin_company_products_path(company.token),
            params: { product: { name: 'Produto 1', price: 53, boleto_discount: 1, company: company } }
@@ -19,16 +19,16 @@ describe 'authentication' do
       expect(response).to redirect_to(new_user_session_path)
     end
     it 'PATCH update' do
-      company2 = company
-      product2 = product
+      company
+      product
 
       patch client_admin_company_product_path(company.token, product.token)
 
       expect(response).to redirect_to(new_user_session_path)
     end
     it 'PATCH status' do
-      company2 = company
-      product2 = product
+      company
+      product
 
       patch product_status_client_admin_company_product_path(company.token, product.token)
 
@@ -38,7 +38,7 @@ describe 'authentication' do
   context 'client' do
     it 'POST' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-      company2 = company
+      company
 
       login_as user, scope: :user
       post client_admin_company_products_path(company.token),
@@ -48,8 +48,8 @@ describe 'authentication' do
     end
     it 'PATCH update' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-      company2 = company
-      product2 = product
+      company
+      product
 
       login_as user, scope: :user
 
@@ -59,8 +59,8 @@ describe 'authentication' do
     end
     it 'PATCH status' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-      company2 = company
-      product2 = product
+      company
+      product
 
       login_as user, scope: :user
       patch product_status_client_admin_company_product_path(company.token, product.token)
@@ -71,7 +71,7 @@ describe 'authentication' do
   context 'client_admin' do
     it 'POST' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-      company2 = company
+      company
 
       login_as user_admin, scope: :user
       post clients_company_products_path(company.token),
@@ -81,8 +81,8 @@ describe 'authentication' do
     end
     it 'PATCH update' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-      company2 = company
-      product2 = product
+      company
+      product
 
       login_as user_admin, scope: :user
       patch clients_company_product_path(company.token, product.token)
@@ -91,8 +91,8 @@ describe 'authentication' do
     end
     it 'PATCH status' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-      company2 = company
-      product2 = product
+      company
+      product
 
       login_as user_admin, scope: :user
       patch product_status_clients_company_product_path(company.token, product.token)

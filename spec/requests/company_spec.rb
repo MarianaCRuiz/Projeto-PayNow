@@ -12,33 +12,35 @@ describe 'authentication' do
   context 'client_admin controller' do
     context 'visitor' do
       it 'POST' do
-        post client_admin_companies_path, params: { company: { corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44', state: 'São Paulo',
-                                                               city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
-                                                               address_complement: '', billing_email: 'faturamento@codeplay.com' } }
+        post client_admin_companies_path, params: { company: { corporate_name: 'Codeplay SA',
+                                                               cnpj: '11.222.333/0001-44', state: 'São Paulo',
+                                                               city: 'Campinas', district: 'Inova', street: 'rua 1',
+                                                               number: '12', address_complement: '',
+                                                               billing_email: 'faturamento@codeplay.com' } }
         expect(response).to redirect_to(new_user_session_path)
       end
       it 'PATCH UPDATE' do
-        company_1 = company
+        company
 
-        patch client_admin_company_path(company_1.token)
+        patch client_admin_company_path(company.token)
 
         expect(response).to redirect_to(new_user_session_path)
       end
       it 'PATCH new token' do
-        company_1 = company
+        company
 
-        patch token_new_client_admin_company_path(company_1.token)
+        patch token_new_client_admin_company_path(company.token)
 
         expect(response).to redirect_to(new_user_session_path)
       end
       it 'block email' do
-        company_1 = company
-        patch block_email_client_admin_company_path(company_1.token)
+        company
+        patch block_email_client_admin_company_path(company.token)
         expect(response).to redirect_to(new_user_session_path)
       end
       it 'unblock email' do
-        company_1 = company
-        patch unblock_email_client_admin_company_path(company_1.token)
+        company
+        patch unblock_email_client_admin_company_path(company.token)
         expect(response).to redirect_to(new_user_session_path)
       end
     end
@@ -47,45 +49,48 @@ describe 'authentication' do
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
 
         login_as user, scope: :user
-        post client_admin_companies_path, params: { company: { corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44', state: 'São Paulo',
-                                                               city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
-                                                               address_complement: '', billing_email: 'faturamento@codeplay.com' } }
+        post client_admin_companies_path, params: { company: { corporate_name: 'Codeplay SA',
+                                                               cnpj: '11.222.333/0001-44',
+                                                               state: 'São Paulo', city: 'Campinas',
+                                                               district: 'Inova', street: 'rua 1',
+                                                               number: '12', address_complement: '',
+                                                               billing_email: 'faturamento@codeplay.com' } }
 
         expect(response).to redirect_to(root_path)
       end
       it 'PATCH UPDATE' do
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-        company_1 = company
+        company
 
         login_as user, scope: :user
-        patch client_admin_company_path(company_1.token)
+        patch client_admin_company_path(company.token)
 
         expect(response).to redirect_to(root_path)
       end
       it 'PATCH new token' do
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-        company_1 = company
+        company
 
         login_as user, scope: :user
-        patch token_new_client_admin_company_path(company_1.token)
+        patch token_new_client_admin_company_path(company.token)
 
         expect(response).to redirect_to(root_path)
       end
       it 'block email' do
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-        company_1 = company
+        company
 
         login_as user, scope: :user
-        patch block_email_client_admin_company_path(company_1.token)
+        patch block_email_client_admin_company_path(company.token)
 
         expect(response).to redirect_to(root_path)
       end
       it 'unblock email' do
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-        company_1 = company
+        company
 
         login_as user, scope: :user
-        patch unblock_email_client_admin_company_path(company_1.token)
+        patch unblock_email_client_admin_company_path(company.token)
 
         expect(response).to redirect_to(root_path)
       end
@@ -94,16 +99,16 @@ describe 'authentication' do
   context 'admin controller' do
     context 'visitor' do
       it 'PATCH UPDATE' do
-        company_1 = company
+        company
 
-        patch admin_company_path(company_1.token)
+        patch admin_company_path(company.token)
 
         expect(response).to redirect_to(new_user_session_path)
       end
       it 'PATCH new token' do
-        company_1 = company
+        company
 
-        patch token_new_admin_company_path(company_1.token)
+        patch token_new_admin_company_path(company.token)
 
         expect(response).to redirect_to(new_user_session_path)
       end
@@ -111,37 +116,37 @@ describe 'authentication' do
     context 'client_admin' do
       it 'PATCH UPDATE' do
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-        company_1 = company
+        company
 
         login_as user_admin, scope: :user
-        patch admin_company_path(company_1.token)
+        patch admin_company_path(company.token)
 
         expect(response).to redirect_to(root_path)
       end
       it 'PATCH new token' do
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-        company_1 = company
+        company
 
         login_as user_admin, scope: :user
-        patch token_new_admin_company_path(company_1.token)
+        patch token_new_admin_company_path(company.token)
 
         expect(response).to redirect_to(root_path)
       end
       it 'block email' do
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-        company_1 = company
+        company
 
         login_as user_admin, scope: :user
-        patch block_email_admin_company_path(company_1.token)
+        patch block_email_admin_company_path(company.token)
 
         expect(response).to redirect_to(root_path)
       end
       it 'unblock email' do
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-        company_1 = company
+        company
 
         login_as user_admin, scope: :user
-        patch unblock_email_admin_company_path(company_1.token)
+        patch unblock_email_admin_company_path(company.token)
 
         expect(response).to redirect_to(root_path)
       end
@@ -149,37 +154,37 @@ describe 'authentication' do
     context 'client' do
       it 'PATCH UPDATE' do
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-        company_1 = company
+        company
 
         login_as user, scope: :user
-        patch admin_company_path(company_1.token)
+        patch admin_company_path(company.token)
 
         expect(response).to redirect_to(root_path)
       end
       it 'PATCH new token' do
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-        company_1 = company
+        company
 
         login_as user, scope: :user
-        patch token_new_admin_company_path(company_1.token)
+        patch token_new_admin_company_path(company.token)
 
         expect(response).to redirect_to(root_path)
       end
       it 'block email' do
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-        company_1 = company
+        company
 
         login_as user, scope: :user
-        patch block_email_admin_company_path(company_1.token)
+        patch block_email_admin_company_path(company.token)
 
         expect(response).to redirect_to(root_path)
       end
       it 'unblock email' do
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-        company_1 = company
+        company
 
         login_as user, scope: :user
-        patch unblock_email_admin_company_path(company_1.token)
+        patch unblock_email_admin_company_path(company.token)
 
         expect(response).to redirect_to(root_path)
       end

@@ -32,10 +32,10 @@ describe 'authentication' do
     context 'visitor' do
       it 'PATCH' do
         PaymentCompany.create(company: company, payment_option: pay_boleto1)
-        product1 = product
-        company_1 = company
-        charge1 = charge
-        final_client1 = final_client
+        product
+        company
+        charge
+        final_client
 
         patch client_admin_charge_path(charge.token)
 
@@ -45,10 +45,10 @@ describe 'authentication' do
     context 'client' do
       it 'PATCH' do
         PaymentCompany.create(company: company, payment_option: pay_boleto1)
-        product1 = product
+        product
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-        company_1 = company
-        final_client1 = final_client
+        company
+        final_client
 
         login_as user, scope: :user
         patch client_admin_charge_path(charge.token)
@@ -61,10 +61,10 @@ describe 'authentication' do
     context 'visitor' do
       it 'PATCH' do
         PaymentCompany.create(company: company, payment_option: pay_boleto1)
-        product1 = product
-        company_1 = company
-        charge1 = charge
-        final_client1 = final_client
+        product
+        company
+        charge
+        final_client
 
         patch admin_charge_path(charge.token)
 
@@ -74,10 +74,10 @@ describe 'authentication' do
     context 'client_admin' do
       it 'PATCH' do
         PaymentCompany.create(company: company, payment_option: pay_boleto1)
-        product1 = product
+        product
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-        company_1 = company
-        final_client1 = final_client
+        company
+        final_client
 
         login_as user_admin, scope: :user
         patch admin_charge_path(charge.token)
@@ -88,10 +88,10 @@ describe 'authentication' do
     context 'client' do
       it 'PATCH' do
         PaymentCompany.create(company: company, payment_option: pay_boleto1)
-        product1 = product
+        product
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-        company_1 = company
-        final_client1 = final_client
+        company
+        final_client
 
         login_as user, scope: :user
         patch admin_charge_path(charge.token)
