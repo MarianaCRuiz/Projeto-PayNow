@@ -3,11 +3,11 @@ class HomeController < ApplicationController
   before_action :check_current_user
 
   def index
-    if user_signed_in?
-      @domainrecord_1 = DomainRecord.find_by(email: current_user.email)
-      @domainrecord_2 = DomainRecord.find_by(email_client_admin: current_user.email)
-      @company = current_user.company if current_user.client? || current_user.client_admin?
-    end
+    return unless user_signed_in?
+
+    @domainrecord_1 = DomainRecord.find_by(email: current_user.email)
+    @domainrecord_2 = DomainRecord.find_by(email_client_admin: current_user.email)
+    @company = current_user.company if current_user.client? || current_user.client_admin?
   end
 
   private

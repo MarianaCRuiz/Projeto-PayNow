@@ -19,6 +19,10 @@ class Charge < ApplicationRecord
     status_returned_code != '05' && !status_returned_code.nil?
   end
 
+  def paid?
+    status_returned_code == '05'
+  end
+
   def boleto_option(product, boleto)
     self.discount = price * product.boleto_discount / 100
     self.boleto_register_option = boleto
@@ -32,10 +36,6 @@ class Charge < ApplicationRecord
   def pix_option(product, pix)
     self.discount = price * product.pix_discount / 100
     self.pix_register_option = pix
-  end
-
-  def paid?
-    status_returned_code == '05'
   end
 
   def paid_with_card?
@@ -100,6 +100,26 @@ class Charge < ApplicationRecord
                         else
                           self.price
                         end
+  end
+
+  def payment(params_charge)
+    status_charge = params_charge[:status]
+    payment_date = params_charge[:payment_date]
+    self.status_returned = status_charge.description
+    self.status_returned_code = status_charge.code
+    if payment_date
+      self.payment_date = payment_date
+      self.authorization_token = params_charge[:authorization_token]
+    end
+  end
+
+  def payment_attempt(params_charge)
+    status_charge = params_charge[:status]
+    attempt_date = params_charge[:attempt_date]
+    self.status_returned = status_charge.description
+    self.status_returned_code = status_charge.code
+    self.status_charge = StatusCharge.find_by(code: '01')
+    self.attempt_date = attempt_date if attempt_date
   end
 
   before_validation(on: :create) do
