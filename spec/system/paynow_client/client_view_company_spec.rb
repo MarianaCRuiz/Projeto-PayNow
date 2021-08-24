@@ -11,7 +11,7 @@ describe 'view company' do
   context 'company profile' do
     it 'client view company profile' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-      company1 = company
+      company
 
       login_as user, scope: :user
       visit root_path

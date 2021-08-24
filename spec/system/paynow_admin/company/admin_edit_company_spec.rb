@@ -10,7 +10,7 @@ describe 'edit company' do
   it 'admin edit company profile' do
     Admin.create!(email: 'user1@paynow.com.br')
     admin = User.create!(email: 'user1@paynow.com.br', password: '123456', role: 2)
-    company1 = company
+    company
 
     login_as admin, scope: :user
     visit root_path
@@ -38,7 +38,7 @@ describe 'edit company' do
   it 'admin edit profile failure' do
     Admin.create!(email: 'user1@paynow.com.br')
     admin = User.create!(email: 'user1@paynow.com.br', password: '123456', role: 2)
-    company1 = company
+    company
 
     login_as admin, scope: :user
     visit root_path
@@ -56,8 +56,8 @@ describe 'edit company' do
   it 'admin request new company token' do
     Admin.create!(email: 'user1@paynow.com.br')
     admin = User.create!(email: 'user1@paynow.com.br', password: '123456', role: 2)
-    company1 = company
-    token = company.token
+    company
+
     login_as admin, scope: :user
     visit root_path
     click_on 'Empresas cadastradas'

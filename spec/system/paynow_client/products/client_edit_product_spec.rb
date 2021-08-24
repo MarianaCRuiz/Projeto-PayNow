@@ -12,7 +12,7 @@ describe 'client edit product' do
 
   it 'successfully' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-    product1 = product
+    product
 
     login_as user, scope: :user
     visit clients_company_path(company[:token])
@@ -32,8 +32,8 @@ describe 'client edit product' do
     company2 = Company.create(corporate_name: 'Empresa1 SA', cnpj: '44.212.343/0001-42', state: 'São Paulo',
                               city: 'Campinas', district: 'Csmpos', street: 'rua 2', number: '13',
                               address_complement: '', billing_email: 'faturamento@empresa1.com')
-    product2 = Product.create!(name: 'Produto 2', price: 58, boleto_discount: 1, company: company2)
-    product1 = product
+    Product.create!(name: 'Produto 2', price: 58, boleto_discount: 1, company: company2)
+    product
 
     login_as user, scope: :user
     visit clients_company_path(company[:token])
@@ -53,7 +53,7 @@ describe 'client edit product' do
   context 'failure' do
     it 'missing information' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-      product1 = product
+      product
 
       login_as user, scope: :user
       visit clients_company_path(company[:token])
@@ -70,8 +70,8 @@ describe 'client edit product' do
     end
     it 'product already registered same company' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-      product1 = product
-      product2 = Product.create!(name: 'Produto 2', price: 23, boleto_discount: 6, company: company)
+      product
+      Product.create!(name: 'Produto 2', price: 23, boleto_discount: 6, company: company)
 
       login_as user, scope: :user
       visit clients_company_path(company[:token])
@@ -87,7 +87,7 @@ describe 'client edit product' do
     end
     it 'discount must be a number' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-      product1 = product
+      product
 
       login_as user, scope: :user
       visit clients_company_path(company[:token])
@@ -106,7 +106,7 @@ describe 'client edit product' do
     end
     it 'discount cannot be negative' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-      product1 = product
+      product
 
       login_as user, scope: :user
       visit clients_company_path(company[:token])

@@ -20,7 +20,7 @@ describe 'authentication' do
         expect(page).to have_content('Para continuar, efetue login ou registre-se')
       end
       it 'show' do
-        product1 = product
+        product
 
         visit clients_company_product_path(company.token, product.token)
 
@@ -40,7 +40,7 @@ describe 'authentication' do
         expect(page).to have_content('Acesso não autorizado')
       end
       it 'show' do
-        product1 = product
+        product
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
 
         login_as user_admin, scope: :user
@@ -59,7 +59,7 @@ describe 'authentication' do
         expect(page).to have_content('Acesso não autorizado')
       end
       it 'edit' do
-        product1 = product
+        product
         DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
 
         login_as user_admin, scope: :user

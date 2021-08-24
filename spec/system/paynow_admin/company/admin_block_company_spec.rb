@@ -16,7 +16,7 @@ describe 'admin block company' do
       admin = User.create!(email: 'admin@paynow.com.br', password: '123456', role: 2)
       admin2 = User.create!(email: 'admin2@paynow.com.br', password: '123456', role: 2)
       DomainRecord.find_by(email_client_admin: client_admin.email).update!(company: company)
-      client1 = client
+      client
 
       login_as admin, scope: :user
       visit root_path
@@ -39,7 +39,6 @@ describe 'admin block company' do
       Admin.create!(email: 'admin@paynow.com.br')
       Admin.create!(email: 'admin2@paynow.com.br')
       admin = User.create!(email: 'admin@paynow.com.br', password: '123456', role: 2)
-      admin2 = User.create!(email: 'admin2@paynow.com.br', password: '123456', role: 2)
       DomainRecord.find_by(email_client_admin: client_admin.email).update!(company: company)
 
       login_as admin, scope: :user

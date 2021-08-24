@@ -44,8 +44,7 @@ describe 'client consult charges' do
     PaymentCompany.create(company: company, payment_option: pay_boleto1)
     product
     product2
-
-    boleto1 = boleto
+    boleto
     charge1
     charge11
 
@@ -70,7 +69,7 @@ describe 'client consult charges' do
     CompanyClient.create!(final_client: final_client, company: company)
     CompanyClient.create!(final_client: final_client2, company: company)
     status2 = StatusCharge.create!(code: '05', description: "Cobrança efetivada com sucesso\n")
-    boleto1 = boleto
+    boleto
     charge1
     charge1.status_charge = status2
     charge11
@@ -95,8 +94,7 @@ describe 'client consult charges' do
     product2
     CompanyClient.create!(final_client: final_client, company: company)
     CompanyClient.create!(final_client: final_client2, company: company)
-    status2 = StatusCharge.create!(code: '05', description: "Cobrança efetivada com sucesso\n")
-    boleto1 = boleto
+    boleto
     a = charge1
     b = a.created_at
     a.created_at = b - 10.days
@@ -125,8 +123,7 @@ describe 'client consult charges' do
     product2
     CompanyClient.create!(final_client: final_client, company: company)
     CompanyClient.create!(final_client: final_client2, company: company)
-    status2 = StatusCharge.create!(code: '05', description: "Cobrança efetivada com sucesso\n")
-    boleto1 = boleto
+    boleto
     a = charge1
     b = a.created_at
     a.created_at = b - 10.days

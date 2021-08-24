@@ -10,7 +10,7 @@ describe 'cannot access through url' do
   let(:user) { User.create!(email: 'user@codeplay.com', password: '123456', role: 0, company: company) }
   context 'visitor' do
     it 'company profile' do
-      company1 = company
+      company
       token = company.token
 
       visit "/clients/companies/#{token}"
@@ -19,7 +19,7 @@ describe 'cannot access through url' do
       expect(page).to have_content('Para continuar, efetue login ou registre-se')
     end
     it 'payment chosen' do
-      company1 = company
+      company
       visit payments_chosen_clients_company_path(company.token)
 
       expect(current_path).to eq(new_user_session_path)
@@ -29,7 +29,7 @@ describe 'cannot access through url' do
   context 'client_admin' do
     it 'company profile' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-      company1 = company
+      company
       token = company.token
 
       login_as user_admin, scope: :user

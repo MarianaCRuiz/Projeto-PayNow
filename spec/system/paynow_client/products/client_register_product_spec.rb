@@ -31,7 +31,7 @@ describe 'client register product' do
     company2 = Company.create(corporate_name: 'Empresa1 SA', cnpj: '44.212.343/0001-42', state: 'São Paulo',
                               city: 'Campinas', district: 'Csmpos', street: 'rua 2', number: '13',
                               address_complement: '', billing_email: 'faturamento@empresa1.com')
-    product = Product.create!(name: 'Produto 2', price: 53, boleto_discount: 1, company: company2)
+    Product.create!(name: 'Produto 2', price: 53, boleto_discount: 1, company: company2)
 
     login_as user, scope: :user
     visit clients_company_path(company[:token])
@@ -67,7 +67,7 @@ describe 'client register product' do
     end
     it 'product already registered same company' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-      product = Product.create!(name: 'Produto 2', price: 53, boleto_discount: 1, company: company)
+      Product.create!(name: 'Produto 2', price: 53, boleto_discount: 1, company: company)
 
       login_as user, scope: :user
       visit clients_company_path(company[:token])

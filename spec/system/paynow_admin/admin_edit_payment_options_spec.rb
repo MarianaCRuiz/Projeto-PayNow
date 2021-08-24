@@ -62,7 +62,7 @@ describe 'payment options' do
     end
     it 'name uniq' do
       Admin.create!(email: 'admin1@paynow.com.br')
-      option = PaymentOption.create(name: 'Cartão de Crédito PISA', fee: 1.9, max_money_fee: 20)
+      PaymentOption.create(name: 'Cartão de Crédito PISA', fee: 1.9, max_money_fee: 20)
       option = PaymentOption.create!(name: 'Cartão de Crédito MASTERCHEF', fee: 1.1, max_money_fee: 12)
 
       login_as user, scope: :user

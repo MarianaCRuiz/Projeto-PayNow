@@ -13,7 +13,7 @@ describe 'admin block client' do
       Admin.create!(email: 'admin@paynow.com.br')
       admin = User.create!(email: 'admin@paynow.com.br', password: '123456', role: 2)
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-      user1 = user
+      user
 
       login_as admin, scope: :user
       visit root_path
@@ -42,8 +42,6 @@ describe 'admin block client' do
       expect(page).to have_content('Permitido')
     end
     it 'blocked client cannot login' do
-      Admin.create!(email: 'admin@paynow.com.br')
-      admin = User.create!(email: 'admin@paynow.com.br', password: '123456', role: 2)
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       DomainRecord.find_by(email: user.email).blocked!
 
@@ -86,8 +84,6 @@ describe 'admin block client' do
       expect(page).to have_content('Permitido')
     end
     it 'blocked client cannot login' do
-      Admin.create!(email: 'admin@paynow.com.br')
-      admin = User.create!(email: 'admin@paynow.com.br', password: '123456', role: 2)
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       DomainRecord.find_by(email_client_admin: user_admin.email).blocked!
 

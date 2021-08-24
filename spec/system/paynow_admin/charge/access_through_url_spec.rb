@@ -31,7 +31,7 @@ describe 'client_admin consult charges' do
 
   context 'visitor' do
     it 'index' do
-      company1 = company
+      company
 
       visit admin_charges_path
 
@@ -39,7 +39,7 @@ describe 'client_admin consult charges' do
       expect(page).to have_content('Para continuar, efetue login ou registre-se')
     end
     it 'all charges' do
-      company1 = company
+      company
       token = '5pjB8SDb74LH6bBnawe2'
       company.token = token
 
@@ -50,8 +50,8 @@ describe 'client_admin consult charges' do
     end
     it 'edit charge' do
       PaymentCompany.create(company: company, payment_option: pay_boleto1)
-      product1 = product
-      company1 = company
+      product
+      company
       token = '5pjB8SDb74LH6bBnawe2'
       company.token = token
       visit "/client_admin/companies/#{token}/edit"
@@ -86,7 +86,7 @@ describe 'client_admin consult charges' do
     it 'edit charge' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       PaymentCompany.create(company: company, payment_option: pay_boleto1)
-      product1 = product
+      product
       token = '1pjB8SDb74LH1bBnawe2'
       charge.token = token
 
@@ -123,7 +123,7 @@ describe 'client_admin consult charges' do
     it 'edit charge' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       PaymentCompany.create(company: company, payment_option: pay_boleto1)
-      product1 = product
+      product
       token = '1pjB8SDb74LH1bBnawe2'
       charge.token = token
 

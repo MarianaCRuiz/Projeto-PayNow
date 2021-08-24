@@ -31,7 +31,7 @@ describe 'client consult charges' do
 
   context 'visitor' do
     it 'index' do
-      company1 = company
+      company
 
       visit clients_charges_path
 
@@ -39,7 +39,7 @@ describe 'client consult charges' do
       expect(page).to have_content('Para continuar, efetue login ou registre-se')
     end
     it 'all charges' do
-      company1 = company
+      company
       token = '5pjB8SDb74LH6bBnawe2'
       company.token = token
 
@@ -49,7 +49,7 @@ describe 'client consult charges' do
       expect(page).to have_content('Para continuar, efetue login ou registre-se')
     end
     it 'time interval' do
-      company1 = company
+      company
       token = '5pjB8SDb74LH6bBnawe2'
       company.token = token
 

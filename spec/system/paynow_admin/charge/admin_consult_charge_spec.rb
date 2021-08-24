@@ -41,11 +41,10 @@ describe 'admin consult charges' do
     Admin.create!(email: 'admin@paynow.com.br')
     Admin.create!(email: 'admin2@paynow.com.br')
     admin = User.create!(email: 'admin@paynow.com.br', password: '123456', role: 2)
-    admin2 = User.create!(email: 'admin2@paynow.com.br', password: '123456', role: 2)
     PaymentCompany.create!(company: company, payment_option: pay_boleto1)
     product
     product2
-    boleto1 = boleto
+    boleto
     charge1
     charge11
 
@@ -70,8 +69,7 @@ describe 'admin consult charges' do
     product
     product2
     status2 = StatusCharge.create!(code: '05', description: 'Cobrança efetivada com sucesso')
-    status1 = status_charge
-    boleto1 = boleto
+    boleto
     charge1
     charge11
 
@@ -102,7 +100,7 @@ describe 'admin consult charges' do
     product
     product2
     status2 = StatusCharge.create!(code: '05', description: 'Cobrança efetivada com sucesso')
-    boleto1 = boleto
+    boleto
     charge1
     charge11
 
@@ -122,7 +120,7 @@ describe 'admin consult charges' do
     product
     product2
     status2 = StatusCharge.create!(code: '11', description: 'Cobrança recusada sem motivo especificado')
-    boleto1 = boleto
+    boleto
     charge1
     charge11
 
@@ -152,7 +150,7 @@ describe 'admin consult charges' do
     product2
     CompanyClient.create!(final_client: final_client, company: company)
     CompanyClient.create!(final_client: final_client2, company: company)
-    boleto1 = boleto
+    boleto
     status = status_charge
     charge1
     charge11
@@ -175,7 +173,7 @@ describe 'admin consult charges' do
     CompanyClient.create!(final_client: final_client, company: company)
     CompanyClient.create!(final_client: final_client2, company: company)
     status2 = StatusCharge.create!(code: '05', description: "Cobrança efetivada com sucesso\n")
-    boleto1 = boleto
+    boleto
     charge1
     charge1.status_charge = status2
     charge11

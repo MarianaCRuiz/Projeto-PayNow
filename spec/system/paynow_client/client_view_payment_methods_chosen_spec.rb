@@ -32,14 +32,13 @@ describe 'register PIX option' do
     PaymentCompany.create!(company: company, payment_option: pay_creditcard1)
     PaymentCompany.create!(company: company, payment_option: pay_pix1)
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-    bank1 = bank
-    token = SecureRandom.base58(20)
-    pay1 = pay_boleto1
-    pay2 = pay_creditcard1
-    pay = pay_pix1
-    boleto1 = boleto
-    creditcard1 = creditcard
-    pix = pix_option
+    bank
+    pay_boleto1
+    pay_creditcard1
+    pay_pix1
+    boleto
+    creditcard
+    pix_option
 
     login_as user, scope: :user
     visit clients_company_path(company[:token])
