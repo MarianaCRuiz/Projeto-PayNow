@@ -1,13 +1,11 @@
 class Api::V1::FinalClientsController < ActionController::API
+  before_action :find_contents
+
   def final_client_token
-    @same = false
-    @final_client = FinalClient.new(final_client_params)
-    @company = Company.find_by(token: params[:company_token])
     @final_client.save!
     @company.company_clients.create!(final_client: @final_client)
     render json: @final_client, status: :created
   rescue ActiveRecord::RecordInvalid
-    @client = FinalClient.where(cpf: @final_client.cpf).first
     same_company?
     different_company?
     if @same == false
@@ -15,8 +13,6 @@ class Api::V1::FinalClientsController < ActionController::API
     elsif @same == true
       render json: @final_client.errors, status: :conflict
     end
-  rescue ActionController::ParameterMissing
-    render status: :precondition_failed, json: { errors: 'parâmetros inválidos' }
   end
 
   private
@@ -32,6 +28,15 @@ class Api::V1::FinalClientsController < ActionController::API
       @company_client = @company.company_clients.create!(final_client: @client)
       @same = false
     end
+  end
+
+  def find_contents
+    @same = false
+    @final_client = FinalClient.new(final_client_params)
+    @company = Company.find_by(token: params[:company_token])
+    @client = FinalClient.where(cpf: @final_client.cpf).first
+  rescue ActionController::ParameterMissing
+    render status: :precondition_failed, json: { errors: 'parâmetros inválidos' }
   end
 
   def same_company?

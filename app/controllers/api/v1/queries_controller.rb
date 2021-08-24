@@ -1,5 +1,4 @@
 class Api::V1::QueriesController < ActionController::API
-
   def consult_charges
     find_company_payment
     specific_deadline?
@@ -36,45 +35,47 @@ class Api::V1::QueriesController < ActionController::API
   end
 
   def specific_deadline?
-    if @due_deadline
-      @charges = if @payment_method
-                   @charges.where(due_deadline: @due_deadline)
-                 else
-                   @company.charges.where(due_deadline: @due_deadline)
-                 end
-    end
+    return unless @due_deadline
+
+    @charges = if @payment_method
+                 @charges.where(due_deadline: @due_deadline)
+               else
+                 @company.charges.where(due_deadline: @due_deadline)
+               end
   end
 
   def max_deadline?
-    if @due_deadline_max && !@due_deadline_min
-      @charges = if @payment_method
-                   @charges.where('due_deadline <= ?', @due_deadline_max.to_date.strftime('%Y-%m-%d'))
-                 else
-                   @company.charges.where('due_deadline <= ?', @due_deadline_max.to_date.strftime('%Y-%m-%d'))
-                 end
-    end
+    return unless @due_deadline_max && !@due_deadline_min
+
+    @charges = if @payment_method
+                 @charges.where('due_deadline <= ?', @due_deadline_max.to_date.strftime('%Y-%m-%d'))
+               else
+                 @company.charges.where('due_deadline <= ?', @due_deadline_max.to_date.strftime('%Y-%m-%d'))
+               end
   end
 
   def min_deadline?
-    if @due_deadline_min && !@due_deadline_max
-      @charges = if @payment_method
-                   @charges.where('due_deadline >= ?', @due_deadline_min.to_date.strftime('%Y-%m-%d'))
-                 else
-                   @company.charges.where('due_deadline >= ?', @due_deadline_min.to_date.strftime('%Y-%m-%d'))
-                 end
-    end
+    return unless @due_deadline_min && !@due_deadline_max
+
+    @charges = if @payment_method
+                 @charges.where('due_deadline >= ?', @due_deadline_min.to_date.strftime('%Y-%m-%d'))
+               else
+                 @company.charges.where('due_deadline >= ?', @due_deadline_min.to_date.strftime('%Y-%m-%d'))
+               end
   end
 
   def interval_deadline?
-    if @due_deadline_max && @due_deadline_min
-      if @payment_method
-        @charges = @charges.where('due_deadline <= ? and due_deadline >= ?',
-                                  @due_deadline_max.to_date.strftime('%Y-%m-%d'), @due_deadline_min.to_date.strftime('%Y-%m-%d'))
-      else
-        @charges = @company.charges.where('due_deadline <= ? and due_deadline >= ?',
-                                          @due_deadline_max.to_date.strftime('%Y-%m-%d'), @due_deadline_min.to_date.strftime('%Y-%m-%d'))
-      end
-    end
+    return unless @due_deadline_max && @due_deadline_min
+
+    @charges = if @payment_method
+                 @charges.where('due_deadline <= ? and due_deadline >= ?',
+                                @due_deadline_max.to_date.strftime('%Y-%m-%d'),
+                                @due_deadline_min.to_date.strftime('%Y-%m-%d'))
+               else
+                 @company.charges.where('due_deadline <= ? and due_deadline >= ?',
+                                        @due_deadline_max.to_date.strftime('%Y-%m-%d'),
+                                        @due_deadline_min.to_date.strftime('%Y-%m-%d'))
+               end
   end
 
   def no_deadline?
