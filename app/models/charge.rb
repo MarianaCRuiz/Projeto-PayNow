@@ -15,6 +15,29 @@ class Charge < ApplicationRecord
   validates :payment_date, :authorization_token, presence: true, if: :paid?
   validates :attempt_date, presence: true, if: :attempted?
 
+  def attempted?
+    status_returned_code != '05' && !status_returned_code.nil?
+  end
+
+  def boleto_option(product, boleto)
+    self.discount = price * product.boleto_discount / 100
+    self.boleto_register_option = boleto
+  end
+
+  def credit_card_option(product, credit_card)
+    self.discount = price * product.credit_card_discount / 100
+    self.credit_card_register_option = credit_card
+  end
+
+  def pix_option(product, pix)
+    self.discount = price * product.pix_discount / 100
+    self.pix_register_option = pix
+  end
+
+  def paid?
+    status_returned_code == '05'
+  end
+
   def paid_with_card?
     payment_option.payment_type == 'credit_card' if payment_option
   end
@@ -23,27 +46,60 @@ class Charge < ApplicationRecord
     payment_option.payment_type == 'boleto' if payment_option
   end
 
-  def paid?
-    status_returned_code == '05'
+  def saving_data(charge_values)
+    find_company = charge_values[:company]
+    if find_company
+      self.status_charge = charge_values[:status]
+      self.company = find_company
+      self.product = charge_values[:product]
+      self.final_client = charge_values[:final_client]
+      self.payment_option = charge_values[:payment_option]
+    end
+    specific_data
   end
 
-  def attempted?
-    status_returned_code != '05' && !status_returned_code.nil?
+  def specific_data
+    client_data(self.final_client)
+    product_data(self.product)
+    payments = { payment_option: self.payment_option, company: self.company, product: self.product }
+    save_payment_type(**payments)
+    save_price_and_discount
   end
 
-  def boleto(product, boleto)
-    self.discount = price * product.boleto_discount / 100
-    self.boleto_register_option = boleto
+  def client_data(final_client)
+    if final_client
+      self.client_name = final_client.name
+      self.client_cpf = final_client.cpf
+      self.final_client = final_client
+    end
   end
 
-  def credit_card(product, credit_card)
-    self.discount = price * product.credit_card_discount / 100
-    self.credit_card_register_option = credit_card
+  def product_data(product)
+    if product
+      self.price = product.price
+      self.product_name = product.name
+      self.product = product
+    end
   end
 
-  def pix(product, pix)
-    self.discount = price * product.pix_discount / 100
-    self.pix_register_option = pix
+  def save_payment_type(payments)
+    if payments[:payment_option] && payments[:company] && payments[:product]
+      self.payment_option = payments[:payment_option]
+      boleto = payments[:company].boleto_register_options.find_by(payment_option: payments[:payment_option])
+      credit_card = payments[:company].credit_card_register_options.find_by(payment_option: payments[:payment_option])
+      pix = payments[:company].pix_register_options.find_by(payment_option: payments[:payment_option])
+      if boleto then boleto_option(payments[:product], boleto)
+      elsif credit_card then credit_card_option(payments[:product], credit_card)
+      elsif pix then pix_option(payments[:product], pix) end
+    end
+  end
+
+  def save_price_and_discount
+    self.charge_price = if self.discount
+                          self.price - self.discount
+                        else
+                          self.price
+                        end
   end
 
   before_validation(on: :create) do

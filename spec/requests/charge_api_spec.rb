@@ -169,7 +169,7 @@ describe 'charge api' do
         bank
         boleto
         final_client
-        message = 'Não foi possível gerar a combrança, a conta da empresa na plataforma está bloqueada'
+        message = 'Não foi possível gerar a cobrança, a conta da empresa na plataforma está bloqueada'
         CompanyClient.create!(final_client: final_client, company: company)
         PaymentCompany.create!(company: company, payment_option: pay_boleto1)
 

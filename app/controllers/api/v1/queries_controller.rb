@@ -1,4 +1,5 @@
 class Api::V1::QueriesController < ActionController::API
+
   def consult_charges
     find_company_payment
     specific_deadline?

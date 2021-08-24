@@ -1,33 +1,16 @@
 class Api::V1::ChargesController < ActionController::API
   before_action :status_charge_generate
+  before_action :find_company
 
   def charges_generate
-    @company = Company.find_by(token: charge_params[:company_token])
-    if @company && @company.blocked?
-      render json: { error: 'Não foi possível gerar a combrança, a conta da empresa na plataforma está bloqueada' },
-             status: :forbidden
-    else
-      @status = StatusCharge.find_by(code: '01')
-      @charge = Charge.new(charge_params)
-      save_charge_data
-      save_final_client_data
-      save_product_data
-      save_payment_type
-      save_price_and_discount
-      if @boleto.nil? && @credit_card.nil? && @pix.nil? then head :precondition_failed
-      else
-        @charge.save!
-        if @credit_card || @pix
-          @charge.due_deadline = @charge.created_at.strftime('%d/%m/%Y')
-          @charge.save
-        end
-        render json: @charge, status: :created
-      end
-    end
+    find_contents(charge_params)
+    @charge = Charge.new(charge_params)
+    @charge.saving_data(setting_values)
+    @charge.save!
+    if @credit_card || @pix then @charge.update!(due_deadline: @charge.created_at.strftime('%d/%m/%Y')) end
+    render json: @charge, status: :created
   rescue ActiveRecord::RecordInvalid
     render json: @charge.errors, status: :precondition_failed
-  rescue ActionController::ParameterMissing
-    render status: :precondition_failed, json: { errors: 'parâmetros inválidos' }
   end
 
   private
@@ -39,53 +22,32 @@ class Api::V1::ChargesController < ActionController::API
                                    :card_name, :cvv_code, :due_deadline)
   end
 
-  def save_charge_data
-    if @company
-      @charge.status_charge = @status
-      @charge.company = @company
-      @charge.product = @product
-      @charge.final_client = @final_client
-      @charge.payment_option = @payment_option
+  def find_company
+    @company = Company.find_by(token: charge_params[:company_token])
+    if @company && @company.blocked?
+      render json: { error: 'Não foi possível gerar a cobrança, a conta da empresa na plataforma está bloqueada' },
+             status: :forbidden
     end
+  rescue ActionController::ParameterMissing
+    return render status: :precondition_failed, json: { errors: 'parâmetros inválidos' }
   end
 
-  def save_final_client_data
+  def find_contents(charge_params)
     @final_client = FinalClient.find_by(token: charge_params[:client_token])
-    if @final_client
-      @charge.client_name = @final_client.name
-      @charge.client_cpf = @final_client.cpf
-      @charge.final_client = @final_client
-    end
-  end
-
-  def save_product_data
     @product = Product.find_by(token: charge_params[:product_token])
-    if @product
-      @charge.price = @product.price
-      @charge.product_name = @product.name
-      @charge.product = @product
-    end
-  end
-
-  def save_payment_type
     @payment_option = PaymentOption.find_by(name: charge_params[:payment_method])
+    @status = StatusCharge.find_by(code: '01')
     if @payment_option && @company && @product
-      @charge.payment_option = @payment_option
       @boleto = @company.boleto_register_options.find_by(payment_option: @payment_option)
       @credit_card = @company.credit_card_register_options.find_by(payment_option: @payment_option)
       @pix = @company.pix_register_options.find_by(payment_option: @payment_option)
-      if @boleto then @charge.boleto(@product, @boleto)
-      elsif @credit_card then @charge.credit_card(@product, @credit_card)
-      elsif @pix then @charge.pix(@product, @pix) end
+      if @boleto.nil? && @credit_card.nil? && @pix.nil? then head :precondition_failed end
     end
   end
 
-  def save_price_and_discount
-    @charge.charge_price = if @charge.discount
-                             @charge.price - @charge.discount
-                           else
-                             @charge.price
-                           end
+  def setting_values
+    { company: @company, final_client: @final_client, product: @product,
+      status: @status, payment_option: @payment_option }
   end
 
   def status_charge_generate
