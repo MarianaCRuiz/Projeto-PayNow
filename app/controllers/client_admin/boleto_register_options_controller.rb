@@ -5,12 +5,12 @@ class ClientAdmin::BoletoRegisterOptionsController < ApplicationController
   before_action :find_boleto, only: %i[edit update exclude]
   before_action :payment_option_and_bank, except: %i[exclude]
   before_action :find_company
-  
+
   def new
     @boleto = BoletoRegisterOption.new
   end
 
-  def create 
+  def create
     @boleto = @company.boleto_register_options.new(boleto_register_option_params)
     save_data
     if @boleto.save
@@ -21,29 +21,33 @@ class ClientAdmin::BoletoRegisterOptionsController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
-  def update 
+  def update
     if @boleto.update(boleto_register_option_params)
-      redirect_to payments_chosen_client_admin_company_path(current_user.company.token), notice: 'Opção atualizada com sucesso'
+      redirect_to payments_chosen_client_admin_company_path(current_user.company.token),
+                  notice: 'Opção atualizada com sucesso'
     else
       render :edit
     end
   end
 
-  def exclude 
+  def exclude
     @payment_option = @boleto.payment_option
     inactivate
     @boleto.save!
     @company.payment_companies.find_by(payment_option: @payment_option).destroy
-    redirect_to payments_chosen_client_admin_company_path(@company.token), notice: 'Meio de pagamento excluído com sucesso'
-  end 
+    redirect_to payments_chosen_client_admin_company_path(@company.token),
+                notice: 'Meio de pagamento excluído com sucesso'
+  end
 
   private
 
   def authenticate_client_admin
-    redirect_to root_path, notice: 'Acesso não autorizado' unless current_user.client_admin? || current_user.client_admin_sign_up? 
+    unless current_user.client_admin? || current_user.client_admin_sign_up?
+      redirect_to root_path,
+                  notice: 'Acesso não autorizado'
+    end
   end
 
   def boleto_register_option_params
@@ -80,7 +84,7 @@ class ClientAdmin::BoletoRegisterOptionsController < ApplicationController
     require 'csv'
     if BankCode.count < 99
       csv_text = File.read("#{Rails.root}/db/csv_folder/bank_codes3.csv")
-      csv = CSV.parse(csv_text, :headers => true)
+      csv = CSV.parse(csv_text, headers: true)
       csv.each do |row|
         code, bank = row.to_s.split(' ', 2)
         BankCode.create(code: code, bank: bank)

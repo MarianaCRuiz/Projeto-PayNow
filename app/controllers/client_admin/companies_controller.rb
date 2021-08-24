@@ -16,13 +16,13 @@ class ClientAdmin::CompaniesController < ApplicationController
       save_domain_company
       current_user.company = @company
       current_user.save
-      redirect_to client_admin_company_path(@company[:token])     
+      redirect_to client_admin_company_path(@company[:token])
     else
       render :new
     end
   end
 
-  def edit 
+  def edit
     @company = Company.find_by(token: params[:token])
   end
 
@@ -73,11 +73,15 @@ class ClientAdmin::CompaniesController < ApplicationController
   private
 
   def authenticate_client_admin
-    redirect_to root_path, notice: 'Acesso não autorizado' unless current_user.client_admin? || current_user.client_admin_sign_up? 
+    unless current_user.client_admin? || current_user.client_admin_sign_up?
+      redirect_to root_path,
+                  notice: 'Acesso não autorizado'
+    end
   end
 
   def company_params
-    params.require(:company).permit(:corporate_name, :cnpj, :state, :city, :district, :street, :number, :address_complement, :billing_email)
+    params.require(:company).permit(:corporate_name, :cnpj, :state, :city, :district, :street, :number,
+                                    :address_complement, :billing_email)
   end
 
   def save_domain_company

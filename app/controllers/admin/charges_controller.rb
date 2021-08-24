@@ -2,19 +2,19 @@ class Admin::ChargesController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin
   before_action :status_charge_generate
-  
+
   def index
     @company = Company.find_by(token: params[:company_token])
     @status = StatusCharge.find_by(code: '01')
     @charges = @company.charges.where(status_charge: @status)
   end
-  
+
   def all_charges
     @company = Company.find_by(token: params[:company_token])
     @charges = @company.charges
   end
 
-  def edit 
+  def edit
     @company = Company.find_by(token: params[:company_token])
     @charge = Charge.find_by(token: params[:token])
     @status_charges = StatusCharge.all
@@ -28,8 +28,9 @@ class Admin::ChargesController < ApplicationController
     @charge.status_returned_code = @status_returned.code
     if @charge.update(charge_params)
       if @charge.paid?
-        Receipt.create(due_deadline: @charge.due_deadline, payment_date: @charge.payment_date, charge: @charge, authorization_token: @charge.authorization_token)
-      elsif @charge.attempted? 
+        Receipt.create(due_deadline: @charge.due_deadline, payment_date: @charge.payment_date, charge: @charge,
+                       authorization_token: @charge.authorization_token)
+      elsif @charge.attempted?
         @charge.status_charge = StatusCharge.find_by(code: '01')
         @charge.save
       end
@@ -39,7 +40,7 @@ class Admin::ChargesController < ApplicationController
       render :edit
     end
   end
-  
+
   private
 
   def authenticate_admin
@@ -50,13 +51,13 @@ class Admin::ChargesController < ApplicationController
     params.require(:charge).permit(:status_charge_id, :payment_date, :authorization_token, :attempt_date)
   end
 
-#  def approved?
-#    if @status_returned.code == '05'
-#      @authorization_token = charge_params[:authorization_token]
+  #  def approved?
+  #    if @status_returned.code == '05'
+  #      @authorization_token = charge_params[:authorization_token]
   #     @charge.authorization_token = @authorization_token
   #     @charge.save
   #     Receipt.create(due_deadline: @charge.due_deadline, payment_date: @charge.payment_date, charge: @charge, authorization_token: @authorization_token)
-  #   end 
+  #   end
   # end
 
   # def fail?
@@ -70,7 +71,7 @@ class Admin::ChargesController < ApplicationController
     require 'csv'
     if StatusCharge.count < 5
       csv_text = File.read("#{Rails.root}/db/csv_folder/charge_status_options.csv")
-      csv2 = CSV.parse(csv_text, :headers => true)
+      csv2 = CSV.parse(csv_text, headers: true)
       csv2.each do |row|
         code, description = row.to_s.split(' ', 2)
         status = StatusCharge.create(code: code, description: description)

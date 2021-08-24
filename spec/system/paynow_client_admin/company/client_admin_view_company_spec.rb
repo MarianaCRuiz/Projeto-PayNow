@@ -3,10 +3,10 @@ require 'rails_helper'
 describe 'client_admin view company' do
   context 'company profile' do
     it 'client_admin view company profile' do
-      company = Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo',
-                                  city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
-                                  address_complement: '', billing_email: 'faturamento@codeplay.com')
-      user_admin = User.create!(email:'user1@codeplay.com', password: '123456', role: 1, company: company)
+      company = Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44', state: 'São Paulo',
+                                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
+                                address_complement: '', billing_email: 'faturamento@codeplay.com')
+      user_admin = User.create!(email: 'user1@codeplay.com', password: '123456', role: 1, company: company)
 
       login_as user_admin, scope: :user
       visit root_path
@@ -25,7 +25,7 @@ describe 'client_admin view company' do
       expect(page).to have_link('Atualizar dados da empresa')
     end
     it 'company not registered' do
-      user_admin = User.create!(email:'user1@codeplay.com', password: '123456', role: 3)
+      user_admin = User.create!(email: 'user1@codeplay.com', password: '123456', role: 3)
 
       login_as user_admin, scope: :user
       visit root_path

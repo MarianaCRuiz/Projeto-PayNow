@@ -1,13 +1,15 @@
 require 'rails_helper'
 
 describe 'edit company' do
-  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo',
-                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
-                address_complement: '', billing_email: 'faturamento@codeplay.com')}
+  let(:company) do
+    Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44', state: 'São Paulo',
+                    city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
+                    address_complement: '', billing_email: 'faturamento@codeplay.com')
+  end
 
   it 'admin edit company profile' do
-    Admin.create!(email:'user1@paynow.com.br')
-    admin = User.create!(email:'user1@paynow.com.br', password: '123456', role: 2)
+    Admin.create!(email: 'user1@paynow.com.br')
+    admin = User.create!(email: 'user1@paynow.com.br', password: '123456', role: 2)
     company1 = company
 
     login_as admin, scope: :user
@@ -18,7 +20,7 @@ describe 'edit company' do
     fill_in 'Cidade', with: 'Cidade x'
     fill_in 'Bairro', with: 'Bairro x'
     fill_in 'Rua', with: 'Rua x'
-    expect{ click_on 'Atualizar' }.to change{ Company.count }.by(0)
+    expect { click_on 'Atualizar' }.to change { Company.count }.by(0)
 
     expect(page).to have_content('Codeplay SA')
     expect(page).to have_content('11.222.333/0001-44')
@@ -34,8 +36,8 @@ describe 'edit company' do
     expect(HistoricCompany.count).to eq(2)
   end
   it 'admin edit profile failure' do
-    Admin.create!(email:'user1@paynow.com.br')
-    admin = User.create!(email:'user1@paynow.com.br', password: '123456', role: 2)
+    Admin.create!(email: 'user1@paynow.com.br')
+    admin = User.create!(email: 'user1@paynow.com.br', password: '123456', role: 2)
     company1 = company
 
     login_as admin, scope: :user
@@ -52,8 +54,8 @@ describe 'edit company' do
     expect(HistoricCompany.count).to eq(1)
   end
   it 'admin request new company token' do
-    Admin.create!(email:'user1@paynow.com.br')
-    admin = User.create!(email:'user1@paynow.com.br', password: '123456', role: 2)
+    Admin.create!(email: 'user1@paynow.com.br')
+    admin = User.create!(email: 'user1@paynow.com.br', password: '123456', role: 2)
     company1 = company
     token = company.token
     login_as admin, scope: :user

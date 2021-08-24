@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'client_admin register' do
-  let(:user_client_admin) {User.create!(email:'user1@codeplay.com', password: '123456')}
+  let(:user_client_admin) { User.create!(email: 'user1@codeplay.com', password: '123456') }
 
   context 'company first register successfuly' do
     it 'client_admin register company' do
@@ -17,7 +17,7 @@ describe 'client_admin register' do
       fill_in 'Número', with: '123'
       fill_in 'Complemento', with: ''
       fill_in 'Email de faturamento', with: 'faturamento@codeplay.com'
-      expect{ click_on 'Registrar' }.to change{ Company.count }.by(1)
+      expect { click_on 'Registrar' }.to change { Company.count }.by(1)
 
       expect(page).to have_content('Codeplay SA')
       expect(page).to have_content('11.222.333/0001-44')

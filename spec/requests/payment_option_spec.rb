@@ -1,15 +1,18 @@
 require 'rails_helper'
 
 describe 'authentication' do
-  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
-                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
-                address_complement: '', billing_email: 'faturamento@codeplay.com')}
-  let(:user_admin) {User.create!(email: 'admin@codeplay.com', password: '123456', role: 1, company: company)}
-  let(:user) {User.create!(email: 'user@codeplay.com', password: '123456', role: 0, company: company)}
+  let(:company) do
+    Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44', state: 'São Paulo',
+                    city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
+                    address_complement: '', billing_email: 'faturamento@codeplay.com')
+  end
+  let(:user_admin) { User.create!(email: 'admin@codeplay.com', password: '123456', role: 1, company: company) }
+  let(:user) { User.create!(email: 'user@codeplay.com', password: '123456', role: 0, company: company) }
 
   context 'visitor' do
     it 'POST' do
-      post admin_payment_options_path, params: {payment_option: {name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0}}
+      post admin_payment_options_path,
+           params: { payment_option: { name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0 } }
 
       expect(response).to redirect_to(new_user_session_path)
     end
@@ -23,9 +26,9 @@ describe 'authentication' do
   end
   context 'client_admin' do
     it 'POST' do
-
       login_as user_admin, scope: :user
-      post admin_payment_options_path, params: {payment_option: {name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0}}
+      post admin_payment_options_path,
+           params: { payment_option: { name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0 } }
 
       expect(response).to redirect_to(root_path)
     end
@@ -45,7 +48,8 @@ describe 'authentication' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
 
       login_as user_admin, scope: :user
-      post admin_payment_options_path, params: {payment_option: {name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0}}
+      post admin_payment_options_path,
+           params: { payment_option: { name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0 } }
 
       expect(response).to redirect_to(root_path)
     end

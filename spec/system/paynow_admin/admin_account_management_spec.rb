@@ -10,23 +10,23 @@ describe 'account admin' do
       fill_in 'Email', with: 'admin1@paynow.com.br'
       fill_in 'Senha', with: '123456'
       fill_in 'Confirmar senha', with: '123456'
-      expect{ click_on 'Criar conta' }.to change{ User.count }.by(1)
+      expect { click_on 'Criar conta' }.to change { User.count }.by(1)
 
       expect(current_path).to eq root_path
       expect(page).to have_content('admin1@paynow.com.br')
-      expect(page).to have_link('Registro de opções de pagamento') 
+      expect(page).to have_link('Registro de opções de pagamento')
     end
 
-    it 'cannot register without being in admin model' do       
+    it 'cannot register without being in admin model' do
       visit root_path
       click_on 'Registrar-se'
       fill_in 'Email', with: 'admin3@paynow.com.br'
       fill_in 'Senha', with: '123456'
       fill_in 'Confirmar senha', with: '123456'
-      expect{ click_on 'Criar conta' }.to change{ User.count }.by(0)
+      expect { click_on 'Criar conta' }.to change { User.count }.by(0)
 
       expect(page).to have_content('email inválido')
-      expect(page).to_not have_link('Registro de opções de pagamento') 
+      expect(page).to_not have_link('Registro de opções de pagamento')
     end
     it 'wrong confirmation password' do
       Admin.create!(email: 'admin1@paynow.com.br')
@@ -36,7 +36,7 @@ describe 'account admin' do
       fill_in 'Email', with: 'admin1@paynow.com.br'
       fill_in 'Senha', with: '123456'
       fill_in 'Confirmar senha', with: '111222'
-      expect{ click_on 'Criar conta' }.to change{ User.count }.by(0)
+      expect { click_on 'Criar conta' }.to change { User.count }.by(0)
 
       expect(page).to have_content('Confirmar senha não é igual a Senha')
     end
@@ -44,7 +44,7 @@ describe 'account admin' do
   context 'login and recognize admin' do
     it 'successfully' do
       Admin.create!(email: 'admin@paynow.com.br')
-      user = User.create!(email:'admin@paynow.com.br', password: '123456', role: 2)
+      user = User.create!(email: 'admin@paynow.com.br', password: '123456', role: 2)
 
       visit root_path
       click_on 'Entrar'
@@ -65,7 +65,7 @@ describe 'account admin' do
     end
     it 'wrong password' do
       Admin.create!(email: 'admin@paynow.com.br')
-      User.create!(email:'admin@paynow.com.br', password: '123456', role: 2)
+      User.create!(email: 'admin@paynow.com.br', password: '123456', role: 2)
 
       visit root_path
       click_on 'Entrar'
@@ -75,11 +75,11 @@ describe 'account admin' do
 
       expect(page).to have_content('Email ou senha inválida')
     end
-  end 
+  end
   context 'changing password' do
     it 'successfully' do
       Admin.create!(email: 'admin@paynow.com.br')
-      admin = User.create!(email:'admin@paynow.com.br', password: '123456', role: 2)
+      admin = User.create!(email: 'admin@paynow.com.br', password: '123456', role: 2)
 
       login_as admin, scope: :user
       visit root_path
@@ -93,7 +93,7 @@ describe 'account admin' do
     end
     it 'wrong password' do
       Admin.create!(email: 'admin@paynow.com.br')
-      admin = User.create!(email:'admin@paynow.com.br', password: '123456', role: 2)
+      admin = User.create!(email: 'admin@paynow.com.br', password: '123456', role: 2)
 
       login_as admin, scope: :user
       visit root_path

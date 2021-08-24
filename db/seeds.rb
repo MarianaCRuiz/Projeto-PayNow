@@ -80,39 +80,39 @@ PaymentOption.create(name: 'PIX_3', fee: 1.3, max_money_fee: 21, payment_type: 2
 
 company_1 = Company.find_by(corporate_name: comp_1)
 company_2 = Company.find_by(corporate_name: comp_2)
-pay_boleto_1 = PaymentOption.find_by(name: 'Boleto')
-boleto_11 = PaymentOption.find_by(name: 'Boleto BB')
-boleto_12 = PaymentOption.find_by(name: 'Boleto X')
-pay_creditcard_1 = PaymentOption.find_by(name: 'Cartão de Crédito MasterChef')
-pay_creditcard_11 = PaymentOption.find_by(name: 'Cartão de Crédito Pisa')
-pay_pix_1 = PaymentOption.find_by(name: 'PIX')
-pay_pix_11 = PaymentOption.find_by(name: 'PIX_2')
-pay_pix_12 = PaymentOption.find_by(name: 'PIX_3')
+pay_boleto1 = PaymentOption.find_by(name: 'Boleto')
+boleto11 = PaymentOption.find_by(name: 'Boleto BB')
+boleto12 = PaymentOption.find_by(name: 'Boleto X')
+pay_creditcard1 = PaymentOption.find_by(name: 'Cartão de Crédito MasterChef')
+pay_creditcard11 = PaymentOption.find_by(name: 'Cartão de Crédito Pisa')
+pay_pix1 = PaymentOption.find_by(name: 'PIX')
+pay_pix11 = PaymentOption.find_by(name: 'PIX_2')
+pay_pix12 = PaymentOption.find_by(name: 'PIX_3')
 
 bank1 = BankCode.find_by(code: '001')
 bank2 = BankCode.find_by(code: '029')
 
-boleto1 = BoletoRegisterOption.new(company: company_1, payment_option: pay_boleto_1, bank_code: bank1, agency_number: '2050', account_number: '123.555-8')
-if boleto1.save then PaymentCompany.create(company: company_1, payment_option: pay_boleto_1) end
-creditcard1 = CreditCardRegisterOption.new(company: company_1, payment_option: pay_creditcard_1, credit_card_operator_token: 'jdB8SD923Nmg8fR1GhJm')
-if creditcard1.save then PaymentCompany.create(company: company_1, payment_option: pay_creditcard_1) end
-pix1 = PixRegisterOption.new(company: company_1, payment_option: pay_pix_1, pix_key: 'AJ86gt4fLBtcF296rTuN', bank_code: bank2)
-if pix1.save then PaymentCompany.create(company: company_1, payment_option: pay_pix_1) end
+boleto1 = BoletoRegisterOption.new(company: company_1, payment_option: pay_boleto1, bank_code: bank1, agency_number: '2050', account_number: '123.555-8')
+if boleto1.save then PaymentCompany.create(company: company_1, payment_option: pay_boleto1) end
+creditcard1 = CreditCardRegisterOption.new(company: company_1, payment_option: pay_creditcard1, credit_card_operator_token: 'jdB8SD923Nmg8fR1GhJm')
+if creditcard1.save then PaymentCompany.create(company: company_1, payment_option: pay_creditcard1) end
+pix1 = PixRegisterOption.new(company: company_1, payment_option: pay_pix1, pix_key: 'AJ86gt4fLBtcF296rTuN', bank_code: bank2)
+if pix1.save then PaymentCompany.create(company: company_1, payment_option: pay_pix1) end
 
-boleto2 = BoletoRegisterOption.new(company: company_2, payment_option: pay_boleto_1, bank_code: bank2, agency_number: '2050', account_number: '123.222-8')
-if boleto2.save then PaymentCompany.create(company: company_2, payment_option: pay_boleto_1) end
-pix2 = PixRegisterOption.new(company: company_2, payment_option: pay_pix_1, pix_key: 'APLB86HpLBtcF296rTuN', bank_code: bank2)
-if pix2.save then PaymentCompany.create(company: company_2, payment_option: pay_pix_1) end
+boleto2 = BoletoRegisterOption.new(company: company_2, payment_option: pay_boleto1, bank_code: bank2, agency_number: '2050', account_number: '123.222-8')
+if boleto2.save then PaymentCompany.create(company: company_2, payment_option: pay_boleto1) end
+pix2 = PixRegisterOption.new(company: company_2, payment_option: pay_pix1, pix_key: 'APLB86HpLBtcF296rTuN', bank_code: bank2)
+if pix2.save then PaymentCompany.create(company: company_2, payment_option: pay_pix1) end
 
-product_1 = Product.new(name:'Produto 1', price: 53, boleto_discount: 1, company: company_1)
-if product_1.save 
-  product_1.token = "PAM17d4gf7mG8vb13zmT"
-  product_1.save
+product1 = Product.new(name:'Produto 1', price: 53, boleto_discount: 1, company: company_1)
+if product1.save 
+  product1.token = "PAM17d4gf7mG8vb13zmT"
+  product1.save
 end
-product_2 = Product.new(name:'Produto 2', price: 34, credit_card_discount: 2, company: company_1)
-if product_2.save
-  product_2.token = "Lmc78sJyc65mamrTpXTA"                                                        
-  product_2.save
+product2 = Product.new(name:'Produto 2', price: 34, credit_card_discount: 2, company: company_1)
+if product2.save
+  product2.token = "Lmc78sJyc65mamrTpXTA"                                                        
+  product2.save
 end
 product_3 = Product.new(name:'Produto 3', price: 45, pix_discount: 3, company: company_1)
 if product_3.save
@@ -120,8 +120,8 @@ if product_3.save
   product_3.save
 end
 
-product_1 = Product.where(name: 'Produto 1').first
-product_2 = Product.where(name: 'Produto 2').first
+product1 = Product.where(name: 'Produto 1').first
+product2 = Product.where(name: 'Produto 2').first
 product_3 = Product.where(name: 'Produto 3').first
 f1 = FinalClient.new(name: 'Cliente 1', cpf: '11122233344')
 if f1.save 
@@ -143,61 +143,61 @@ if f3.save
   f3.save
 end
 
-final_client_1 = FinalClient.find_by(cpf: '11122233344')
-final_client_2 = FinalClient.find_by(cpf: '55522233344')
+final_client1 = FinalClient.find_by(cpf: '11122233344')
+final_client2 = FinalClient.find_by(cpf: '55522233344')
 status_charge = StatusCharge.find_by(code: '01')
-status_2 = StatusCharge.find_by(code: '05')
+status2 = StatusCharge.find_by(code: '05')
 
-c11 = Charge.create(client_token: final_client_1.token, 
-                    client_name: final_client_1.name, client_cpf: final_client_1.cpf, 
-                    company_token:company_1.token, product_token: product_1.token, 
-                    payment_method: pay_boleto_1.name, client_address: 'algum endereço', 
-                    due_deadline: '24/12/2023', company: company_1, final_client: final_client_1,
-                    status_charge: status_charge, product: product_1,
-                    payment_option: pay_boleto_1, price: 50, charge_price: 45 )
+c11 = Charge.create(client_token: final_client1.token, 
+                    client_name: final_client1.name, client_cpf: final_client1.cpf, 
+                    company_token:company_1.token, product_token: product1.token, 
+                    payment_method: pay_boleto1.name, client_address: 'algum endereço', 
+                    due_deadline: '24/12/2023', company: company_1, final_client: final_client1,
+                    status_charge: status_charge, product: product1,
+                    payment_option: pay_boleto1, price: 50, charge_price: 45 )
 c11.created_at = Date.today - 15.days
 c11.save
-c12 = Charge.create(client_token: final_client_1.token,
-                    client_name: final_client_1.name, client_cpf: final_client_1.cpf, 
-                    company_token:company_1.token, product_token: product_2.token, 
-                    payment_method: pay_boleto_1.name, client_address: 'algum endereço', 
-                    due_deadline: '30/12/2024', company: company_1, final_client: final_client_1,
-                    status_charge: status_charge, product: product_2,
-                    payment_option: pay_boleto_1, price: 60, charge_price: 54)
+c12 = Charge.create(client_token: final_client1.token,
+                    client_name: final_client1.name, client_cpf: final_client1.cpf, 
+                    company_token:company_1.token, product_token: product2.token, 
+                    payment_method: pay_boleto1.name, client_address: 'algum endereço', 
+                    due_deadline: '30/12/2024', company: company_1, final_client: final_client1,
+                    status_charge: status_charge, product: product2,
+                    payment_option: pay_boleto1, price: 60, charge_price: 54)
 c12.created_at = Date.today - 95.days
 c12.save
-Charge.create(client_token: final_client_2.token, 
-              client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
-              company_token:company_1.token, product_token: product_1.token, 
-              payment_method: pay_creditcard_1.name, card_number: '1111 2222 3333 4444',
+Charge.create(client_token: final_client2.token, 
+              client_name: final_client2.name, client_cpf: final_client2.cpf, 
+              company_token:company_1.token, product_token: product1.token, 
+              payment_method: pay_creditcard1.name, card_number: '1111 2222 3333 4444',
               card_name: 'CLIENTE XY', cvv_code: '123', 
-              due_deadline: '25/04/2021', company: company_1, final_client: final_client_2,
-              status_charge: status_charge, product: product_1,
-              payment_option: pay_creditcard_1, price: 50, charge_price: 45 )
-Charge.create(client_token: final_client_2.token, 
-              client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
-              company_token:company_1.token, product_token: product_2.token, 
-              payment_method: pay_pix_1.name, due_deadline: '17/12/2020', 
-              company: company_1, final_client: final_client_2,
-              status_charge: status_charge, product: product_2,
-              payment_option: pay_pix_1, price: 60, charge_price: 54)
-c1 = Charge.new(client_token: final_client_2.token, 
-                    client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
+              due_deadline: '25/04/2021', company: company_1, final_client: final_client2,
+              status_charge: status_charge, product: product1,
+              payment_option: pay_creditcard1, price: 50, charge_price: 45 )
+Charge.create(client_token: final_client2.token, 
+              client_name: final_client2.name, client_cpf: final_client2.cpf, 
+              company_token:company_1.token, product_token: product2.token, 
+              payment_method: pay_pix1.name, due_deadline: '17/12/2020', 
+              company: company_1, final_client: final_client2,
+              status_charge: status_charge, product: product2,
+              payment_option: pay_pix1, price: 60, charge_price: 54)
+c1 = Charge.new(client_token: final_client2.token, 
+                    client_name: final_client2.name, client_cpf: final_client2.cpf, 
                     company_token:company_1.token, product_token: product_3.token, 
-                    payment_method: pay_pix_1.name, due_deadline: '14/06/2021', 
-                    company: company_1, final_client: final_client_2,
-                    status_charge: status_2, product: product_3,
-                    payment_option: pay_pix_1, price: product_3.price, discount: (product_3.price*product_3.pix_discount/100),
+                    payment_method: pay_pix1.name, due_deadline: '14/06/2021', 
+                    company: company_1, final_client: final_client2,
+                    status_charge: status2, product: product_3,
+                    payment_option: pay_pix1, price: product_3.price, discount: (product_3.price*product_3.pix_discount/100),
                     charge_price: product_3.price-(product_3.price*product_3.pix_discount/100), payment_date: '14/06/2021', authorization_token: 'kdmwemd2127')
-c2 = Charge.new(client_token: final_client_2.token, 
-                    client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
+c2 = Charge.new(client_token: final_client2.token, 
+                    client_name: final_client2.name, client_cpf: final_client2.cpf, 
                     company_token:company_1.token, product_token: product_3.token, 
-                    payment_method: pay_creditcard_1.name, due_deadline: '14/06/2021', 
+                    payment_method: pay_creditcard1.name, due_deadline: '14/06/2021', 
                     card_number: '1111 2222 3333 4444',
                     card_name: 'CLIENTE XY', cvv_code: '123', 
-                    company: company_1, final_client: final_client_2,
-                    status_charge: status_2, product: product_3,
-                    payment_option: pay_creditcard_1, price: product_3.price, discount: (product_3.price*product_3.credit_card_discount/100),
+                    company: company_1, final_client: final_client2,
+                    status_charge: status2, product: product_3,
+                    payment_option: pay_creditcard1, price: product_3.price, discount: (product_3.price*product_3.credit_card_discount/100),
                     charge_price: product_3.price-(product_3.price*product_3.credit_card_discount/100), payment_date: '14/06/2021', authorization_token: 'kdmw9u32eeuh7')
 if c1.save then Receipt.create(due_deadline: c1.due_deadline, payment_date: c1.payment_date, authorization_token: 'kdmwemd2127', charge: c1) end
 if c2.save then Receipt.create!(due_deadline: c2.due_deadline, payment_date: c2.payment_date, authorization_token: 'kdmw9u32eeuh7', charge: c2) end

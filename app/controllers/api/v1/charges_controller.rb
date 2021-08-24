@@ -1,10 +1,11 @@
 class Api::V1::ChargesController < ActionController::API
   before_action :status_charge_generate
-  
+
   def charges_generate
     @company = Company.find_by(token: charge_params[:company_token])
     if @company && @company.blocked?
-      render json: {error: "Não foi possível gerar a combrança, a conta da empresa na plataforma está bloqueada"}, status: 403
+      render json: { error: 'Não foi possível gerar a combrança, a conta da empresa na plataforma está bloqueada' },
+             status: :forbidden
     else
       @status = StatusCharge.find_by(code: '01')
       @charge = Charge.new(charge_params)
@@ -13,13 +14,14 @@ class Api::V1::ChargesController < ActionController::API
       save_product_data
       save_payment_type
       save_price_and_discount
-      if @boleto == nil && @credit_card == nil && @pix == nil then head 412
-      else @charge.save!
+      if @boleto.nil? && @credit_card.nil? && @pix.nil? then head :precondition_failed
+      else
+        @charge.save!
         if @credit_card || @pix
-          @charge.due_deadline = @charge.created_at.strftime("%d/%m/%Y")
+          @charge.due_deadline = @charge.created_at.strftime('%d/%m/%Y')
           @charge.save
         end
-        render json: @charge, status: 201
+        render json: @charge, status: :created
       end
     end
   rescue ActiveRecord::RecordInvalid
@@ -31,10 +33,10 @@ class Api::V1::ChargesController < ActionController::API
   private
 
   def charge_params
-    params.require(:charge).permit(:client_token, :company_token, :product_token, 
-                                  :payment_method, :boleto_register_option_id, :credit_card_register_option_id, 
-                                  :pix_register_option_id, :client_address, :card_number, 
-                                  :card_name, :cvv_code, :due_deadline)
+    params.require(:charge).permit(:client_token, :company_token, :product_token,
+                                   :payment_method, :boleto_register_option_id, :credit_card_register_option_id,
+                                   :pix_register_option_id, :client_address, :card_number,
+                                   :card_name, :cvv_code, :due_deadline)
   end
 
   def save_charge_data
@@ -55,7 +57,7 @@ class Api::V1::ChargesController < ActionController::API
       @charge.final_client = @final_client
     end
   end
-  
+
   def save_product_data
     @product = Product.find_by(token: charge_params[:product_token])
     if @product
@@ -79,18 +81,18 @@ class Api::V1::ChargesController < ActionController::API
   end
 
   def save_price_and_discount
-    if  @charge.discount
-      @charge.charge_price = @charge.price - @charge.discount
-    else
-      @charge.charge_price = @charge.price
-    end
+    @charge.charge_price = if @charge.discount
+                             @charge.price - @charge.discount
+                           else
+                             @charge.price
+                           end
   end
-  
+
   def status_charge_generate
     require 'csv'
     if StatusCharge.count < 5
       csv_text = File.read("#{Rails.root}/db/csv_folder/charge_status_options.csv")
-      csv2 = CSV.parse(csv_text, :headers => true)
+      csv2 = CSV.parse(csv_text, headers: true)
       csv2.each do |row|
         code, description = row.to_s.split(' ', 2)
         status = StatusCharge.create(code: code, description: description)

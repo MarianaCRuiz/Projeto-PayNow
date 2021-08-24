@@ -4,7 +4,7 @@ class Clients::ProductsController < ApplicationController
 
   def index
     @company = Company.find_by(token: params[:token])
-    @products = Product.where(status: 0)  #order(:name)
+    @products = Product.where(status: 0)  # order(:name)
   end
 
   def show
@@ -36,7 +36,8 @@ class Clients::ProductsController < ApplicationController
     @company = current_user.company
     @product = Product.find_by(token: params[:token])
     if @product.update(product_params)
-      redirect_to clients_company_product_path(current_user.company, @product.token), notice: 'Opção atualizada com sucesso'
+      redirect_to clients_company_product_path(current_user.company, @product.token),
+                  notice: 'Opção atualizada com sucesso'
     else
       render :edit
     end
@@ -49,8 +50,8 @@ class Clients::ProductsController < ApplicationController
     @product.name = ''
     @product.save!
     redirect_to clients_company_products_path(current_user.company), notice: 'Produto excluído com sucesso'
-  end 
-  
+  end
+
   private
 
   def authenticate_client

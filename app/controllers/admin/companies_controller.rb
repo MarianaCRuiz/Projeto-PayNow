@@ -7,12 +7,13 @@ class Admin::CompaniesController < ApplicationController
     @block_company_2 = BlockCompany.find_by(email_2: current_user.email)
     @companies = Company.all
   end
+
   def show
     @company = Company.find_by(token: params[:token])
     @companies = Company.all
   end
-  
-  def edit 
+
+  def edit
     @company = Company.find_by(token: params[:token])
   end
 
@@ -37,7 +38,7 @@ class Admin::CompaniesController < ApplicationController
     @domains = DomainRecord.all
     @emails = @company.domain_records
   end
-  
+
   def block_email
     @company = Company.find_by(token: params[:token])
     if params[:email]
@@ -59,14 +60,12 @@ class Admin::CompaniesController < ApplicationController
     @email.allowed!
     redirect_to emails_admin_company_path(@company.token), notice: 'Email desbloqueado com sucesso'
   end
-  
+
   def block_company
     @company = Company.find_by(token: params[:token])
     @block = BlockCompany.find_by(company: @company)
-    if !@block
-      @block = BlockCompany.create(company: @company, email_1: current_user.email)
-    end
-    if @block.vote_1 
+    @block ||= BlockCompany.create(company: @company, email_1: current_user.email)
+    if @block.vote_1
       @block.vote_1 = false
       @block.save
     elsif @block.vote_2 && @block.email_1 != current_user.email
@@ -92,7 +91,7 @@ class Admin::CompaniesController < ApplicationController
   end
 
   def company_params
-    params.require(:company).permit(:corporate_name, :cnpj, :state, :city, :district, :street, :number, :address_complement, :billing_email)
+    params.require(:company).permit(:corporate_name, :cnpj, :state, :city, :district, :street, :number,
+                                    :address_complement, :billing_email)
   end
-
 end
