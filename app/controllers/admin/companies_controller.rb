@@ -3,8 +3,8 @@ class Admin::CompaniesController < ApplicationController
   before_action :authenticate_admin
 
   def index
-    @block_company_1 = BlockCompany.find_by(email_1: current_user.email)
-    @block_company_2 = BlockCompany.find_by(email_2: current_user.email)
+    @block_company_1 = BlockCompany.find_by(email1: current_user.email)
+    @block_company_2 = BlockCompany.find_by(email2: current_user.email)
     @companies = Company.all
   end
 
@@ -64,16 +64,16 @@ class Admin::CompaniesController < ApplicationController
   def block_company
     @company = Company.find_by(token: params[:token])
     @block = BlockCompany.find_by(company: @company)
-    @block ||= BlockCompany.create(company: @company, email_1: current_user.email)
-    if @block.vote_1
-      @block.vote_1 = false
+    @block ||= BlockCompany.create(company: @company, email1: current_user.email)
+    if @block.vote1
+      @block.vote1 = false
       @block.save
-    elsif @block.vote_2 && @block.email_1 != current_user.email
-      @block.vote_2 = false
-      @block.email_2 = current_user.email
+    elsif @block.vote2 && @block.email1 != current_user.email
+      @block.vote2 = false
+      @block.email2 = current_user.email
       @block.save
     end
-    if @block.vote_1 == false && @block.vote_2 == false
+    if @block.vote1 == false && @block.vote2 == false
       @company.blocked!
       DomainRecord.where(company: @company).each do |user|
         if user.email then user.blocked!

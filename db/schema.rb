@@ -55,10 +55,10 @@ ActiveRecord::Schema.define(version: 2021_06_29_110402) do
 
   create_table "block_companies", force: :cascade do |t|
     t.integer "company_id", null: false
-    t.string "email_1"
-    t.string "email_2"
-    t.boolean "vote_1", default: true, null: false
-    t.boolean "vote_2", default: true, null: false
+    t.string "email1"
+    t.string "email2"
+    t.boolean "vote1", default: true, null: false
+    t.boolean "vote2", default: true, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_block_companies_on_company_id"

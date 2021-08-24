@@ -25,19 +25,19 @@ describe BoletoRegisterOption do
   it 'must be uniq scope agency and bank' do
     BoletoRegisterOption.create!(company: company, payment_option: pay_boleto1,
                                  bank_code: bank, agency_number: '2050', account_number: '123.555-8')
-    boleto_2 = BoletoRegisterOption.new(company: company, payment_option: pay_boleto1,
-                                        bank_code: bank, agency_number: '2050', account_number: '123.555-8')
-    boleto_2.valid?
+    boleto2 = BoletoRegisterOption.new(company: company, payment_option: pay_boleto1,
+                                       bank_code: bank, agency_number: '2050', account_number: '123.555-8')
+    boleto2.valid?
 
-    expect(boleto_2.errors[:account_number]).to include('já está em uso')
+    expect(boleto2.errors[:account_number]).to include('já está em uso')
   end
   it 'do not need to be uniq scope just agency, different bank' do
     BoletoRegisterOption.create!(company: company, payment_option: pay_boleto1,
                                  bank_code: bank, agency_number: '2050', account_number: '123.555-8')
-    boleto_2 = BoletoRegisterOption.new(company: company, payment_option: pay_boleto1,
-                                        bank_code: bank2, agency_number: '2050', account_number: '123.555-8')
-    boleto_2.valid?
+    boleto2 = BoletoRegisterOption.new(company: company, payment_option: pay_boleto1,
+                                       bank_code: bank2, agency_number: '2050', account_number: '123.555-8')
+    boleto2.valid?
 
-    expect(boleto_2.errors).to be_empty
+    expect(boleto2.errors).to be_empty
   end
 end

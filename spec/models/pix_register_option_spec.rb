@@ -25,10 +25,10 @@ describe PixRegisterOption do
   it 'pix_operator_token must be uniq scope company' do
     PixRegisterOption.create!(company: company, payment_option: pay_creditcard1,
                               pix_key: 'AJ86gt4fLBtcF296rTuN', bank_code: bank)
-    pix_2 = PixRegisterOption.new(company: company, payment_option: pay_creditcard1,
-                                  pix_key: 'AJ86gt4fLBtcF296rTuN', bank_code: bank)
-    pix_2.valid?
+    pix2 = PixRegisterOption.new(company: company, payment_option: pay_creditcard1,
+                                 pix_key: 'AJ86gt4fLBtcF296rTuN', bank_code: bank)
+    pix2.valid?
 
-    expect(pix_2.errors[:pix_key]).to include('já está em uso')
+    expect(pix2.errors[:pix_key]).to include('já está em uso')
   end
 end

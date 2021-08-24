@@ -14,7 +14,7 @@
       <img src="./assets/0.12.3/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" class="hide">
-      <div class="timestamp">Generated <abbr class="timeago" title="2021-08-23T23:26:54-03:00">2021-08-23T23:26:54-03:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2021-08-23T23:40:23-03:00">2021-08-23T23:40:23-03:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
@@ -2507,7 +2507,7 @@
 
             
 
-            <code class="ruby">    @block_company_1 = BlockCompany.find_by(email_1: current_user.email)</code>
+            <code class="ruby">    @block_company_1 = BlockCompany.find_by(email1: current_user.email)</code>
           </li>
         </div>
       
@@ -2518,7 +2518,7 @@
 
             
 
-            <code class="ruby">    @block_company_2 = BlockCompany.find_by(email_2: current_user.email)</code>
+            <code class="ruby">    @block_company_2 = BlockCompany.find_by(email2: current_user.email)</code>
           </li>
         </div>
       
@@ -3178,7 +3178,7 @@
 
             
 
-            <code class="ruby">    @block ||= BlockCompany.create(company: @company, email_1: current_user.email)</code>
+            <code class="ruby">    @block ||= BlockCompany.create(company: @company, email1: current_user.email)</code>
           </li>
         </div>
       
@@ -3189,7 +3189,7 @@
 
             
 
-            <code class="ruby">    if @block.vote_1</code>
+            <code class="ruby">    if @block.vote1</code>
           </li>
         </div>
       
@@ -3200,7 +3200,7 @@
 
             
 
-            <code class="ruby">      @block.vote_1 = false</code>
+            <code class="ruby">      @block.vote1 = false</code>
           </li>
         </div>
       
@@ -3222,7 +3222,7 @@
 
             
 
-            <code class="ruby">    elsif @block.vote_2 &amp;&amp; @block.email_1 != current_user.email</code>
+            <code class="ruby">    elsif @block.vote2 &amp;&amp; @block.email1 != current_user.email</code>
           </li>
         </div>
       
@@ -3233,7 +3233,7 @@
 
             
 
-            <code class="ruby">      @block.vote_2 = false</code>
+            <code class="ruby">      @block.vote2 = false</code>
           </li>
         </div>
       
@@ -3244,7 +3244,7 @@
 
             
 
-            <code class="ruby">      @block.email_2 = current_user.email</code>
+            <code class="ruby">      @block.email2 = current_user.email</code>
           </li>
         </div>
       
@@ -3277,7 +3277,7 @@
 
             
 
-            <code class="ruby">    if @block.vote_1 == false &amp;&amp; @block.vote_2 == false</code>
+            <code class="ruby">    if @block.vote1 == false &amp;&amp; @block.vote2 == false</code>
           </li>
         </div>
       
@@ -15958,7 +15958,7 @@
 
             
 
-            <code class="ruby">  validates :email_2, presence: true, if: :checking_email</code>
+            <code class="ruby">  validates :email2, presence: true, if: :checking_email</code>
           </li>
         </div>
       
@@ -15980,7 +15980,7 @@
 
             
 
-            <code class="ruby">    if email_1 &amp;&amp; email_2 == email_1</code>
+            <code class="ruby">    if email1 &amp;&amp; email2 == email1</code>
           </li>
         </div>
       

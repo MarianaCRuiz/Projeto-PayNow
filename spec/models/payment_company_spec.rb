@@ -6,7 +6,7 @@ describe PaymentCompany do
                     city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
                     address_complement: '', billing_email: 'faturamento@codeplay.com')
   end
-  let(:company_2) do
+  let(:company2) do
     Company.create!(corporate_name: 'Empresa SA', cnpj: '11.888.333/0001-44', state: 'São Paulo',
                     city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
                     address_complement: '', billing_email: 'faturamento@empresa.com')
@@ -22,7 +22,7 @@ describe PaymentCompany do
       expect(pay.errors[:payment_option]).to include('já está em uso')
     end
     it 'different companies' do
-      PaymentCompany.create!(company: company_2, payment_option: pay_boleto1)
+      PaymentCompany.create!(company: company2, payment_option: pay_boleto1)
       pay = PaymentCompany.new(company: company, payment_option: pay_boleto1)
 
       pay.valid?

@@ -25,10 +25,10 @@ describe CreditCardRegisterOption do
   it 'credit_card_operator_token must be uniq scope company' do
     CreditCardRegisterOption.create!(company: company, payment_option: pay_creditcard1,
                                      credit_card_operator_token: 'jdB8SD923Nmg8fR1GhJm')
-    credit_card_2 = CreditCardRegisterOption.new(company: company, payment_option: pay_creditcard1,
-                                                 credit_card_operator_token: 'jdB8SD923Nmg8fR1GhJm')
-    credit_card_2.valid?
+    credit_card2 = CreditCardRegisterOption.new(company: company, payment_option: pay_creditcard1,
+                                                credit_card_operator_token: 'jdB8SD923Nmg8fR1GhJm')
+    credit_card2.valid?
 
-    expect(credit_card_2.errors[:credit_card_operator_token]).to include('já está em uso')
+    expect(credit_card2.errors[:credit_card_operator_token]).to include('já está em uso')
   end
 end
