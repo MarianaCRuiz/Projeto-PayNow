@@ -1,11 +1,8 @@
 class Api::V1::QueriesController < ActionController::API
+  before_action :find_company_payment
+
   def consult_charges
-    find_company_payment
-    specific_deadline?
-    max_deadline?
-    min_deadline?
-    interval_deadline?
-    no_deadline?
+    analysing_deadlines
     if @due_deadline_max && @due_deadline_min && @due_deadline_max < @due_deadline_min
       head :range_not_satisfiable
     elsif !@charges.empty?
@@ -15,8 +12,6 @@ class Api::V1::QueriesController < ActionController::API
     else
       render json: @charges, status: :no_content
     end
-  rescue ActionController::ParameterMissing
-    render status: :precondition_failed, json: { errors: 'parâmetros inválidos' }
   end
 
   private
@@ -32,6 +27,16 @@ class Api::V1::QueriesController < ActionController::API
     @due_deadline_max = consult_params[:due_deadline_max]
     @due_deadline_min = consult_params[:due_deadline_min]
     @charges = @company.charges.where(payment_method: @payment_method) if @payment_method
+  rescue ActionController::ParameterMissing
+    render status: :precondition_failed, json: { errors: 'parâmetros inválidos' }
+  end
+
+  def analysing_deadlines
+    specific_deadline?
+    max_deadline?
+    min_deadline?
+    interval_deadline?
+    no_deadline?
   end
 
   def specific_deadline?
