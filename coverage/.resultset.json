@@ -659,11 +659,15 @@
           6,
           6,
           6,
-          4,
-          4,
-          4,
+          null,
           4,
           null,
+          null,
+          1,
+          4,
+          4,
+          4,
+          4,
           null,
           null,
           1,
@@ -674,12 +678,12 @@
           1,
           8,
           8,
-          8,
-          8,
-          8,
-          40,
-          40,
           null,
+          8,
+          8,
+          8,
+          40,
+          40,
           null,
           null,
           null
@@ -1120,6 +1124,7 @@
       "/home/maricruiz/campuscode/project/app/controllers/api/v1/queries_controller.rb": {
         "lines": [
           1,
+          null,
           1,
           19,
           18,
@@ -1773,6 +1778,6 @@
         ]
       }
     },
-    "timestamp": 1629778260
+    "timestamp": 1629780244
   }
 }

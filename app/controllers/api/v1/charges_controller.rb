@@ -7,7 +7,7 @@ class Api::V1::ChargesController < ActionController::API
     @charge = Charge.new(charge_params)
     @charge.saving_data(setting_values)
     @charge.save!
-    if @credit_card || @pix then @charge.update!(due_deadline: @charge.created_at.strftime('%d/%m/%Y')) end
+    @charge.update!(due_deadline: @charge.created_at.strftime('%d/%m/%Y')) if @credit_card || @pix
     render json: @charge, status: :created
   rescue ActiveRecord::RecordInvalid
     render json: @charge.errors, status: :precondition_failed
@@ -24,12 +24,12 @@ class Api::V1::ChargesController < ActionController::API
 
   def find_company
     @company = Company.find_by(token: charge_params[:company_token])
-    if @company && @company.blocked?
+    if @company&.blocked?
       render json: { error: 'Não foi possível gerar a cobrança, a conta da empresa na plataforma está bloqueada' },
              status: :forbidden
     end
   rescue ActionController::ParameterMissing
-    return render status: :precondition_failed, json: { errors: 'parâmetros inválidos' }
+    render status: :precondition_failed, json: { errors: 'parâmetros inválidos' }
   end
 
   def find_contents(charge_params)
@@ -37,12 +37,16 @@ class Api::V1::ChargesController < ActionController::API
     @product = Product.find_by(token: charge_params[:product_token])
     @payment_option = PaymentOption.find_by(name: charge_params[:payment_method])
     @status = StatusCharge.find_by(code: '01')
-    if @payment_option && @company && @product
-      @boleto = @company.boleto_register_options.find_by(payment_option: @payment_option)
-      @credit_card = @company.credit_card_register_options.find_by(payment_option: @payment_option)
-      @pix = @company.pix_register_options.find_by(payment_option: @payment_option)
-      if @boleto.nil? && @credit_card.nil? && @pix.nil? then head :precondition_failed end
-    end
+    return unless @payment_option && @company && @product
+
+    find_payment
+  end
+
+  def find_payment
+    @boleto = @company.boleto_register_options.find_by(payment_option: @payment_option)
+    @credit_card = @company.credit_card_register_options.find_by(payment_option: @payment_option)
+    @pix = @company.pix_register_options.find_by(payment_option: @payment_option)
+    head :precondition_failed if @boleto.nil? && @credit_card.nil? && @pix.nil?
   end
 
   def setting_values
@@ -52,13 +56,13 @@ class Api::V1::ChargesController < ActionController::API
 
   def status_charge_generate
     require 'csv'
-    if StatusCharge.count < 5
-      csv_text = File.read("#{Rails.root}/db/csv_folder/charge_status_options.csv")
-      csv2 = CSV.parse(csv_text, headers: true)
-      csv2.each do |row|
-        code, description = row.to_s.split(' ', 2)
-        status = StatusCharge.create(code: code, description: description)
-      end
+    return unless StatusCharge.count < 5
+
+    csv_text = File.read(Rails.root.join('db', 'csv_folder', 'charge_status_options.csv'))
+    csv2 = CSV.parse(csv_text, headers: true)
+    csv2.each do |row|
+      code, description = row.to_s.split(' ', 2)
+      StatusCharge.create(code: code, description: description)
     end
   end
 end
