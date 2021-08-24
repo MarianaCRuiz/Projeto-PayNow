@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe 'final client api' do
-  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
-                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
+  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo',
+                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
                 address_complement: '', billing_email: 'faturamento@codeplay.com')}
   context 'POST final client api' do
     it 'generating final client token successfully' do

@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 describe 'edit company' do
-  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
-                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
+  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo',
+                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
                 address_complement: '', billing_email: 'faturamento@codeplay.com')}
-  
+
   it 'admin edit company profile' do
     Admin.create!(email:'user1@paynow.com.br')
     admin = User.create!(email:'user1@paynow.com.br', password: '123456', role: 2)
@@ -31,7 +31,7 @@ describe 'edit company' do
     expect(page).to have_content('Email de faturamento')
     expect(page).to have_content('faturamento@codeplay.com')
     expect(page).to have_link('Atualizar dados da empresa')
-    expect(HistoricCompany.count).to eq(2) 
+    expect(HistoricCompany.count).to eq(2)
   end
   it 'admin edit profile failure' do
     Admin.create!(email:'user1@paynow.com.br')
@@ -49,7 +49,7 @@ describe 'edit company' do
     click_on 'Atualizar'
 
     expect(page).to have_content('não pode ficar em branco')
-    expect(HistoricCompany.count).to eq(1) 
+    expect(HistoricCompany.count).to eq(1)
   end
   it 'admin request new company token' do
     Admin.create!(email:'user1@paynow.com.br')
@@ -61,8 +61,8 @@ describe 'edit company' do
     click_on 'Empresas cadastradas'
     click_on 'Codeplay SA'
     click_on 'Novo token'
-    
+
     expect(page).to_not have_content(company.token)
-    expect(HistoricCompany.count).to eq(2) 
+    expect(HistoricCompany.count).to eq(2)
   end
 end

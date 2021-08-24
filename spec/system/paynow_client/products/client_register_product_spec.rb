@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe 'client register product' do
-  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
-                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
+  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo',
+                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
                 address_complement: '', billing_email: 'faturamento@codeplay.com')}
   let(:user_admin) {User.create!(email: 'admin@codeplay.com', password: '123456', role: 1, company: company)}
   let(:user) {User.create!(email: 'user@codeplay.com', password: '123456', role: 0, company: company)}
@@ -25,9 +25,9 @@ describe 'client register product' do
     expect(HistoricProduct.count).to be(1)
   end
   it 'same product but diferent companies' do
-    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)  
-    company2 = Company.create(corporate_name: 'Empresa1 SA', cnpj: '44.212.343/0001-42' , state: 'São Paulo', 
-                              city: 'Campinas', district: 'Csmpos', street: 'rua 2', number: '13', 
+    DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
+    company2 = Company.create(corporate_name: 'Empresa1 SA', cnpj: '44.212.343/0001-42' , state: 'São Paulo',
+                              city: 'Campinas', district: 'Csmpos', street: 'rua 2', number: '13',
                               address_complement: '', billing_email: 'faturamento@empresa1.com')
     product = Product.create!(name:'Produto 2', price: 53, boleto_discount: 1, company: company2)
 
@@ -60,13 +60,13 @@ describe 'client register product' do
 
       click_on 'Registrar produto'
 
-      expect(page).to have_content('não pode ficar em branco', count: 2) 
+      expect(page).to have_content('não pode ficar em branco', count: 2)
       expect(HistoricProduct.count).to be(0)
     end
     it 'product already registered same company' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       product = Product.create!(name:'Produto 2', price: 53, boleto_discount: 1, company: company)
-      
+
       login_as user, scope: :user
       visit clients_company_path(company[:token])
       click_on 'Produtos cadastrados'
@@ -78,12 +78,12 @@ describe 'client register product' do
 
       click_on 'Registrar produto'
 
-      expect(page).to have_content('Produto já cadastrado') 
-      expect(HistoricProduct.count).to be(1) 
+      expect(page).to have_content('Produto já cadastrado')
+      expect(HistoricProduct.count).to be(1)
     end
     it 'discount must be a number' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-      
+
       login_as user, scope: :user
       visit clients_company_path(company[:token])
       click_on 'Produtos cadastrados'
@@ -96,11 +96,11 @@ describe 'client register product' do
       click_on 'Registrar produto'
 
       expect(page).to have_content('não é um número', count: 3)
-      expect(HistoricProduct.count).to be(0) 
+      expect(HistoricProduct.count).to be(0)
     end
     it 'discount cannot be negative' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-      
+
       login_as user, scope: :user
       visit clients_company_path(company[:token])
       click_on 'Produtos cadastrados'
@@ -113,7 +113,7 @@ describe 'client register product' do
       click_on 'Registrar produto'
 
       expect(page).to have_content('deve ser maior ou igual a 0.0', count: 3)
-      expect(HistoricProduct.count).to be(0) 
+      expect(HistoricProduct.count).to be(0)
     end
   end
 end

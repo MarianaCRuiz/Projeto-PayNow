@@ -336,6 +336,12 @@
           null
         ]
       },
+      "/home/maricruiz/campuscode/project/app/models/receipt_filter.rb": {
+        "lines": [
+          1,
+          null
+        ]
+      },
       "/home/maricruiz/campuscode/project/app/models/payment_company.rb": {
         "lines": [
           1,
@@ -429,12 +435,6 @@
           null,
           164,
           null,
-          null
-        ]
-      },
-      "/home/maricruiz/campuscode/project/app/models/receipt_filter.rb": {
-        "lines": [
-          1,
           null
         ]
       },
@@ -1744,6 +1744,6 @@
         ]
       }
     },
-    "timestamp": 1625044240
+    "timestamp": 1629764294
   }
 }

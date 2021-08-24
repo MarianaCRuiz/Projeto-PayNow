@@ -1,8 +1,8 @@
 require 'rails_helper'  
 
 describe 'accessing recipes' do
-  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
-                            city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
+  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo',
+                            city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
                             address_complement: '', billing_email: 'faturamento@codeplay.com')}
   let(:user_admin) {User.create!(email: 'admin@codeplay.com', password: '123456', role: 1, company: company)}
   let(:pay_boleto_1) {PaymentOption.create!(name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0)}
@@ -19,34 +19,33 @@ describe 'accessing recipes' do
   let(:final_client_2) {FinalClient.create!(name: 'Cliente final 2', cpf: '11144455599')}
   let(:final_client_3) {FinalClient.create!(name: 'Cliente final 3', cpf: '11188855599')}
   let(:status_charge) {StatusCharge.create!(code: '05', description: "Cobrança efetivada com sucesso\n")}
-  let(:charge_1) {Charge.create!(client_name: final_client.name, client_cpf: final_client.cpf, 
-                                 client_token: final_client.token, company_token:company.token, 
-                                 product_token: product.token, payment_method: pay_boleto_1.name, 
-                                 client_address: 'algum endereço', due_deadline: '24/07/2021', 
+  let(:charge_1) {Charge.create!(client_name: final_client.name, client_cpf: final_client.cpf,
+                                 client_token: final_client.token, company_token:company.token,
+                                 product_token: product.token, payment_method: pay_boleto_1.name,
+                                 client_address: 'algum endereço', due_deadline: '24/07/2021',
                                  company: company, final_client: final_client,
                                  status_charge: status_charge, product: product,
                                  payment_option: pay_boleto_1, price: 50, discount: 5,
                                  charge_price: 45, payment_date: '17/06/2021' )}
-  let(:charge_11) {Charge.create!(client_token: final_client_2.token, 
-                                 client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
-                                 company_token:company.token, product_token: product_2.token, 
-                                 payment_method: pay_creditcard_1.name, card_number: '1111 2222 3333 4444', 
+  let(:charge_11) {Charge.create!(client_token: final_client_2.token,
+                                 client_name: final_client_2.name, client_cpf: final_client_2.cpf,
+                                 company_token:company.token, product_token: product_2.token,
+                                 payment_method: pay_creditcard_1.name, card_number: '1111 2222 3333 4444',
                                  card_name: 'CLIENTE X2', cvv_code: '123',
                                  due_deadline: '15/06/2021', company: company, final_client: final_client_2,
                                  status_charge: status_charge, product: product_2,
                                  payment_option: pay_creditcard_1, price: product_2.price, discount: 9,
                                  charge_price: 51, payment_date: '15/06/2021')}
-  let(:charge_12) {Charge.create!(client_token: final_client_3.token, 
-                                 client_name: final_client_3.name, client_cpf: final_client_3.cpf, 
-                                 company_token:company.token, product_token: product_3.token, 
-                                 payment_method: pay_pix_1.name, due_deadline: '14/06/2021', 
+  let(:charge_12) {Charge.create!(client_token: final_client_3.token,
+                                 client_name: final_client_3.name, client_cpf: final_client_3.cpf,
+                                 company_token:company.token, product_token: product_3.token,
+                                 payment_method: pay_pix_1.name, due_deadline: '14/06/2021',
                                  company: company, final_client: final_client_3,
                                  status_charge: status_charge, product: product_3,
                                  payment_option: pay_pix_1, price: product_3.price, discount: 7,
                                  charge_price: 63, payment_date: '14/06/2021')}
-  
+
   it 'successfully' do
-    # DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
     PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
     PaymentCompany.create!(company: company, payment_option: pay_creditcard_1)
     PaymentCompany.create!(company: company, payment_option: pay_pix_1)
@@ -94,7 +93,6 @@ describe 'accessing recipes' do
     expect(page).to_not have_content('PIX')
   end
   it 'failure' do
-    # DomainRecord.create!(email_client_admin: user_admin.email, domain: 'codeplay.com', company: company)
     PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
     HistoricProduct.create(product: product, company: company, price: product.price)
     CompanyClient.create!(company: company, final_client: final_client)

@@ -9,6 +9,7 @@ gem 'jbuilder', '~> 2.7'
 gem 'puma', '~> 5.0'
 gem 'rails', '~> 6.1.3', '>= 6.1.3.2'
 gem 'simplecov', require: false, group: :test
+gem 'rubocop-rails', require: false
 gem 'sqlite3', '~> 1.4'
 gem 'sass-rails', '>= 6'
 gem 'turbolinks', '~> 5'
@@ -18,8 +19,8 @@ gem 'webpacker', '~> 5.0'
 # gem 'image_processing', '~> 1.2'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 5.0.0'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'rspec-rails', '~> 5.0.0'
 end
 
 group :development do

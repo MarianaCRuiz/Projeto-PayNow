@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe 'client_admin register' do
-  let(:user_client_admin) {User.create!(email:'user1@codeplay.com', password: '123456')} #, role: 3
-  
+  let(:user_client_admin) {User.create!(email:'user1@codeplay.com', password: '123456')}
+
   context 'company first register successfuly' do
     it 'client_admin register company' do
       login_as user_client_admin, scope: :user
@@ -29,7 +29,7 @@ describe 'client_admin register' do
       expect(page).to have_content('123')
       expect(page).to have_content('Email de faturamento')
       expect(page).to have_content('faturamento@codeplay.com')
-      expect(HistoricCompany.count).to eq(1)  
+      expect(HistoricCompany.count).to eq(1)
     end
   end
   context 'company first register failure' do

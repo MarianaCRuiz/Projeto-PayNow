@@ -5,20 +5,19 @@ describe FinalClient do
     it 'cannot be blank' do
       company_client = FinalClient.new
       company_client.valid?
-      expect(company_client.errors[:name]).to include('não pode ficar em branco') 
-      expect(company_client.errors[:cpf]).to include('não pode ficar em branco') 
+      expect(company_client.errors[:name]).to include('não pode ficar em branco')
+      expect(company_client.errors[:cpf]).to include('não pode ficar em branco')
     end
     it 'uniqueness' do
       FinalClient.create!(name: 'Client', cpf: '11199922244')
       company_client = FinalClient.new(name: 'Client', cpf: '11199922244')
       company_client.valid?
-      expect(company_client.errors[:cpf]).to include('já está em uso') 
+      expect(company_client.errors[:cpf]).to include('já está em uso')
     end
     it 'format' do
       company_client = FinalClient.new(name: 'Client', cpf: '11199922244234')
       company_client.valid?
-      expect(company_client.errors[:cpf]).to include('apenas os números, 11 caracteres') 
+      expect(company_client.errors[:cpf]).to include('apenas os números, 11 caracteres')
     end
   end
 end
-

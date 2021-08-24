@@ -5,9 +5,9 @@ describe BlockCompany do
     it 'first block admin email' do
       a1 = Admin.create(email: 'adminteste1@paynow.com.br')
       a2 = Admin.create(email: 'adminteste2@paynow.com.br')
-      company_1 = Company.create!(corporate_name: 'test SA', cnpj: '11.222.333/0001-45' , 
-                                  state: 'São Paulo', city: 'Campinas', district: 'Inova', 
-                                  street: 'rua 1', number: '12', address_complement: '', 
+      company_1 = Company.create!(corporate_name: 'test SA', cnpj: '11.222.333/0001-45' ,
+                                  state: 'São Paulo', city: 'Campinas', district: 'Inova',
+                                  street: 'rua 1', number: '12', address_complement: '',
                                   billing_email: 'persontest@test.com')
       b = BlockCompany.new(company: company_1, email_1: a1.email, vote_1: false)
       b.valid?
@@ -16,9 +16,9 @@ describe BlockCompany do
     it 'second block admin email' do
       a1 = Admin.create(email: 'adminteste1@paynow.com.br')
       a2 = Admin.create(email: 'adminteste2@paynow.com.br')
-      company_1 = Company.create!(corporate_name: 'test SA', cnpj: '11.222.333/0001-45' , 
-                                  state: 'São Paulo', city: 'Campinas', district: 'Inova', 
-                                  street: 'rua 1', number: '12', address_complement: '', 
+      company_1 = Company.create!(corporate_name: 'test SA', cnpj: '11.222.333/0001-45',
+                                  state: 'São Paulo', city: 'Campinas', district: 'Inova',
+                                  street: 'rua 1', number: '12', address_complement: '',
                                   billing_email: 'persontest@test.com')
       b = BlockCompany.create!(company: company_1, email_1: a1.email, vote_1: false)
       b.email_2 = a2.email
@@ -29,9 +29,9 @@ describe BlockCompany do
     it 'emails must be different' do
       a1 = Admin.create(email: 'adminteste1@paynow.com.br')
       a2 = Admin.create(email: 'adminteste2@paynow.com.br')
-      company_1 = Company.create!(corporate_name: 'test SA', cnpj: '11.222.333/0001-45' , 
-                                  state: 'São Paulo', city: 'Campinas', district: 'Inova', 
-                                  street: 'rua 1', number: '12', address_complement: '', 
+      company_1 = Company.create!(corporate_name: 'test SA', cnpj: '11.222.333/0001-45',
+                                  state: 'São Paulo', city: 'Campinas', district: 'Inova',
+                                  street: 'rua 1', number: '12', address_complement: '',
                                   billing_email: 'persontest@test.com')
       b = BlockCompany.create!(company: company_1, email_1: a1.email, vote_1: false)
       b.email_2 = a1.email

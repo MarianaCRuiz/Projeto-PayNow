@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe 'client edit product' do
-  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
-                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
+  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo',
+                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
                 address_complement: '', billing_email: 'faturamento@codeplay.com')}
   let(:user_admin) {User.create!(email: 'admin@codeplay.com', password: '123456', role: 1, company: company)}
   let(:user) {User.create!(email: 'user@codeplay.com', password: '123456', role: 0, company: company)}
@@ -11,7 +11,7 @@ describe 'client edit product' do
   it 'successfully' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
     product1 = product
-    
+
     login_as user, scope: :user
     visit clients_company_path(company[:token])
     click_on 'Produtos cadastrados'
@@ -51,7 +51,6 @@ describe 'client edit product' do
   context 'failure' do
     it 'missing information' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-
       product1 = product
 
       login_as user, scope: :user
@@ -71,7 +70,7 @@ describe 'client edit product' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       product1 = product
       product2 = Product.create!(name:'Produto 2', price: 23, boleto_discount: 6, company: company)
-      
+
       login_as user, scope: :user
       visit clients_company_path(company[:token])
       click_on 'Produtos cadastrados'
@@ -87,7 +86,7 @@ describe 'client edit product' do
     it 'discount must be a number' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       product1 = product
-      
+
       login_as user, scope: :user
       visit clients_company_path(company[:token])
       click_on 'Produtos cadastrados'
@@ -106,7 +105,7 @@ describe 'client edit product' do
     it 'discount cannot be negative' do
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       product1 = product
-      
+
       login_as user, scope: :user
       visit clients_company_path(company[:token])
       click_on 'Produtos cadastrados'

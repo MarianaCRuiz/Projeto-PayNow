@@ -1,18 +1,20 @@
 require 'rails_helper'
 
 describe 'charge api' do
-  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
-                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
-                address_complement: '', billing_email: 'faturamento@codeplay.com')}
-  let(:product) {Product.create!(name:'Produto 1', price: 50, boleto_discount: 10, credit_card_discount: 8, company: company)}
-  let(:pay_boleto_1) {PaymentOption.create!(name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0)}
-  let(:pay_creditcard_1) {PaymentOption.create(name: 'Cartão de Crédito MasterChef', fee: 1.2, max_money_fee: 24, payment_type:1)}
-  let(:pay_pix_1) {PaymentOption.create(name: 'PIX', fee: 1.3, max_money_fee: 21, payment_type: 2)}
-  let(:bank) {BankCode.create!(code: '001', bank:'Banco do Brasil S.A.')}
-  let(:boleto) {BoletoRegisterOption.create!(company: company, payment_option: pay_boleto_1, bank_code: bank, agency_number: '2050', account_number: '123.555-8')}
-  let(:credit_card) {CreditCardRegisterOption.create!(company: company, payment_option: pay_creditcard_1, credit_card_operator_token: 'jdB8SD923Nmg8fR1GhJm')}
-  let(:pix) {PixRegisterOption.create!(company: company, payment_option: pay_pix_1, pix_key: 'AJ86gt4fLBtcF296rTuN', bank_code: bank)}
-  let(:final_client) {FinalClient.create!(name: 'Cliente final 1', cpf: '11122255599')}
+  let(:company) { Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo',
+                                  city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
+                                  address_complement: '', billing_email: 'faturamento@codeplay.com') }
+  let(:product) { Product.create!(name:'Produto 1', price: 50, boleto_discount: 10, credit_card_discount: 8, company: company) }
+  let(:pay_boleto_1) { PaymentOption.create!(name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0) }
+  let(:pay_creditcard_1) { PaymentOption.create(name: 'Cartão de Crédito MasterChef', fee: 1.2, max_money_fee: 24, payment_type:1) }
+  let(:pay_pix_1) { PaymentOption.create(name: 'PIX', fee: 1.3, max_money_fee: 21, payment_type: 2) }
+  let(:bank) { BankCode.create!(code: '001', bank:'Banco do Brasil S.A.') }
+  let(:boleto) { BoletoRegisterOption.create!(company: company, payment_option: pay_boleto_1, bank_code: bank,
+                                              agency_number: '2050', account_number: '123.555-8') }
+  let(:credit_card) { CreditCardRegisterOption.create!(company: company, payment_option: pay_creditcard_1,
+                                                       credit_card_operator_token: 'jdB8SD923Nmg8fR1GhJm') }
+  let(:pix) { PixRegisterOption.create!(company: company, payment_option: pay_pix_1, pix_key: 'AJ86gt4fLBtcF296rTuN', bank_code: bank) }
+  let(:final_client) { FinalClient.create!(name: 'Cliente final 1', cpf: '11122255599') }
   context 'POST charge api' do
     context 'generating charge successfully' do
       it 'boleto' do
@@ -23,10 +25,11 @@ describe 'charge api' do
         boleto1 = boleto
         PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
 
-        post "/api/v1/charges", params: {charge: {client_token: final_client.token, 
-            company_token: company.token, product_token: product.token, payment_method: pay_boleto_1.name, 
-            client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
-            due_deadline: '24/12/2023'}}
+        post "/api/v1/charges", params: { charge: { client_token: final_client.token, 
+                                                    company_token: company.token, product_token: product.token,
+                                                    payment_method: pay_boleto_1.name,
+                                                    client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
+                                                    due_deadline: '24/12/2023' } }
 
         expect(response).to have_http_status(201)
         expect(response.content_type).to include('application/json')
@@ -46,9 +49,11 @@ describe 'charge api' do
         pay1 = pay_creditcard_1
         credit_card1 = credit_card
 
-        post "/api/v1/charges", params: {charge: {client_token: final_client.token, 
-            company_token: company.token, product_token: product.token, payment_method: pay_creditcard_1.name, 
-            card_number: '1111 2222 333 4444', card_name: 'FULANO A C', cvv_code: '444'}}
+        post "/api/v1/charges", params: { charge: { client_token: final_client.token,
+                                                    company_token: company.token, product_token: product.token,
+                                                    payment_method: pay_creditcard_1.name,
+                                                    card_number: '1111 2222 333 4444', card_name: 'FULANO A C',
+                                                    cvv_code: '444' } }
 
         expect(response).to have_http_status(201)
         expect(response.content_type).to include('application/json')
@@ -68,8 +73,10 @@ describe 'charge api' do
         pay1 = pay_pix_1
         pix1 = pix
 
-        post "/api/v1/charges", params: {charge: {client_token: final_client.token, 
-            company_token: company.token, product_token: product.token, payment_method: pay_pix_1.name}}
+        post "/api/v1/charges", params: { charge: { client_token: final_client.token,
+                                                    company_token: company.token,
+                                                    product_token: product.token,
+                                                    payment_method: pay_pix_1.name } }
 
         expect(response).to have_http_status(201)
         expect(response.content_type).to include('application/json')
@@ -91,11 +98,11 @@ describe 'charge api' do
         pay1 = pay_boleto_1
         boleto1 = boleto
         final_client1 = final_client
-      
-        post "/api/v1/charges", params: {charge: {client_token: final_client.token, 
-            company_token: company.token, product_token: product.token, 
-            client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
-            due_deadline: '24/12/2023'}}
+
+        post "/api/v1/charges", params: { charge: { client_token: final_client.token,
+                                                    company_token: company.token, product_token: product.token,
+                                                    client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
+                                                    due_deadline: '24/12/2023' } }
 
         expect(response).to have_http_status(412)
       end
@@ -107,10 +114,10 @@ describe 'charge api' do
         boleto1 = boleto
         final_client1 = final_client
 
-        post "/api/v1/charges", params: {charge: {company_token: company.token, product_token: product.token, 
-                                                  payment_method: pay_boleto_1.name, 
-                                                  client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
-                                                  due_deadline: '24/12/2023'}}
+        post "/api/v1/charges", params: { charge: { company_token: company.token, product_token: product.token,
+                                                    payment_method: pay_boleto_1.name,
+                                                    client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
+                                                    due_deadline: '24/12/2023' } }
 
         expect(response).to have_http_status(412)
       end
@@ -122,9 +129,9 @@ describe 'charge api' do
         boleto1 = boleto
         final_client1 = final_client
 
-        post "/api/v1/charges", params: {charge: {client_token: final_client.token, payment_method: pay_boleto_1.name, 
-            client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
-            due_deadline: '24/12/2023'}}
+        post "/api/v1/charges", params: { charge: { client_token: final_client.token, payment_method: pay_boleto_1.name,
+                                                    client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
+                                                    due_deadline: '24/12/2023' } }
 
         expect(response).to have_http_status(412)
       end
@@ -136,8 +143,8 @@ describe 'charge api' do
         boleto1 = boleto
         final_client1 = final_client
 
-         post "/api/v1/charges", params: {charge: {}}
-  
+         post "/api/v1/charges", params: { charge: {} }
+
         expect(response).to have_http_status(412)
         expect(response.content_type).to include('application/json')
         parsed_body = JSON.parse(response.body)
@@ -149,17 +156,18 @@ describe 'charge api' do
         bank1 = bank
         boleto1 = boleto
         final_client1 = final_client
-    
+
         CompanyClient.create!(final_client: final_client, company: company)
         PaymentCompany.create!(company: company, payment_option: pay_boleto_1)
-  
+
         company.blocked!
-  
-        post "/api/v1/charges", params: {charge: {client_token: final_client.token, 
-              company_token: company.token, product_token: product.token, payment_method: pay_boleto_1.name, 
-              client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
-              due_deadline: '24/12/2023'}}
-  
+
+        post "/api/v1/charges", params: { charge: { client_token: final_client.token,
+                                                    company_token: company.token, product_token: product.token,
+                                                    payment_method: pay_boleto_1.name,
+                                                    client_address: 'Rua 1, numero 2, Bairro X, Cidade 1, Estado Y',
+                                                    due_deadline: '24/12/2023' } }
+
           expect(response).to have_http_status(403)
           expect(response.content_type).to include('application/json')
           parsed_body = JSON.parse(response.body)

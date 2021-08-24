@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 describe 'admin block client' do
-  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
-        city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
+  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo',
+        city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
         address_complement: '', billing_email: 'faturamento@codeplay.com')}
   let(:user_admin) {User.create!(email: 'admin@codeplay.com', password: '123456', role: 1, company: company)}
-  let(:user) {User.create!(email: 'user@codeplay.com', password: '123456', role: 0, company: company)}    
+  let(:user) {User.create!(email: 'user@codeplay.com', password: '123456', role: 0, company: company)}
   context 'client' do
     it 'block client' do
       Admin.create!(email: "admin@paynow.com.br")
@@ -44,10 +44,10 @@ describe 'admin block client' do
       admin = User.create!(email:'admin@paynow.com.br', password: '123456', role: 2)
       DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
       DomainRecord.find_by(email: user.email).blocked!
-      
+
       login_as user, scope: :user
       visit root_path
-      
+
       expect(user.role).to eq("blocked")
     end
   end

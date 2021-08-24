@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 describe 'register PIX option' do
-  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
-                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
+  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo',
+                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
                 address_complement: '', billing_email: 'faturamento@codeplay.com')}
   let(:user_admin) {User.create!(email: 'admin@codeplay.com', password: '123456', role: 1, company: company)}
-  let(:user) {User.create!(email: 'user@codeplay.com', password: '123456', role: 0, company: company)}    
+  let(:user) {User.create!(email: 'user@codeplay.com', password: '123456', role: 0, company: company)}
   let(:pay_creditcard_1) {PaymentOption.create!(name: 'Cartão de Crédito PISA', fee: 1.9, max_money_fee: 20, payment_type: 1)}
   let(:pay_boleto_1) {PaymentOption.create!(name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0)}
   let(:pay_pix_1) {PaymentOption.create!(name: 'PIX_1', fee: 1.9, max_money_fee: 20, payment_type: 2)}
@@ -31,7 +31,7 @@ describe 'register PIX option' do
     login_as user, scope: :user
     visit clients_company_path(company[:token])
     click_on 'Opções de pagamento'
-    
+
     expect(page).to have_content('Boleto')
     expect(page).to have_content('2050')
     expect(page).to have_content('123.555-8')

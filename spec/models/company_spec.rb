@@ -15,26 +15,26 @@ describe Company do
       expect(company.errors[:billing_email]).to include('não pode ficar em branco')
     end
     it ' must be uniq' do
-      company_1 = Company.create!(corporate_name: 'test SA', cnpj: '11.222.333/0001-45' , 
-                                  state: 'São Paulo', city: 'Campinas', district: 'Inova', 
-                                  street: 'rua 1', number: '12', address_complement: '', 
+      company_1 = Company.create!(corporate_name: 'test SA', cnpj: '11.222.333/0001-45',
+                                  state: 'São Paulo', city: 'Campinas', district: 'Inova',
+                                  street: 'rua 1', number: '12', address_complement: '',
                                   billing_email: 'persontest@test.com')
-      company_2 = Company.new(corporate_name: 'test SA', cnpj: '11.222.333/0001-45' , 
-                                  state: 'São Paulo', city: 'Campinas', district: 'Campos', 
-                                  street: 'rua 2', number: '13', address_complement: '', 
-                                  billing_email: 'persontest@test.com')
+      company_2 = Company.new(corporate_name: 'test SA', cnpj: '11.222.333/0001-45',
+                              state: 'São Paulo', city: 'Campinas', district: 'Campos',
+                              street: 'rua 2', number: '13', address_complement: '',
+                              billing_email: 'persontest@test.com')
 
       company_2.valid?
 
-      expect(company_2.errors[:corporate_name]).to include('já está em uso') 
-      expect(company_2.errors[:cnpj]).to include('já está em uso') 
-      expect(company_2.errors[:billing_email]).to include('já está em uso')   
+      expect(company_2.errors[:corporate_name]).to include('já está em uso')
+      expect(company_2.errors[:cnpj]).to include('já está em uso')
+      expect(company_2.errors[:billing_email]).to include('já está em uso')
     end
     it ' format' do
-      company_2 = Company.new(corporate_name: 'test SA', cnpj: '43i4943i9034i43' , 
-                                  state: 'São Paulo', city: 'Campinas', district: 'Campos', 
-                                  street: 'rua 2', number: '13', address_complement: '', 
-                                  billing_email: 'persontest@test.com')
+      company_2 = Company.new(corporate_name: 'test SA', cnpj: '43i4943i9034i43',
+                              state: 'São Paulo', city: 'Campinas', district: 'Campos',
+                              street: 'rua 2', number: '13', address_complement: '',
+                              billing_email: 'persontest@test.com')
 
       company_2.valid?
 

@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe 'consult charges api' do
-  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
-                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
+  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo',
+                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
                 address_complement: '', billing_email: 'faturamento@codeplay.com')}
   let(:product) {Product.create!(name:'Produto 1', price: 50, boleto_discount: 10, credit_card_discount: 8, company: company)}
   let(:product_2) {Product.create!(name:'Produto 2', price: 60, boleto_discount: 10, credit_card_discount: 5, company: company)}
@@ -16,35 +16,35 @@ describe 'consult charges api' do
   let(:final_client) {FinalClient.create!(name: 'Cliente final 1', cpf: '11122255599')}
   let(:final_client_2) {FinalClient.create!(name: 'Cliente final 2', cpf: '11133355599')}
   let(:status_charge) {StatusCharge.create!(code: '01', description: 'Pendente de cobrança')}
-  let(:charge_1) {Charge.create!(client_token: final_client.token, 
-                                 client_name: final_client.name, client_cpf: final_client.cpf, 
-                                 company_token:company.token, product_token: product.token, 
-                                 payment_method: pay_boleto_1.name, client_address: 'algum endereço', 
+  let(:charge_1) {Charge.create!(client_token: final_client.token,
+                                 client_name: final_client.name, client_cpf: final_client.cpf,
+                                 company_token:company.token, product_token: product.token,
+                                 payment_method: pay_boleto_1.name, client_address: 'algum endereço',
                                  due_deadline: '20/08/2021', company: company, final_client: final_client,
                                  status_charge: status_charge, product: product,
                                  payment_option: pay_boleto_1, price: product.price, charge_price: 45,
                                  product_name: product.name, discount: 5)}
-  let(:charge_10) {Charge.create!(client_token: final_client.token, 
-                                 client_name: final_client.name, client_cpf: final_client.cpf, 
-                                 company_token:company.token, product_token: product.token, 
-                                 payment_method: pay_creditcard_1.name, card_number: '1111 2222 3333 4444', 
+  let(:charge_10) {Charge.create!(client_token: final_client.token,
+                                 client_name: final_client.name, client_cpf: final_client.cpf,
+                                 company_token:company.token, product_token: product.token,
+                                 payment_method: pay_creditcard_1.name, card_number: '1111 2222 3333 4444',
                                  card_name: 'CLIENTE X2', cvv_code: '123',
                                  due_deadline: '20/08/2021', company: company, final_client: final_client,
                                  status_charge: status_charge, product: product,
                                  payment_option: pay_creditcard_1, price: product.price, charge_price: 45,
                                  product_name: product.name, discount: 5)}
-  let(:charge_11) {Charge.create!(client_token: final_client_2.token, 
-                                 client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
-                                 company_token:company.token, product_token: product.token, 
-                                 payment_method: pay_boleto_1.name, client_address: 'algum endereço', 
+  let(:charge_11) {Charge.create!(client_token: final_client_2.token,
+                                 client_name: final_client_2.name, client_cpf: final_client_2.cpf,
+                                 company_token:company.token, product_token: product.token,
+                                 payment_method: pay_boleto_1.name, client_address: 'algum endereço',
                                  due_deadline: '30/12/2022', company: company, final_client: final_client_2,
                                  status_charge: status_charge, product: product,
                                  payment_option: pay_boleto_1, price: product.price, charge_price: 45,
                                  product_name: product.name, discount: 5)}
-  let(:charge_12) {Charge.create!(client_token: final_client_2.token, 
-                                 client_name: final_client_2.name, client_cpf: final_client_2.cpf, 
-                                 company_token:company.token, product_token: product_2.token, 
-                                 payment_method: pay_creditcard_1.name, card_number: '1111 2222 3333 4444', 
+  let(:charge_12) {Charge.create!(client_token: final_client_2.token,
+                                 client_name: final_client_2.name, client_cpf: final_client_2.cpf,
+                                 company_token:company.token, product_token: product_2.token,
+                                 payment_method: pay_creditcard_1.name, card_number: '1111 2222 3333 4444',
                                  card_name: 'CLIENTE X2', cvv_code: '123',
                                  due_deadline: '30/12/2023', company: company, final_client: final_client_2,
                                  status_charge: status_charge, product: product_2,

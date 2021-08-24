@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe 'register payment options' do
-  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo', 
-                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12', 
+  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo',
+                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
                 address_complement: '', billing_email: 'faturamento@codeplay.com')}
   let(:user_admin) {User.create!(email: 'admin@codeplay.com', password: '123456', role: 1, company: company)}
   let(:pay_boleto_1) {PaymentOption.create!(name: 'Boleto', fee: 1.9, max_money_fee: 20, payment_type: 0)}
@@ -40,7 +40,7 @@ describe 'register payment options' do
     expect(page).to have_content('Adicionar: PIX_1')
     expect(page).to have_content('Adicionar: Cartão de Crédito MASTERCHEF')
   end
-  it 'client_admin see payment options chosen' do  
+  it 'client_admin see payment options chosen' do
     bank = BankCode.create(code: '001', bank:'Banco do Brasil S.A.')
     boleto = BoletoRegisterOption.create!(company: company, payment_option: pay_boleto_1, bank_code: bank, agency_number: '3140', account_number: '111.444-2')
     creditcard = CreditCardRegisterOption.create!(company: company, payment_option: pay_creditcard_1, credit_card_operator_token: 'jdB8SD923Nmg8fR1GhJm')
@@ -68,7 +68,7 @@ describe 'register payment options' do
     PaymentCompany.create!(company: company, payment_option: pay_creditcard_1)
     PaymentCompany.create!(company: company, payment_option: pay_pix_1)
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-    
+
     login_as user_admin, scope: :user
     visit client_admin_company_path(company[:token])
     click_on 'Opções de pagamento'
