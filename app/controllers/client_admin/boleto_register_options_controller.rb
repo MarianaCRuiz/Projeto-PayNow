@@ -44,10 +44,9 @@ class ClientAdmin::BoletoRegisterOptionsController < ApplicationController
   private
 
   def authenticate_client_admin
-    unless current_user.client_admin? || current_user.client_admin_sign_up?
-      redirect_to root_path,
-                  notice: 'Acesso não autorizado'
-    end
+    return if current_user.client_admin? || current_user.client_admin_sign_up?
+
+    redirect_to root_path, notice: 'Acesso não autorizado'
   end
 
   def boleto_register_option_params
@@ -82,13 +81,13 @@ class ClientAdmin::BoletoRegisterOptionsController < ApplicationController
 
   def bank_code_generate
     require 'csv'
-    if BankCode.count < 99
-      csv_text = File.read("#{Rails.root}/db/csv_folder/bank_codes3.csv")
-      csv = CSV.parse(csv_text, headers: true)
-      csv.each do |row|
-        code, bank = row.to_s.split(' ', 2)
-        BankCode.create(code: code, bank: bank)
-      end
+    return unless BankCode.count < 99
+
+    csv_text = File.read(Rails.root.join('db', 'csv_folder', 'bank_codes3.csv'))
+    csv = CSV.parse(csv_text, headers: true)
+    csv.each do |row|
+      code, bank = row.to_s.split(' ', 2)
+      BankCode.create(code: code, bank: bank)
     end
   end
 end

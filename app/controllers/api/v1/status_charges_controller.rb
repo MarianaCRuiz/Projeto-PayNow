@@ -41,7 +41,7 @@ class Api::V1::StatusChargesController < ActionController::API
   end
 
   def charge_attempt?
-    return @paid = false unless @status_charge.code != '01'
+    return @paid = false unless @status_charge.code != '01' && @status_charge.code != '05'
 
     params_charge = { status: @status_charge, attempt_date: @attempt_date }
     @charge.payment_attempt(params_charge)
