@@ -11,7 +11,7 @@ class ClientAdmin::PixRegisterOptionsController < ApplicationController
     @pix = PixRegisterOption.new
   end
 
-  def create 
+  def create
     @pix = @company.pix_register_options.new(pix_register_option_params)
     save_data
     if @pix.save
@@ -22,30 +22,33 @@ class ClientAdmin::PixRegisterOptionsController < ApplicationController
     end
   end
 
-  def edit 
-  end
+  def edit; end
 
-  def update 
+  def update
     if @pix.update(pix_register_option_params)
-      redirect_to payments_chosen_client_admin_company_path(current_user.company.token), notice: 'Opção atualizada com sucesso'
+      redirect_to payments_chosen_client_admin_company_path(current_user.company.token),
+                  notice: 'Opção atualizada com sucesso'
     else
       render :edit
     end
   end
 
-  def exclude 
+  def exclude
     @payment_option = @pix.payment_option
     @pix.pix_key = ''
     @pix.inactive!
     @pix.save!
     @company.payment_companies.find_by(payment_option: @payment_option).destroy
-    redirect_to payments_chosen_client_admin_company_path(@company.token), notice: 'Meio de pagamento excluído com sucesso'
-  end 
+    redirect_to payments_chosen_client_admin_company_path(@company.token),
+                notice: 'Meio de pagamento excluído com sucesso'
+  end
 
   private
 
   def authenticate_client_admin
-    redirect_to root_path, notice: 'Acesso não autorizado' unless current_user.client_admin? || current_user.client_admin_sign_up? 
+    return if current_user.client_admin? || current_user.client_admin_sign_up?
+
+    redirect_to root_path, notice: 'Acesso não autorizado'
   end
 
   def pix_register_option_params
@@ -67,7 +70,7 @@ class ClientAdmin::PixRegisterOptionsController < ApplicationController
   def find_company
     @company = current_user.company
   end
-  
+
   def save_data
     @pix.payment_option = @payment_option
     @pix.name = @payment_option.name
@@ -77,13 +80,13 @@ class ClientAdmin::PixRegisterOptionsController < ApplicationController
 
   def bank_code_generate
     require 'csv'
-    if BankCode.count < 99
-      csv_text = File.read("#{Rails.root}/db/csv_folder/bank_codes3.csv")
-      csv = CSV.parse(csv_text, :headers => true)
-      csv.each do |row|
-        code, bank = row.to_s.split(' ', 2)
-        BankCode.create(code: code, bank: bank)
-      end
+    return unless BankCode.count < 99
+
+    csv_text = File.read(Rails.root.join('db', 'csv_folder', 'charge_status_options.csv'))
+    csv = CSV.parse(csv_text, headers: true)
+    csv.each do |row|
+      code, bank = row.to_s.split(' ', 2)
+      BankCode.create(code: code, bank: bank)
     end
   end
 end

@@ -1,15 +1,19 @@
 require 'rails_helper'
 
 describe 'register credit card option' do
-  let(:company) {Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44' , state: 'São Paulo',
-                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
-                address_complement: '', billing_email: 'faturamento@codeplay.com')}
-  let(:user_admin) {User.create!(email: 'admin@codeplay.com', password: '123456', role: 1, company: company)}
-  let(:pay_creditcard_1) {PaymentOption.create!(name: 'Cartão de Crédito MASTERCHEF', fee: 1.9, max_money_fee: 20, payment_type: 1)}
+  let(:company) do
+    Company.create!(corporate_name: 'Codeplay SA', cnpj: '11.222.333/0001-44', state: 'São Paulo',
+                    city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
+                    address_complement: '', billing_email: 'faturamento@codeplay.com')
+  end
+  let(:user_admin) { User.create!(email: 'admin@codeplay.com', password: '123456', role: 1, company: company) }
+  let(:pay_creditcard1) do
+    PaymentOption.create!(name: 'Cartão de Crédito MASTERCHEF', fee: 1.9, max_money_fee: 20, payment_type: 1)
+  end
 
   it 'client_admin register credit card succesfully' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-    pay = pay_creditcard_1
+    pay = pay_creditcard1
     token = SecureRandom.base58(20)
 
     login_as user_admin, scope: :user
@@ -26,8 +30,7 @@ describe 'register credit card option' do
   end
   it 'cannot be blank' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-    pay = pay_creditcard_1
-    token = SecureRandom.base58(20)
+    pay = pay_creditcard1
 
     login_as user_admin, scope: :user
     visit client_admin_company_path(company[:token])
@@ -41,8 +44,9 @@ describe 'register credit card option' do
   end
   it 'bank token uniq' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-    pay = pay_creditcard_1
-    CreditCardRegisterOption.create!(payment_option: pay_creditcard_1, company: company, credit_card_operator_token: 'haBN7S9kM726bhz5d1pB')
+    pay = pay_creditcard1
+    CreditCardRegisterOption.create!(payment_option: pay_creditcard1, company: company,
+                                     credit_card_operator_token: 'haBN7S9kM726bhz5d1pB')
 
     login_as user_admin, scope: :user
     visit client_admin_company_path(company[:token])

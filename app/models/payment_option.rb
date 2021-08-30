@@ -1,10 +1,10 @@
 class PaymentOption < ApplicationRecord
-  enum state: {active: 0, inactive: 1}
-  enum payment_type: {boleto: 0, credit_card: 1, pix: 2}
+  enum state: { active: 0, inactive: 1 }
+  enum payment_type: { boleto: 0, credit_card: 1, pix: 2 }
 
   has_one_attached :icon
   after_create_commit :set_photo
-  
+
   has_many :charges
 
   has_many :payment_companies
@@ -15,6 +15,7 @@ class PaymentOption < ApplicationRecord
 
   def set_photo
     return if icon.attached?
+
     if PaymentOption.last.name.include?('Boleto')
       icon.attach(io: File.open(Rails.root.join('app/assets/images/Boleto.png')), filename: 'Boleto.png')
     elsif PaymentOption.last.name.include?('Cartão de Crédito')

@@ -1,7 +1,7 @@
 class Admin::PaymentOptionsController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin
-  
+
   def index
     @payment_options = PaymentOption.all
   end
@@ -20,8 +20,8 @@ class Admin::PaymentOptionsController < ApplicationController
       render :new
     end
   end
-  
-  def edit 
+
+  def edit
     @payment_option = PaymentOption.find(params[:id])
     @payments = PaymentOption.all
   end
@@ -35,7 +35,7 @@ class Admin::PaymentOptionsController < ApplicationController
       render :edit
     end
   end
-  
+
   private
 
   def authenticate_admin

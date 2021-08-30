@@ -8,8 +8,10 @@ class ClientAdmin::PaymentOptionsController < ApplicationController
   end
 
   private
-  
+
   def authenticate_client_admin
-    redirect_to root_path, notice: 'Acesso não autorizado' unless current_user.client_admin? || current_user.client_admin_sign_up? 
+    return if current_user.client_admin? || current_user.client_admin_sign_up?
+
+    redirect_to root_path, notice: 'Acesso não autorizado'
   end
 end

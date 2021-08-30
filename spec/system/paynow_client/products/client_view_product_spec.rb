@@ -1,11 +1,13 @@
 require 'rails_helper'
 
 describe 'client register product' do
-  let(:company) {Company.create!(corporate_name: 'Empresa 2 SA', cnpj: '11.222.333/0002-45' , state: 'São Paulo',
-                city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
-                address_complement: '', billing_email: 'faturamento@empresa2.com')}
-  let(:user_admin) {User.create!(email: 'admin@empresa2.com', password: '123456', role: 1, company: company)}
-  let(:user) {User.create!(email: 'user@empresa2.com', password: '123456', role: 0, company: company)}
+  let(:company) do
+    Company.create!(corporate_name: 'Empresa 2 SA', cnpj: '11.222.333/0002-45', state: 'São Paulo',
+                    city: 'Campinas', district: 'Inova', street: 'rua 1', number: '12',
+                    address_complement: '', billing_email: 'faturamento@empresa2.com')
+  end
+  let(:user_admin) { User.create!(email: 'admin@empresa2.com', password: '123456', role: 1, company: company) }
+  let(:user) { User.create!(email: 'user@empresa2.com', password: '123456', role: 0, company: company) }
   it 'index empty' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
 
@@ -18,8 +20,8 @@ describe 'client register product' do
   end
   it 'index' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-    Product.create!(name:'Produto 1', price: 10, boleto_discount: 2, company: company)
-    Product.create!(name:'Produto 2', price: 20, boleto_discount: 1, company: company)
+    Product.create!(name: 'Produto 1', price: 10, boleto_discount: 2, company: company)
+    Product.create!(name: 'Produto 2', price: 20, boleto_discount: 1, company: company)
 
     login_as user, scope: :user
     visit clients_company_path(company[:token])
@@ -33,7 +35,7 @@ describe 'client register product' do
   end
   it 'show' do
     DomainRecord.find_by(email_client_admin: user_admin.email).update!(company: company)
-    product = Product.create!(name:'Produto 1', price: 10, boleto_discount: 2, company: company)
+    product = Product.create!(name: 'Produto 1', price: 10, boleto_discount: 2, company: company)
 
     login_as user, scope: :user
     visit clients_company_product_path(company[:token], product[:token])

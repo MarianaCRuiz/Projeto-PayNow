@@ -9,7 +9,7 @@ class ClientAdmin::CreditCardRegisterOptionsController < ApplicationController
     @credit_card = CreditCardRegisterOption.new
   end
 
-  def create 
+  def create
     @credit_card = @company.credit_card_register_options.new(credit_card_params)
     save_data
     if @credit_card.save
@@ -20,32 +20,36 @@ class ClientAdmin::CreditCardRegisterOptionsController < ApplicationController
     end
   end
 
-  def edit 
+  def edit
     @bank_codes = BankCode.all
   end
 
-  def update 
+  def update
     if @credit_card.update(credit_card_params)
-      redirect_to payments_chosen_client_admin_company_path(current_user.company.token), notice: 'Opção atualizada com sucesso'
+      redirect_to payments_chosen_client_admin_company_path(current_user.company.token),
+                  notice: 'Opção atualizada com sucesso'
     else
       @bank_codes = BankCode.all
       render :edit
     end
   end
 
-  def exclude     
+  def exclude
     @payment_option = @credit_card.payment_option
     @credit_card.credit_card_operator_token = ''
     @credit_card.inactive!
     @credit_card.save!
     @company.payment_companies.find_by(payment_option: @payment_option).destroy
-    redirect_to payments_chosen_client_admin_company_path(@company.token), notice: 'Meio de pagamento excluído com sucesso'
-  end 
-  
+    redirect_to payments_chosen_client_admin_company_path(@company.token),
+                notice: 'Meio de pagamento excluído com sucesso'
+  end
+
   private
-  
+
   def authenticate_client_admin
-    redirect_to root_path, notice: 'Acesso não autorizado' unless current_user.client_admin? || current_user.client_admin_sign_up? 
+    return if current_user.client_admin? || current_user.client_admin_sign_up?
+
+    redirect_to root_path, notice: 'Acesso não autorizado'
   end
 
   def credit_card_params
