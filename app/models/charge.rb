@@ -7,7 +7,6 @@ class Charge < ApplicationRecord
   belongs_to :pix_register_option, optional: true
   belongs_to :status_charge
   belongs_to :payment_option
-
   validates :client_name, :client_cpf, :client_token, :company_token, :product_token, :payment_method, :token,
             presence: true
   validates :card_number, :card_name, :cvv_code, presence: true, if: :paid_with_card?
@@ -59,46 +58,46 @@ class Charge < ApplicationRecord
   end
 
   def specific_data
-    client_data(self.final_client)
-    product_data(self.product)
-    payments = { payment_option: self.payment_option, company: self.company, product: self.product }
+    client_data(final_client)
+    product_data(product)
+    payments = { payment_option: payment_option, company: company, product: product }
     save_payment_type(**payments)
     save_price_and_discount
   end
 
   def client_data(final_client)
-    if final_client
-      self.client_name = final_client.name
-      self.client_cpf = final_client.cpf
-      self.final_client = final_client
-    end
+    return unless final_client
+
+    self.client_name = final_client.name
+    self.client_cpf = final_client.cpf
+    self.final_client = final_client
   end
 
   def product_data(product)
-    if product
-      self.price = product.price
-      self.product_name = product.name
-      self.product = product
-    end
+    return unless product
+
+    self.price = product.price
+    self.product_name = product.name
+    self.product = product
   end
 
   def save_payment_type(payments)
-    if payments[:payment_option] && payments[:company] && payments[:product]
-      self.payment_option = payments[:payment_option]
-      boleto = payments[:company].boleto_register_options.find_by(payment_option: payments[:payment_option])
-      credit_card = payments[:company].credit_card_register_options.find_by(payment_option: payments[:payment_option])
-      pix = payments[:company].pix_register_options.find_by(payment_option: payments[:payment_option])
-      if boleto then boleto_option(payments[:product], boleto)
-      elsif credit_card then credit_card_option(payments[:product], credit_card)
-      elsif pix then pix_option(payments[:product], pix) end
-    end
+    return unless payments[:payment_option] && payments[:company] && payments[:product]
+
+    self.payment_option = payments[:payment_option]
+    boleto = payments[:company].boleto_register_options.find_by(payment_option: payments[:payment_option])
+    credit_card = payments[:company].credit_card_register_options.find_by(payment_option: payments[:payment_option])
+    pix = payments[:company].pix_register_options.find_by(payment_option: payments[:payment_option])
+    if boleto then boleto_option(payments[:product], boleto)
+    elsif credit_card then credit_card_option(payments[:product], credit_card)
+    elsif pix then pix_option(payments[:product], pix) end
   end
 
   def save_price_and_discount
-    self.charge_price = if self.discount
-                          self.price - self.discount
+    self.charge_price = if discount
+                          price - discount
                         else
-                          self.price
+                          price
                         end
   end
 
@@ -107,10 +106,10 @@ class Charge < ApplicationRecord
     payment_date = params_charge[:payment_date]
     self.status_returned = status_charge.description
     self.status_returned_code = status_charge.code
-    if payment_date
-      self.payment_date = payment_date
-      self.authorization_token = params_charge[:authorization_token]
-    end
+    return unless payment_date
+
+    self.payment_date = payment_date
+    self.authorization_token = params_charge[:authorization_token]
   end
 
   def payment_attempt(params_charge)
@@ -123,16 +122,9 @@ class Charge < ApplicationRecord
   end
 
   before_validation(on: :create) do
-    token = self.token = SecureRandom.base58(20)
-    same = true
-    while same == true
-      if Charge.where(token: token).empty?
-        self.token = token
-        same = false
-      else
-        self.token = SecureRandom.base58(20)
-      end
+    loop do
+      token = SecureRandom.base58(20)
+      break self.token = token unless Charge.exists?(token: token)
     end
-    self.token
   end
 end
