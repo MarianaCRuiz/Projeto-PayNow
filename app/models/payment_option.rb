@@ -16,12 +16,26 @@ class PaymentOption < ApplicationRecord
   def set_photo
     return if icon.attached?
 
-    if PaymentOption.last.name.include?('Boleto')
-      icon.attach(io: File.open(Rails.root.join('app/assets/images/Boleto.png')), filename: 'Boleto.png')
-    elsif PaymentOption.last.name.include?('Cartão de Crédito')
-      icon.attach(io: File.open(Rails.root.join('app/assets/images/CreditCard.png')), filename: 'CreditCard.png')
-    elsif PaymentOption.last.name.include?('PIX') || PaymentOption.last.name.include?('Pix')
-      icon.attach(io: File.open(Rails.root.join('app/assets/images/Pix.png')), filename: 'Pix.png')
-    end
+    include_boleto?
+    include_creditcard?
+    include_pix?
+  end
+
+  def include_boleto?
+    return unless PaymentOption.last.name.include?('Boleto')
+
+    icon.attach(io: File.open(Rails.root.join('app/assets/images/Boleto.png')), filename: 'Boleto.png')
+  end
+
+  def include_creditcard?
+    return unless PaymentOption.last.name.include?('Cartão de Crédito')
+
+    icon.attach(io: File.open(Rails.root.join('app/assets/images/CreditCard.png')), filename: 'CreditCard.png')
+  end
+
+  def include_pix?
+    return unless PaymentOption.last.name.include?('PIX') || PaymentOption.last.name.include?('Pix')
+
+    icon.attach(io: File.open(Rails.root.join('app/assets/images/Pix.png')), filename: 'Pix.png')
   end
 end

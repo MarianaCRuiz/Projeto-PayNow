@@ -11,19 +11,12 @@ class FinalClient < ApplicationRecord
   # before_create do   before_validate ou before_save
   def generate_token
     if FinalClient.where(cpf: cpf).empty?
-      token = self.token = SecureRandom.base58(20)
-      same = true
-      while same == true
-        if FinalClient.where(token: token).empty?
-          self.token = token
-          same = false
-        else
-          self.token = SecureRandom.base58(20)
-        end
+      loop do
+        token = SecureRandom.base58(20)
+        break self.token = token unless FinalClient.exists?(token: token)
       end
     else
       self.token = FinalClient.where(cpf: cpf).first.token
     end
-    self.token
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_29_110402) do
+ActiveRecord::Schema.define(version: 2021_08_31_045513) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 2021_06_29_110402) do
     t.string "email"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_admins_on_email", unique: true
   end
 
   create_table "bank_codes", force: :cascade do |t|
@@ -51,6 +52,8 @@ ActiveRecord::Schema.define(version: 2021_06_29_110402) do
     t.string "bank"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["bank"], name: "index_bank_codes_on_bank", unique: true
+    t.index ["code"], name: "index_bank_codes_on_code", unique: true
   end
 
   create_table "block_companies", force: :cascade do |t|
@@ -138,6 +141,9 @@ ActiveRecord::Schema.define(version: 2021_06_29_110402) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status", default: 0, null: false
+    t.index ["billing_email"], name: "index_companies_on_billing_email", unique: true
+    t.index ["cnpj"], name: "index_companies_on_cnpj", unique: true
+    t.index ["corporate_name"], name: "index_companies_on_corporate_name", unique: true
   end
 
   create_table "company_clients", force: :cascade do |t|
@@ -180,6 +186,8 @@ ActiveRecord::Schema.define(version: 2021_06_29_110402) do
     t.string "token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["cpf"], name: "index_final_clients_on_cpf", unique: true
+    t.index ["token"], name: "index_final_clients_on_token", unique: true
   end
 
   create_table "historic_companies", force: :cascade do |t|
@@ -229,6 +237,7 @@ ActiveRecord::Schema.define(version: 2021_06_29_110402) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "payment_type", default: 0, null: false
+    t.index ["name"], name: "index_payment_options_on_name", unique: true
   end
 
   create_table "pix_register_options", force: :cascade do |t|
@@ -282,6 +291,8 @@ ActiveRecord::Schema.define(version: 2021_06_29_110402) do
     t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["code"], name: "index_status_charges_on_code", unique: true
+    t.index ["description"], name: "index_status_charges_on_description", unique: true
   end
 
   create_table "users", force: :cascade do |t|

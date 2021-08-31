@@ -21,16 +21,9 @@ class Product < ApplicationRecord
   end
 
   before_validation(on: :create) do
-    token = self.token = SecureRandom.base58(20)
-    same = true
-    while same == true
-      if Product.where(token: token).empty?
-        self.token = token
-        same = false
-      else
-        self.token = SecureRandom.base58(20)
-      end
+    loop do
+      token = SecureRandom.base58(20)
+      break self.token = token unless Product.exists?(token: token)
     end
-    self.token
   end
 end

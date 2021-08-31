@@ -37,17 +37,9 @@ class Company < ApplicationRecord
   end
 
   def generate_token
-    self.token = SecureRandom.base58(20)
-    token = self.token
-    same = true
-    while same == true
-      if Company.where(token: token).empty?
-        self.token = token
-        same = false
-      else
-        self.token = SecureRandom.base58(20)
-      end
+    loop do
+      token = SecureRandom.base58(20)
+      break self.token = token unless Company.exists?(token: token)
     end
-    self.token
   end
 end
