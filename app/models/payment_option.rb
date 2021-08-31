@@ -5,9 +5,9 @@ class PaymentOption < ApplicationRecord
   has_one_attached :icon
   after_create_commit :set_photo
 
-  has_many :charges
+  has_many :charges, dependent: :destroy
 
-  has_many :payment_companies
+  has_many :payment_companies, dependent: :destroy
   has_many :companies, through: :payment_companies
 
   validates :name, :fee, :max_money_fee, presence: true

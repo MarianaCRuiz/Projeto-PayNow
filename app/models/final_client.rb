@@ -1,7 +1,7 @@
 class FinalClient < ApplicationRecord
   before_validation :generate_token, on: :create
 
-  has_many :company_clients
+  has_many :company_clients, dependent: :destroy
   has_many :companies, through: :company_clients
 
   validates :name, :cpf, presence: true

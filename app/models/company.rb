@@ -1,23 +1,23 @@
 class Company < ApplicationRecord
   enum status: { allowed: 0, blocked: 1 }
 
-  has_many :users
+  has_many :users, dependent: :destroy
 
-  has_many :charges
+  has_many :charges, dependent: :destroy
 
-  has_many :boleto_register_options
-  has_many :credit_card_register_options
-  has_many :pix_register_options
+  has_many :boleto_register_options, dependent: :destroy
+  has_many :credit_card_register_options, dependent: :destroy
+  has_many :pix_register_options, dependent: :destroy
 
-  has_many :products
-  has_many :historic_products
+  has_many :products, dependent: :destroy
+  has_many :historic_products, dependent: :destroy
 
-  has_many :domain_records
+  has_many :domain_records, dependent: :destroy
 
-  has_many :payment_companies
+  has_many :payment_companies, dependent: :destroy
   has_many :payment_options, through: :payment_companies
 
-  has_many :company_clients
+  has_many :company_clients, dependent: :destroy
   has_many :final_clients, through: :company_clients
 
   validates :corporate_name, :cnpj, :state, :city, :district, :street, :number, :billing_email, :token, presence: true

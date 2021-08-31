@@ -1,5 +1,5 @@
 class StatusCharge < ApplicationRecord
-  has_many :charges
+  has_many :charges, dependent: :destroy
 
   validates :code, :description, presence: true, uniqueness: true
 

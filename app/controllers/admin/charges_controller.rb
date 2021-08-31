@@ -22,9 +22,7 @@ class Admin::ChargesController < ApplicationController
     @status_returned = StatusCharge.find(params[:charge][:status_charge_id])
     save_params
     if @charge.update(charge_params)
-      if @charge.paid? then generate_receipt
-      elsif @charge.attempted? then @charge.update(status_charge: StatusCharge.find_by(code: '01'))
-      end
+      check_status
       redirect_to admin_charges_path(company_token: @company.token)
     else
       @status_charges = StatusCharge.all
@@ -58,6 +56,12 @@ class Admin::ChargesController < ApplicationController
   def generate_receipt
     Receipt.create(due_deadline: @charge.due_deadline, payment_date: @charge.payment_date, charge: @charge,
                    authorization_token: @charge.authorization_token)
+  end
+
+  def check_status
+    if @charge.paid? then generate_receipt
+    elsif @charge.attempted? then @charge.update!(status_charge: StatusCharge.find_by(code: '01'))
+    end
   end
 
   def status_charge_generate

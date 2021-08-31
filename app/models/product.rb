@@ -1,8 +1,8 @@
 class Product < ApplicationRecord
   enum status: { active: 0, inactive: 1 }
   belongs_to :company
-  has_many :historic_products
-  has_many :charges
+  has_many :historic_products, dependent: :destroy
+  has_many :charges, dependent: :destroy
 
   validates :name, :price, :token, :company_id, presence: true, if: :product_active?
   validates :name, :token, uniqueness: { scope: :company_id, allow_blank: true, message: 'Produto já cadastrado' }
