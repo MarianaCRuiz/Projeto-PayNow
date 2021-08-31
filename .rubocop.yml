@@ -17,6 +17,8 @@ Style/FrozenStringLiteralComment:
   Enabled: false
 Style/ClassAndModuleChildren:
   Enabled: false
+Rails/FilePath:
+  Enabled: false
 
 Metrics/ClassLength:
   Enabled: false

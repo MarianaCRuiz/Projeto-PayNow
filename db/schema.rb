@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_31_045513) do
+ActiveRecord::Schema.define(version: 2021_08_31_054424) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 2021_08_31_045513) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status", default: 0, null: false
+    t.index ["account_number", "bank_code_id", "agency_number"], name: "boleto_account", unique: true
     t.index ["bank_code_id"], name: "index_boleto_register_options_on_bank_code_id"
     t.index ["company_id"], name: "index_boleto_register_options_on_company_id"
     t.index ["payment_option_id"], name: "index_boleto_register_options_on_payment_option_id"
@@ -152,6 +153,7 @@ ActiveRecord::Schema.define(version: 2021_08_31_045513) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_company_clients_on_company_id"
+    t.index ["final_client_id", "company_id"], name: "index_company_clients_on_final_client_id_and_company_id", unique: true
     t.index ["final_client_id"], name: "index_company_clients_on_final_client_id"
   end
 
@@ -166,6 +168,7 @@ ActiveRecord::Schema.define(version: 2021_08_31_045513) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status", default: 0, null: false
     t.index ["company_id"], name: "index_credit_card_register_options_on_company_id"
+    t.index ["credit_card_operator_token", "company_id"], name: "cc_token", unique: true
     t.index ["payment_option_id"], name: "index_credit_card_register_options_on_payment_option_id"
   end
 
@@ -178,6 +181,8 @@ ActiveRecord::Schema.define(version: 2021_08_31_045513) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "company_id"
     t.index ["company_id"], name: "index_domain_records_on_company_id"
+    t.index ["email", "domain"], name: "index_domain_records_on_email_and_domain", unique: true
+    t.index ["email_client_admin", "domain"], name: "index_domain_records_on_email_client_admin_and_domain", unique: true
   end
 
   create_table "final_clients", force: :cascade do |t|
@@ -226,6 +231,7 @@ ActiveRecord::Schema.define(version: 2021_08_31_045513) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_payment_companies_on_company_id"
+    t.index ["payment_option_id", "company_id"], name: "index_payment_companies_on_payment_option_id_and_company_id", unique: true
     t.index ["payment_option_id"], name: "index_payment_companies_on_payment_option_id"
   end
 
@@ -254,6 +260,7 @@ ActiveRecord::Schema.define(version: 2021_08_31_045513) do
     t.index ["bank_code_id"], name: "index_pix_register_options_on_bank_code_id"
     t.index ["company_id"], name: "index_pix_register_options_on_company_id"
     t.index ["payment_option_id"], name: "index_pix_register_options_on_payment_option_id"
+    t.index ["pix_key", "company_id"], name: "pix_key_index", unique: true
   end
 
   create_table "products", force: :cascade do |t|
@@ -268,6 +275,8 @@ ActiveRecord::Schema.define(version: 2021_08_31_045513) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status", default: 0, null: false
     t.index ["company_id"], name: "index_products_on_company_id"
+    t.index ["name", "company_id"], name: "index_products_on_name_and_company_id", unique: true
+    t.index ["token", "company_id"], name: "index_products_on_token_and_company_id", unique: true
   end
 
   create_table "receipt_filters", force: :cascade do |t|
