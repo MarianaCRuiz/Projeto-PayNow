@@ -22,17 +22,26 @@ class Charge < ApplicationRecord
     status_returned_code == '05'
   end
 
-  def boleto_option(product, boleto)
+  def boleto_option(product, payments)
+    boleto = payments[:company].boleto_register_options.find_by(payment_option: payments[:payment_option])
+    return unless boleto
+
     self.discount = price * product.boleto_discount / 100
     self.boleto_register_option = boleto
   end
 
-  def credit_card_option(product, credit_card)
+  def credit_card_option(product, payments)
+    credit_card = payments[:company].credit_card_register_options.find_by(payment_option: payments[:payment_option])
+    return unless credit_card
+
     self.discount = price * product.credit_card_discount / 100
     self.credit_card_register_option = credit_card
   end
 
-  def pix_option(product, pix)
+  def pix_option(product, payments)
+    pix = payments[:company].pix_register_options.find_by(payment_option: payments[:payment_option])
+    return unless pix
+
     self.discount = price * product.pix_discount / 100
     self.pix_register_option = pix
   end
@@ -85,12 +94,9 @@ class Charge < ApplicationRecord
     return unless payments[:payment_option] && payments[:company] && payments[:product]
 
     self.payment_option = payments[:payment_option]
-    boleto = payments[:company].boleto_register_options.find_by(payment_option: payments[:payment_option])
-    credit_card = payments[:company].credit_card_register_options.find_by(payment_option: payments[:payment_option])
-    pix = payments[:company].pix_register_options.find_by(payment_option: payments[:payment_option])
-    if boleto then boleto_option(payments[:product], boleto)
-    elsif credit_card then credit_card_option(payments[:product], credit_card)
-    elsif pix then pix_option(payments[:product], pix) end
+    boleto_option(payments[:product], payments)
+    credit_card_option(payments[:product], payments)
+    pix_option(payments[:product], payments)
   end
 
   def save_price_and_discount
